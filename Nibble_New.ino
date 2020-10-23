@@ -14,16 +14,16 @@ Game *game;
 void setup(){
 
 	Serial.begin(115200);
-    Nibble.begin();
+	Nibble.begin();
 
-    game = new Game;
+	game = new Game;
 
-    LoopManager::addListener(game);
-    LoopManager::addListener(Input::getInstance());
+	LoopManager::addListener(game);
+	LoopManager::addListener(Input::getInstance());
 
 }
 
 void loop(){
 
-    LoopManager::loop();
+	LoopManager::loop();
 }
