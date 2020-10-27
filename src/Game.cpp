@@ -32,8 +32,8 @@ Game::Game(){
 
 	instance = this;
 
-	triangleVector.push_back({0, (float) random(10, 50)}); // horizontal triangle [0]
-	triangleVector.push_back({(float) random(10, 50), 0}); // vertical triangle [1]
+	triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle [0]
+	triangleVector.push_back({(float) random(10, 50), 'V', 0}); // vertical triangle [1]
 
 	circleVector.push_back({(float) random(10, 80), (float) random(40, 117)});    // circle[0] = blue
 
@@ -222,9 +222,9 @@ void Game::states(Triangle &triangle, uint t){
 	}
 
 	if(cnt % 20 == 0)
-		triangleVector.push_back({(float) random(10, 50), 0}); // vertical triangle
+		triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
 	else if(cnt % 10 == 0)
-		triangleVector.push_back({0, (float) random(10, 50)}); // horizontal triangle
+		triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
 
 /*
 	for(int i = 0; i < triangleVector.size(); i++){
