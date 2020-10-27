@@ -32,8 +32,8 @@ Game::Game(){
 
 	instance = this;
 
-	triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle [0]
-	triangleVector.push_back({(float) random(10, 50), 'V', 0}); // vertical triangle [1]
+	triangleVector.push_back({0, (float) random(30, 98), 'H'}); // horizontal triangle [0]
+	triangleVector.push_back({(float) random(30, 98), 'V', 0}); // vertical triangle [1]
 
 	circleVector.push_back({(float) random(10, 80), (float) random(40, 117)});    // circle[0] = blue
 
@@ -109,7 +109,7 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 
 		if(triangle.x > 127){
 			triangle.x = 0;
-			triangle.y = (float) random(20, 108);
+			triangle.y = (float) random(30, 98);
 		}
 	}
 
@@ -118,7 +118,7 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 		triangle.y += speed * t / 13000;
 
 		if(triangle.y > 127){
-			triangle.x = (float) random(20, 108);
+			triangle.x = (float) random(30, 98);
 			triangle.y = 0;
 		}
 	}
