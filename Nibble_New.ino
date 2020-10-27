@@ -6,14 +6,12 @@
 #include <Input/InputI2C.h>
 #include <Nibble.h>
 #include <Loop/LoopManager.h>
-#include <spiffs_api.h>
 #include <gpio.h>
 
 Game *game;
 
 void setup(){
 
-	Serial.begin(115200);
 	Nibble.begin();
 
 	game = new Game;
