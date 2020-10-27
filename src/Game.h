@@ -21,6 +21,7 @@ struct Triangle {
 
 	float x;
 	float y;
+	char orientation;
 
 };
 
@@ -70,24 +71,24 @@ private:
 	Display *display;
 	Sprite *baseSprite;
 
-	Vector<Triangle> triangle;
-	Vector<Circle> circle;
+	Vector<Triangle> triangleVector;
+	Vector<Circle> circleVector;
 
-	void states(Circle &dot, uint t);
+	void states(uint time);
 
 	void drawPlayer();
 
-	void drawCircle(Circle &dot);
+	void drawCircle(Circle &circle);
 
 	void drawCircles();
 
-	void drawTriangle(Triangle &tri);
+	void drawTriangle(Triangle &triangle);
 
 	void drawTriangles();
 
-	void check_if_eaten(Circle &dot);
+	void checkIfEaten(Circle &circle);
 
-	void check_if_dead(Triangle &tri);
+	void checkIfDead(Triangle &triangle);
 
 	void drawWarningMessage();
 

@@ -32,18 +32,18 @@ Game::Game(){
 
 	instance = this;
 
-	triangle.push_back({0, 64}); // triangle_horizontal[0]
-	triangle.push_back({64, 0}); // triangle_vertical[1]
-	triangle.push_back({0, (float) random(10, 50)}); // triangle_horizontal[2]
-	triangle.push_back({(float) random(10, 50), 0}); // triangle_vertical[3]
+	triangleVector.push_back({0, 64}); // triangle_horizontal[0]
+	triangleVector.push_back({64, 0}); // triangle_vertical[1]
+	triangleVector.push_back({0, (float) random(10, 50)}); // triangle_horizontal[2]
+	triangleVector.push_back({(float) random(10, 50), 0}); // triangle_vertical[3]
 
-	circle.push_back({(float) random(10, 80), (float) random(40, 117)});    // circle[0] = blue
+	circleVector.push_back({(float) random(10, 80), (float) random(40, 117)});    // circle[0] = blue
 
 }
 
 void Game::loop(uint time){
 
-	states(circle[0], time);
+	states(time);
 
 	baseSprite->clear(TFT_BLACK);
 
@@ -65,16 +65,16 @@ void Game::drawPlayer(){
 	baseSprite->fillCircle(playerX, playerY, radius, TFT_GOLD);
 }
 
-void Game::drawCircle(Circle &dot){
+void Game::drawCircle(Circle &circle){
 
-	baseSprite->fillCircle(dot.dot_x, dot.dot_y, radius, TFT_BLUE);
+	baseSprite->fillCircle(circle.x, circle.y, radius, TFT_BLUE);
 
 }
 
 void Game::drawCircles(){
-	for(int i = 0; i < circle.size(); i++){
+	for(int i = 0; i < circleVector.size(); i++){
 
-		drawCircle(circle[i], i);
+		drawCircle(circleVector[i], i);
 
 	}
 }
@@ -139,14 +139,14 @@ void Game::drawTriangle(Triangle &tri){
 }
 
 void Game::drawTriangles(){
-	for(int i = 0; i < triangle.size(); i++){
+	for(int i = 0; i < triangleVector.size(); i++){
 
-		drawTriangle(triangle[i], i);
-		check_if_dead(triangle[i], circle[0], i);
+		drawTriangle(triangleVector[i]);
+		checkIfDead(triangleVector[i]);
 	}
 }
 
-void Game::check_if_dead(Triangle &tri){
+void Game::checkIfDead(Triangle &tri){
 
 	if((sqrt(pow(tri.triangle_x + triangle_side * sqrt(3) / 6 - greenDot.dot_x, 2) +
 			 pow(tri.triangle_y - greenDot.dot_y, 2)) <
@@ -197,7 +197,7 @@ void Game::check_if_dead(Triangle &tri){
 	}
 }
 
-void Game::check_if_eaten(Circle &blueDot){
+void Game::checkIfEaten(Circle &blue){
 
 	if(abs(blueDot.dot_x - green_X) < (radius + 5) && abs(blueDot.dot_y - green_Y) < (radius + 5)){
 
@@ -217,7 +217,7 @@ void Game::check_if_eaten(Circle &blueDot){
 
 }
 
-void Game::states(Circle &greenDot, uint t){
+void Game::states(uint t){
 
 	if(instance->upState == 1){
 		greenDot.dot_y -= speed * t / 13000;
