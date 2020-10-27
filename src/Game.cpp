@@ -246,10 +246,10 @@ void Game::states(uint t){
 
 	if(newTriangle){
 		if(cnt > 0 && cnt % 20 == 0)
-			triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
+			triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
 
 		else if(cnt > 0 && cnt % 10 == 0)
-			triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
+			triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
 
 		newTriangle = false;
 	}
