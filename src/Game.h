@@ -92,8 +92,6 @@ private:
 
 	void checkIfDead(Triangle &triangle);
 
-	void invisibilityMode();
-
 	void drawWarningMessage();
 
 	void drawCounterString();
@@ -105,8 +103,7 @@ private:
 
 	const float speed = 1;
 
-	float playerX = 117;
-	float playerY = 10;
+	Circle player;
 	uint32_t playerColor = TFT_GOLD;
 
 
@@ -124,7 +121,8 @@ private:
 	int cnt = 0;
 
 	bool newTriangle = true;
-	bool invisibilityStatus = false;
+	bool invisibilityButtonStatus = false;
+
 
 	String endMessage = "Game Over";
 	String livesRest = "Lives: ";

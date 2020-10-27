@@ -37,6 +37,9 @@ Game::Game(){
 
 	circleVector.push_back({(float) random(10, 80), (float) random(40, 117)});    // circle[0] = blue
 
+	player.x = 117;
+	player.y = 10;
+
 }
 
 void Game::loop(uint time){
@@ -59,7 +62,7 @@ void Game::loop(uint time){
 }
 
 void Game::drawPlayer(){
-	baseSprite->fillCircle(playerX, playerY, radius, playerColor);
+	baseSprite->fillCircle(player.x, player.y, radius, playerColor);
 }
 
 void Game::drawCircle(Circle &circle){
@@ -134,15 +137,15 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 
 void Game::checkIfDead(Triangle &triangle){
 
-	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - playerX, 2) +
-			 pow(triangle.y - playerY, 2)) <
+	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - player.x, 2) +
+			 pow(triangle.y - player.y, 2)) <
 		(triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == 'H')){
 
 		Piezo.tone(1000, 300);
 		delay(500);
 
-		playerX = 117;
-		playerY = 10;
+		player.x = 117;
+		player.y = 10;
 
 		lives--;
 
@@ -160,15 +163,15 @@ void Game::checkIfDead(Triangle &triangle){
 
 		}
 
-	}else if((sqrt(pow(triangle.x - playerX, 2) +
-				   pow(triangle.y + triangleSide * sqrt(3) / 6 - playerY, 2)) <
+	}else if((sqrt(pow(triangle.x - player.x, 2) +
+				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
 			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == 'V')){
 
 		Piezo.tone(1000, 300);
 		delay(500);
 
-		playerX = 117;
-		playerY = 10;
+		player.x = 117;
+		player.y = 10;
 
 		lives--;
 
@@ -187,12 +190,11 @@ void Game::checkIfDead(Triangle &triangle){
 		}
 
 	}
-
 }
 
 void Game::checkIfEaten(Circle &blue){
 
-	if(sqrt(pow(blue.x - playerX, 2) + pow(blue.y - playerY, 2)) < (radius + radius - 1)){
+	if(sqrt(pow(blue.x - player.x, 2) + pow(blue.y - player.y, 2)) < (radius + radius - 1)){
 
 		float pomX = blue.x;
 		float pomY = blue.y;
@@ -211,58 +213,52 @@ void Game::checkIfEaten(Circle &blue){
 
 }
 
-void Game::invisibilityMode(){
-	playerColor = TFT_VIOLET;
-
-}
-
 void Game::states(uint t){
 
-
 	if(instance->upState == 1){
-		playerY -= speed * t / 13000;
-		if(playerY <= 5)
-			playerY = 5;
+		player.y -= speed * t / 13000;
+		if(player.y <= 5)
+			player.y = 5;
 
 	}
 	if(instance->leftState == 1){
-		playerX -= speed * t / 13000;
-		if(playerX <= 5)
-			playerX = 5;
+		player.x -= speed * t / 13000;
+		if(player.x <= 5)
+			player.x = 5;
 
 
 	}
 	if(instance->downState == 1){
-		playerY += speed * t / 13000;
-		if(playerY >= 122)
-			playerY = 122;
+		player.y += speed * t / 13000;
+		if(player.y >= 122)
+			player.y = 122;
 
 	}
 	if(instance->rightState == 1){
-		playerX += speed * t / 13000;
-		if(playerX >= 122)
-			playerX = 122;
+		player.x += speed * t / 13000;
+		if(player.x >= 122)
+			player.x = 122;
 
 	}
 	if(instance->aState == 1){
-		if(instance->upState == 1 && playerY > 5){
-			playerY -= speed * t / 13000;
+		if(instance->upState == 1 && player.y > 5){
+			player.y -= speed * t / 13000;
 		}
-		if(instance->downState == 1 && playerY < 122){
-			playerY += speed * t / 13000;
+		if(instance->downState == 1 && player.y < 122){
+			player.y += speed * t / 13000;
 		}
-		if(instance->rightState == 1 && playerX < 122){
-			playerX += speed * t / 13000;
+		if(instance->rightState == 1 && player.x < 122){
+			player.x += speed * t / 13000;
 		}
-		if(instance->leftState == 1 && playerY > 5){
-			playerX -= speed * t / 13000;
+		if(instance->leftState == 1 && player.y > 5){
+			player.x -= speed * t / 13000;
 		}
 
-		invisibilityStatus = false;
+		invisibilityButtonStatus = false;
 
 	}
 	if(instance->bState == 1){
-		invisibilityStatus = true;
+		invisibilityButtonStatus = true;
 		instance->aState = 0;
 	}
 
@@ -285,10 +281,10 @@ void Game::states(uint t){
 
 	checkIfEaten(circleVector[0]);
 
-	if(invisibilityStatus){
-		invisibilityMode();
-	}
-	else
+
+	if(invisibilityButtonStatus){
+		playerColor = TFT_VIOLET;
+	}else
 		playerColor = TFT_GOLD;
 
 }
