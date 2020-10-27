@@ -74,7 +74,7 @@ private:
 	Vector<Triangle> triangleVector;
 	Vector<Circle> circleVector;
 
-	void states(Triangle &triangle, uint time);
+	void states(uint time);
 
 	void drawPlayer();
 
@@ -85,6 +85,8 @@ private:
 	void drawTriangle(Triangle &triangle);
 
 	void drawTriangles();
+
+	void triangleMovement(Triangle &triangle, uint t);
 
 	void checkIfEaten(Circle &circle);
 
