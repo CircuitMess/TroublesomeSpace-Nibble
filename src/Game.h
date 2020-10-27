@@ -17,17 +17,17 @@
 #include "Pins.hpp"
 #include <Audio/Piezo.h>
 
-struct redTriangle {
+struct Triangle {
 
-	float triangle_x;
-	float triangle_y;
+	float x;
+	float y;
 
 };
 
-struct fillCircles {
+struct Circle {
 
-	float dot_x;
-	float dot_y;
+	float x;
+	float y;
 };
 
 
@@ -37,31 +37,31 @@ public:
 
 	Game();
 
-	void loop(uint) override;
+	void loop(uint t) override;
 
-	static void buttonUp_pressed();
+	static void buttonUpPressed();
 
-	static void buttonDown_pressed();
+	static void buttonDownPressed();
 
-	static void buttonLeft_pressed();
+	static void buttonLeftPressed();
 
-	static void buttonRight_pressed();
+	static void buttonRightPressed();
 
-	static void buttonA_pressed();
+	static void buttonAPressed();
 
-	static void buttonB_pressed();
+	static void buttonBPressed();
 
-	static void buttonUp_released();
+	static void buttonUpReleased();
 
-	static void buttonDown_released();
+	static void buttonDownReleased();
 
-	static void buttonLeft_released();
+	static void buttonLeftReleased();
 
-	static void buttonRight_released();
+	static void buttonRightReleased();
 
-	static void buttonA_released();
+	static void buttonAReleased();
 
-	static void buttonB_released();
+	static void buttonBReleased();
 
 private:
 
@@ -70,58 +70,55 @@ private:
 	Display *display;
 	Sprite *baseSprite;
 
-	Vector<redTriangle> triangle;
-	Vector<fillCircles> circle;
+	Vector<Triangle> triangle;
+	Vector<Circle> circle;
 
-	void states(fillCircles &dot, uint t);
+	void states(Circle &dot, uint t);
 
-	void drawCircles(fillCircles &dot, int i);
+	void drawPlayer();
 
-	void circles();
+	void drawCircle(Circle &dot);
 
-	void triangles();
+	void drawCircles();
 
-	void drawRed_Triangle(redTriangle &tri, int i);
+	void drawTriangle(Triangle &tri);
 
-	void check_if_eaten(fillCircles &dot);
+	void drawTriangles();
 
-	void check_if_dead(redTriangle &tri, fillCircles &dot, fillCircles &orientation);
+	void check_if_eaten(Circle &dot);
 
-	//void lvl_surprise();
-	void warning_message();
+	void check_if_dead(Triangle &tri);
 
-	void draw_counter_string();
+	void drawWarningMessage();
 
-	void draw_spawn_point();
+	void drawCounterString();
 
-	void draw_lives_string();
+	void drawSpawnPoint();
 
+	void drawLivesString();
 
-	void draw_orientation_piece(fillCircles &dot);
-
-	void orientation_piece(fillCircles &dot, fillCircles &greenDot);
 
 	const float speed = 1;
 
-	float green_X = 0;
-	float green_Y = 0;
+	float playerX = 117;
+	float playerY = 10;
 
-	int up_state = 0;
-	int down_state = 0;
-	int right_state = 0;
-	int left_state = 0;
-	int a_state = 0;
-	int b_state = 0;
+
+	int upState = 0;
+	int downState = 0;
+	int rightState = 0;
+	int leftState = 0;
+	int aState = 0;
+	int bState = 0;
 
 	const float radius = 5;
-	const float triangle_side = 10;
+	const float triangleSide = 10;
 
 	int lives = 3;
 	int cnt = 0;
-	int lvl_mul = 0;
 
-	String end_message = "Game Over";
-	String lives_rest = "Lives: ";
+	String endMessage = "Game Over";
+	String livesRest = "Lives: ";
 	String warning = "Warning!";
 
 };

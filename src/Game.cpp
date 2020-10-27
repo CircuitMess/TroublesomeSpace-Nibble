@@ -16,27 +16,28 @@ Game::Game(){
 	baseSprite = display->getBaseSprite();
 	Piezo.setMute(false);
 
-	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUp_pressed);
-	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDown_pressed);
-	Input::getInstance()->setBtnPressCallback(BTN_LEFT, buttonLeft_pressed);
-	Input::getInstance()->setBtnPressCallback(BTN_RIGHT, buttonRight_pressed);
-	Input::getInstance()->setBtnPressCallback(BTN_A, buttonA_pressed);
-	Input::getInstance()->setBtnPressCallback(BTN_B, buttonB_pressed);
+	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
+	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
+	Input::getInstance()->setBtnPressCallback(BTN_LEFT, buttonLeftPressed);
+	Input::getInstance()->setBtnPressCallback(BTN_RIGHT, buttonRightPressed);
+	Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
+	Input::getInstance()->setBtnPressCallback(BTN_B, buttonBPressed);
 
-	Input::getInstance()->setBtnReleaseCallback(BTN_UP, buttonUp_released);
-	Input::getInstance()->setBtnReleaseCallback(BTN_DOWN, buttonDown_released);
-	Input::getInstance()->setBtnReleaseCallback(BTN_LEFT, buttonLeft_released);
-	Input::getInstance()->setBtnReleaseCallback(BTN_RIGHT, buttonRight_released);
-	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonA_released);
-	Input::getInstance()->setBtnReleaseCallback(BTN_B, buttonB_released);
+	Input::getInstance()->setBtnReleaseCallback(BTN_UP, buttonUpReleased);
+	Input::getInstance()->setBtnReleaseCallback(BTN_DOWN, buttonDownReleased);
+	Input::getInstance()->setBtnReleaseCallback(BTN_LEFT, buttonLeftReleased);
+	Input::getInstance()->setBtnReleaseCallback(BTN_RIGHT, buttonRightReleased);
+	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
+	Input::getInstance()->setBtnReleaseCallback(BTN_B, buttonBReleased);
 
 	instance = this;
 
-	triangle.push_back({0, 64}); // triangle[0]
-	triangle.push_back({64, 0}); // triangle[1]
-	circle.push_back({117, 10}); // circle[0] = green
-	circle.push_back({(float) random(10, 117), (float) random(10, 117)});    // circle[1] = blue
-	circle.push_back({117, 10}); // circle[2] = orientation_piece
+	triangle.push_back({0, 64}); // triangle_horizontal[0]
+	triangle.push_back({64, 0}); // triangle_vertical[1]
+	triangle.push_back({0, (float) random(10, 50)}); // triangle_horizontal[2]
+	triangle.push_back({(float) random(10, 50), 0}); // triangle_vertical[3]
+
+	circle.push_back({(float) random(10, 80), (float) random(40, 117)});    // circle[0] = blue
 
 }
 
@@ -46,43 +47,43 @@ void Game::loop(uint time){
 
 	baseSprite->clear(TFT_BLACK);
 
-	circles();
-	triangles();
-	draw_counter_string();
-	draw_spawn_point();
-	draw_lives_string();
-	warning_message();
-	//lvl_surprise();
+	drawPlayer();
+	drawCircles();
+	drawTriangles();
 
-	draw_orientation_piece(circle[2]);
+	drawCounterString();
+	drawSpawnPoint();
+	drawLivesString();
+	drawWarningMessage();
 
 	display->commit();
 
-}
-
-void Game::drawCircles(fillCircles &dot, int i){
-	if(i == 0){
-		baseSprite->fillCircle(dot.dot_x, dot.dot_y, radius, TFT_GREEN);
-		green_X = dot.dot_x;
-		green_Y = dot.dot_y;
-	}
-	if(i == 1)
-		baseSprite->fillCircle(dot.dot_x, dot.dot_y, radius, TFT_BLUE);
 
 }
 
-void Game::circles(){
+void Game::drawPlayer(){
+	baseSprite->fillCircle(playerX, playerY, radius, TFT_GOLD);
+}
+
+void Game::drawCircle(Circle &dot){
+
+	baseSprite->fillCircle(dot.dot_x, dot.dot_y, radius, TFT_BLUE);
+
+}
+
+void Game::drawCircles(){
 	for(int i = 0; i < circle.size(); i++){
 
-		drawCircles(circle[i], i);
+		drawCircle(circle[i], i);
 
 	}
-
 }
 
-void Game::drawRed_Triangle(redTriangle &tri, int i){
+void Game::drawTriangle(Triangle &tri){
 
 	if(i == 0){
+
+		horizontal_triangle_y = tri.triangle_y;
 
 		if(tri.triangle_x > 127){
 			tri.triangle_x = 0;
@@ -94,6 +95,9 @@ void Game::drawRed_Triangle(redTriangle &tri, int i){
 
 	}
 	if(i == 1){
+
+		vertical_triangle_x = tri.triangle_x;
+
 		if(tri.triangle_y > 127){
 			tri.triangle_x = (float) random(20, 108);
 			tri.triangle_y = 0;
@@ -105,20 +109,48 @@ void Game::drawRed_Triangle(redTriangle &tri, int i){
 
 	}
 
+	if(i == 2 && (cnt > 9)){
+		if(tri.triangle_x > 127){
+			do {
+				tri.triangle_x = 0;
+				tri.triangle_y = (float) random(20, 108);
+			} while(abs(horizontal_triangle_y - tri.triangle_y) < 40);
+		}
+		baseSprite->fillTriangle(tri.triangle_x, tri.triangle_y - 5, 5 * sqrt(2) + tri.triangle_x,
+								 tri.triangle_y, tri.triangle_x, tri.triangle_y + 5, TFT_RED);
+		tri.triangle_x++;
+
+	}
+
+	if(i == 3 && (cnt > 19)){
+		if(tri.triangle_y > 127){
+			do {
+				tri.triangle_x = (float) random(20, 108);
+				tri.triangle_y = 0;
+			} while(abs(vertical_triangle_x - tri.triangle_x) < 40);
+		}
+
+		baseSprite->fillTriangle(tri.triangle_x + 5, tri.triangle_y, tri.triangle_x,
+								 tri.triangle_y + 5 * sqrt(2), tri.triangle_x - 5, tri.triangle_y, TFT_RED);
+		tri.triangle_y++;
+
+	}
+
 }
 
-void Game::triangles(){
+void Game::drawTriangles(){
 	for(int i = 0; i < triangle.size(); i++){
 
-		drawRed_Triangle(triangle[i], i);
-		check_if_dead(triangle[i], circle[0], circle[2]);
+		drawTriangle(triangle[i], i);
+		check_if_dead(triangle[i], circle[0], i);
 	}
 }
 
-void Game::check_if_dead(redTriangle &tri, fillCircles &greenDot, fillCircles &orientation){
+void Game::check_if_dead(Triangle &tri){
 
-	if(sqrt(pow(tri.triangle_x - greenDot.dot_x, 2) + pow(tri.triangle_y - greenDot.dot_y, 2)) <
-	   (triangle_side * sqrt(3) / 6 + radius)){
+	if((sqrt(pow(tri.triangle_x + triangle_side * sqrt(3) / 6 - greenDot.dot_x, 2) +
+			 pow(tri.triangle_y - greenDot.dot_y, 2)) <
+		(triangle_side * sqrt(3) / 6 + radius)) && (i % 2 == 0)){
 
 		Piezo.tone(1000, 300);
 		delay(500);
@@ -126,8 +158,28 @@ void Game::check_if_dead(redTriangle &tri, fillCircles &greenDot, fillCircles &o
 		greenDot.dot_x = 117;
 		greenDot.dot_y = 10;
 
-		orientation.dot_x = 117;
-		orientation.dot_y = 10;
+		lives--;
+
+		if(lives == 0){
+
+			cnt = 0;
+			lives = 3;
+			baseSprite->clear(TFT_BLACK);
+			baseSprite->drawString(end_message, 35, 55);
+			display->commit();
+			delay(2000);
+
+		}
+
+	}else if((sqrt(pow(tri.triangle_x - greenDot.dot_x, 2) +
+				   pow(tri.triangle_y + triangle_side * sqrt(3) / 6 - greenDot.dot_y, 2)) <
+			  (triangle_side * sqrt(3) / 6 + radius)) && (i % 2 == 1)){
+
+		Piezo.tone(1000, 300);
+		delay(500);
+
+		greenDot.dot_x = 117;
+		greenDot.dot_y = 10;
 
 		lives--;
 
@@ -145,7 +197,7 @@ void Game::check_if_dead(redTriangle &tri, fillCircles &greenDot, fillCircles &o
 	}
 }
 
-void Game::check_if_eaten(fillCircles &blueDot){
+void Game::check_if_eaten(Circle &blueDot){
 
 	if(abs(blueDot.dot_x - green_X) < (radius + 5) && abs(blueDot.dot_y - green_Y) < (radius + 5)){
 
@@ -153,79 +205,76 @@ void Game::check_if_eaten(fillCircles &blueDot){
 		float pom_y = blueDot.dot_y;
 
 		do {
-			blueDot.dot_x = random(10, 117);
-			blueDot.dot_y = random(10, 117);
-		} while(abs(pom_x - blueDot.dot_x) < 20 && abs(pom_y - blueDot.dot_y));
+			blueDot.dot_x = (float) random(10, 117);
+			blueDot.dot_y = (float) random(10, 117);
+		} while(abs(pom_x - blueDot.dot_x) < 30 && abs(pom_y - blueDot.dot_y) < 30);
 
 		cnt++;
+
 		Piezo.tone(500, 200);
 
 	}
 
 }
 
-void Game::states(fillCircles &greenDot, uint t){
+void Game::states(Circle &greenDot, uint t){
 
-	if(instance->up_state == 1){
+	if(instance->upState == 1){
 		greenDot.dot_y -= speed * t / 13000;
-		if(greenDot.dot_y < 0)
-			greenDot.dot_y = 127;
+		if(greenDot.dot_y <= 5)
+			greenDot.dot_y = 5;
 
 	}
-	if(instance->left_state == 1){
+	if(instance->leftState == 1){
 		greenDot.dot_x -= speed * t / 13000;
-		if(greenDot.dot_x < 0)
-			greenDot.dot_x = 127;
+		if(greenDot.dot_x <= 5)
+			greenDot.dot_x = 5;
 
 
 	}
-	if(instance->down_state == 1){
+	if(instance->downState == 1){
 		greenDot.dot_y += speed * t / 13000;
-		if(greenDot.dot_y > 127)
-			greenDot.dot_y = 0;
+		if(greenDot.dot_y >= 122)
+			greenDot.dot_y = 122;
 
 	}
-	if(instance->right_state == 1){
+	if(instance->rightState == 1){
 		greenDot.dot_x += speed * t / 13000;
-		if(greenDot.dot_x > 127)
-			greenDot.dot_x = 0;
+		if(greenDot.dot_x >= 122)
+			greenDot.dot_x = 122;
 
 	}
-	if(instance->a_state == 1){
-		if(instance->up_state == 1){
+	if(instance->aState == 1){
+		if(instance->upState == 1 && greenDot.dot_y > 5){
 			greenDot.dot_y -= speed * t / 13000;
 		}
-		if(instance->down_state == 1){
+		if(instance->downState == 1 && greenDot.dot_y < 122){
 			greenDot.dot_y += speed * t / 13000;
 		}
-		if(instance->right_state == 1){
+		if(instance->rightState == 1 && greenDot.dot_x < 122){
 			greenDot.dot_x += speed * t / 13000;
 		}
-		if(instance->left_state == 1){
+		if(instance->leftState == 1 && greenDot.dot_x > 5){
 			greenDot.dot_x -= speed * t / 13000;
 		}
 
 
 	}
-	if(instance->b_state == 1){
+	if(instance->bState == 1){
 
 	}
 
 	check_if_eaten(circle[1]);
 
-	orientation_piece(circle[2], circle[0]);
-
 }
 
-void Game::warning_message(){
+void Game::drawWarningMessage(){
 	if((cnt + 1) % 20 == 0){
-		lvl_mul = 20;
 		baseSprite->setTextColor(TFT_RED);
 		baseSprite->drawString(warning, 35, 55);
 		baseSprite->drawLine(24, 0, 24, 128, TFT_RED);
 		baseSprite->drawLine(104, 0, 104, 128, TFT_RED);
 	}else if((cnt + 1) % 10 == 0){
-		lvl_mul = 10;
 		baseSprite->setTextColor(TFT_RED);
 		baseSprite->drawString(warning, 35, 55);
 		baseSprite->drawLine(0, 24, 128, 24, TFT_RED);
@@ -233,20 +282,7 @@ void Game::warning_message(){
 	}
 }
 
-/*
-void Game::lvl_surprise() {
-
-	if (cnt > 0 && cnt % 20 == 0) {
-		baseSprite->fillTriangle(ver_tri_x1 + 40, ver_tri_y1, ver_tri_x2 + 40, ver_tri_y2, ver_tri_x3 + 40, ver_tri_y3, TFT_RED); //ty++ for faster movement
-		baseSprite->fillTriangle(ver_tri_x1 - 40, ver_tri_y1, ver_tri_x2 - 40, ver_tri_y2, ver_tri_x3 - 40, ver_tri_y3, TFT_RED);
-	}
-	else if (cnt > 0 && cnt % 10 == 0) {
-		baseSprite->fillTriangle(hor_tri_x1, hor_tri_y1 + 40, hor_tri_x2, hor_tri_y2 + 40, hor_tri_x3, hor_tri_y3 + 40, TFT_RED); //tx++ for faster movement
-		baseSprite->fillTriangle(hor_tri_x1, hor_tri_y1 - 40, hor_tri_x2, hor_tri_y2 - 40, hor_tri_x3, hor_tri_y3 - 40, TFT_RED);
-	}
-}
-*/
-void Game::draw_counter_string(){
+void Game::drawCounterString(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(2);
@@ -255,7 +291,7 @@ void Game::draw_counter_string(){
 
 }
 
-void Game::draw_spawn_point(){
+void Game::drawSpawnPoint(){
 
 	baseSprite->drawLine(127, 0, 107, 0, TFT_WHITE);
 	baseSprite->drawLine(127, 0, 127, 20, TFT_WHITE);
@@ -264,120 +300,82 @@ void Game::draw_spawn_point(){
 
 }
 
-void Game::draw_lives_string(){
+void Game::drawLivesString(){
 
-	baseSprite->drawString(lives_rest, 1, 110);
+	baseSprite->drawString(livesRest, 1, 110);
 	baseSprite->drawNumber(lives, 40, 110);
 }
 
 
-void Game::buttonUp_pressed(){
+void Game::buttonUpPressed(){
 
-	instance->up_state = 1;
-
-}
-
-void Game::buttonDown_pressed(){
-
-	instance->down_state = 1;
+	instance->upState = 1;
 
 }
 
-void Game::buttonLeft_pressed(){
+void Game::buttonDownPressed(){
 
-	instance->left_state = 1;
-
-}
-
-void Game::buttonRight_pressed(){
-
-	instance->right_state = 1;
+	instance->downState = 1;
 
 }
 
-void Game::buttonA_pressed(){
+void Game::buttonLeftPressed(){
 
-	instance->a_state = 1;
-
-}
-
-void Game::buttonB_pressed(){
-
-	instance->b_state = 1;
+	instance->leftState = 1;
 
 }
 
-void Game::buttonUp_released(){
+void Game::buttonRightPressed(){
 
-	instance->up_state = 0;
-
-}
-
-void Game::buttonDown_released(){
-
-	instance->down_state = 0;
+	instance->rightState = 1;
 
 }
 
-void Game::buttonLeft_released(){
+void Game::buttonAPressed(){
 
-	instance->left_state = 0;
-
-}
-
-void Game::buttonRight_released(){
-
-	instance->right_state = 0;
-
+	instance->aState = 1;
 
 }
 
-void Game::buttonA_released(){
+void Game::buttonBPressed(){
 
-	instance->a_state = 0;
+	instance->bState = 1;
+
+}
+
+void Game::buttonUpReleased(){
+
+	instance->upState = 0;
 
 }
 
-void Game::buttonB_released(){
+void Game::buttonDownReleased(){
 
-	instance->b_state = 0;
-}
-
-
-void Game::draw_orientation_piece(fillCircles &dot){
-	baseSprite->fillCircle(dot.dot_x, dot.dot_y, 2, TFT_GREEN);
-}
-
-void Game::orientation_piece(fillCircles &orientation, fillCircles &greenDot){
-
-	if(instance->up_state == 1 && instance->left_state == 1){
-		orientation.dot_x = greenDot.dot_x - 6 * cos(45);
-		orientation.dot_y = greenDot.dot_y - 6 * sin(45);
-	}else if(instance->up_state == 1 && instance->right_state == 1){
-		orientation.dot_x = greenDot.dot_x + 6 * cos(45);
-		orientation.dot_y = greenDot.dot_y - 6 * sin(45);
-	}else if(instance->down_state == 1 && instance->left_state == 1){
-		orientation.dot_x = greenDot.dot_x - 6 * cos(45);
-		orientation.dot_y = greenDot.dot_y + 6 * sin(45);
-	}else if(instance->down_state == 1 && instance->right_state == 1){
-		orientation.dot_x = greenDot.dot_x + 6 * cos(45);
-		orientation.dot_y = greenDot.dot_y + 6 * sin(45);
-	}else if(instance->up_state == 1){
-
-		orientation.dot_x = greenDot.dot_x;
-		orientation.dot_y = greenDot.dot_y - 6;
-	}else if(instance->left_state == 1){
-
-		orientation.dot_x = greenDot.dot_x - 6;
-		orientation.dot_y = greenDot.dot_y;
-	}else if(instance->down_state == 1){
-
-		orientation.dot_x = greenDot.dot_x;
-		orientation.dot_y = greenDot.dot_y + 6;
-	}else if(instance->right_state == 1){
-
-		orientation.dot_x = greenDot.dot_x + 6;
-		orientation.dot_y = greenDot.dot_y;
-	}
+	instance->downState = 0;
 
 }
+
+void Game::buttonLeftReleased(){
+
+	instance->leftState = 0;
+
+}
+
+void Game::buttonRightReleased(){
+
+	instance->rightState = 0;
+
+
+}
+
+void Game::buttonAReleased(){
+
+	instance->aState = 0;
+
+}
+
+void Game::buttonBReleased(){
+
+	instance->bState = 0;
+}
+
