@@ -22,8 +22,6 @@ struct Triangle {
 	float x;
 	float y;
 	char orientation;
-	int horizontalNumber;
-	int verticalNumber;
 
 };
 

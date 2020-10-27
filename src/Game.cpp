@@ -226,15 +226,7 @@ void Game::states(Triangle &triangle, uint t){
 	else if(cnt % 10 == 0)
 		triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
 
-/*
-	for(int i = 0; i < triangleVector.size(); i++){
 
-		if(i % 2 == 0)
-			triangle.horizontalNumber++;
-		else
-			triangle.verticalNumber++;
-	}
-*/
 
 	if(triangle.x > 127){
 		triangle.x = 0;
