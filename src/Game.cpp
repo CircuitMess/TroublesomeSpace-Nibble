@@ -65,7 +65,7 @@ void Game::drawPlayer(){
 
 void Game::drawCircle(Circle &circle){
 
-	baseSprite->fillCircle(circle.x, circle.y, radius, TFT_BLUE);
+	baseSprite->fillCircle(circle.x, circle.y, radius-1, TFT_BLUE);
 
 }
 
