@@ -45,17 +45,16 @@ void Game::loop(uint time){
 
 	baseSprite->clear(TFT_BLACK);
 
-	drawPlayer();
-	drawCircles();
-	drawTriangles();
-
 	drawCounterString();
 	drawSpawnPoint();
 	drawLivesString();
 	drawWarningMessage();
 
-	display->commit();
+	drawPlayer();
+	drawCircles();
+	drawTriangles();
 
+	display->commit();
 
 }
 
@@ -89,7 +88,6 @@ void Game::drawTriangle(Triangle &triangle){
 		baseSprite->fillTriangle(triangle.x + 5, triangle.y, triangle.x,
 								 triangle.y + 5 * sqrt(2), triangle.x - 5, triangle.y, TFT_RED);
 	}
-
 
 }
 
@@ -213,8 +211,9 @@ void Game::checkIfEaten(Circle &blue){
 
 }
 
-void Game::rampageMode(){
+void Game::invisibilityMode(){
 	playerColor = TFT_VIOLET;
+
 }
 
 void Game::states(uint t){
@@ -259,11 +258,12 @@ void Game::states(uint t){
 			playerX -= speed * t / 13000;
 		}
 
-		rampageStatus = false;
+		invisibilityStatus = false;
 
 	}
 	if(instance->bState == 1){
-		rampageStatus = true;
+		invisibilityStatus = true;
+		instance->aState = 0;
 	}
 
 	if(newTriangle){
@@ -285,9 +285,8 @@ void Game::states(uint t){
 
 	checkIfEaten(circleVector[0]);
 
-	if(rampageStatus){
-		rampageMode();
-
+	if(invisibilityStatus){
+		invisibilityMode();
 	}
 	else
 		playerColor = TFT_GOLD;

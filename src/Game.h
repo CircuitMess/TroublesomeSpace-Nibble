@@ -92,7 +92,7 @@ private:
 
 	void checkIfDead(Triangle &triangle);
 
-	void rampageMode();
+	void invisibilityMode();
 
 	void drawWarningMessage();
 
@@ -124,7 +124,7 @@ private:
 	int cnt = 0;
 
 	bool newTriangle = true;
-	bool rampageStatus = false;
+	bool invisibilityStatus = false;
 
 	String endMessage = "Game Over";
 	String livesRest = "Lives: ";
