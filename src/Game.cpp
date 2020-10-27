@@ -268,13 +268,11 @@ void Game::drawWarningMessage(){
 	if((cnt + 1) % 20 == 0){
 		baseSprite->setTextColor(TFT_RED);
 		baseSprite->drawString(warning, 35, 55);
-		baseSprite->drawLine(24, 0, 24, 128, TFT_RED);
-		baseSprite->drawLine(104, 0, 104, 128, TFT_RED);
+
 	}else if((cnt + 1) % 10 == 0){
 		baseSprite->setTextColor(TFT_RED);
 		baseSprite->drawString(warning, 35, 55);
-		baseSprite->drawLine(0, 24, 128, 24, TFT_RED);
-		baseSprite->drawLine(0, 104, 128, 104, TFT_RED);
+
 	}
 }
 
