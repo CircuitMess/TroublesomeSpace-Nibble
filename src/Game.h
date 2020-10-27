@@ -21,6 +21,8 @@ struct Triangle {
 
 	float x;
 	float y;
+	int horizontalNumber;
+	int verticalNumber;
 	char orientation;
 
 };
@@ -74,7 +76,7 @@ private:
 	Vector<Triangle> triangleVector;
 	Vector<Circle> circleVector;
 
-	void states(uint time);
+	void states(Triangle &triangle, uint time);
 
 	void drawPlayer();
 

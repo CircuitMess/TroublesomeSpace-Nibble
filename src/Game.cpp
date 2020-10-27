@@ -32,10 +32,8 @@ Game::Game(){
 
 	instance = this;
 
-	triangleVector.push_back({0, 64}); // triangle_horizontal[0]
-	triangleVector.push_back({64, 0}); // triangle_vertical[1]
-	triangleVector.push_back({0, (float) random(10, 50)}); // triangle_horizontal[2]
-	triangleVector.push_back({(float) random(10, 50), 0}); // triangle_vertical[3]
+	triangleVector.push_back({0, (float) random(10, 50)}); // horizontal triangle [0]
+	triangleVector.push_back({(float) random(10, 50), 0}); // vertical triangle [1]
 
 	circleVector.push_back({(float) random(10, 80), (float) random(40, 117)});    // circle[0] = blue
 
@@ -43,7 +41,8 @@ Game::Game(){
 
 void Game::loop(uint time){
 
-	states(time);
+	for(int i = 0; i<triangleVector.size(); i++)
+		states(triangleVector[i],time);
 
 	baseSprite->clear(TFT_BLACK);
 
@@ -79,62 +78,19 @@ void Game::drawCircles(){
 	}
 }
 
-void Game::drawTriangle(Triangle &tri){
+void Game::drawTriangle(Triangle &triangle){
 
-	if(i == 0){
+	if(triangle.orientation == 'H'){
 
-		horizontal_triangle_y = tri.triangle_y;
-
-		if(tri.triangle_x > 127){
-			tri.triangle_x = 0;
-			tri.triangle_y = (float) random(20, 108);
-		}
-		baseSprite->fillTriangle(tri.triangle_x, tri.triangle_y - 5, 5 * sqrt(2) + tri.triangle_x,
-								 tri.triangle_y, tri.triangle_x, tri.triangle_y + 5, TFT_RED);
-		tri.triangle_x++;
-
+		baseSprite->fillTriangle(triangle.x, triangle.y - 5, 5 * sqrt(2) + triangle.x,
+								 triangle.y, triangle.x, triangle.y + 5, TFT_RED);
 	}
-	if(i == 1){
+	if(triangle.orientation == 'V'){
 
-		vertical_triangle_x = tri.triangle_x;
-
-		if(tri.triangle_y > 127){
-			tri.triangle_x = (float) random(20, 108);
-			tri.triangle_y = 0;
-		}
-
-		baseSprite->fillTriangle(tri.triangle_x + 5, tri.triangle_y, tri.triangle_x,
-								 tri.triangle_y + 5 * sqrt(2), tri.triangle_x - 5, tri.triangle_y, TFT_RED);
-		tri.triangle_y++;
-
+		baseSprite->fillTriangle(triangle.x + 5, triangle.y, triangle.x,
+								 triangle.y + 5 * sqrt(2), triangle.x - 5, triangle.y, TFT_RED);
 	}
 
-	if(i == 2 && (cnt > 9)){
-		if(tri.triangle_x > 127){
-			do {
-				tri.triangle_x = 0;
-				tri.triangle_y = (float) random(20, 108);
-			} while(abs(horizontal_triangle_y - tri.triangle_y) < 40);
-		}
-		baseSprite->fillTriangle(tri.triangle_x, tri.triangle_y - 5, 5 * sqrt(2) + tri.triangle_x,
-								 tri.triangle_y, tri.triangle_x, tri.triangle_y + 5, TFT_RED);
-		tri.triangle_x++;
-
-	}
-
-	if(i == 3 && (cnt > 19)){
-		if(tri.triangle_y > 127){
-			do {
-				tri.triangle_x = (float) random(20, 108);
-				tri.triangle_y = 0;
-			} while(abs(vertical_triangle_x - tri.triangle_x) < 40);
-		}
-
-		baseSprite->fillTriangle(tri.triangle_x + 5, tri.triangle_y, tri.triangle_x,
-								 tri.triangle_y + 5 * sqrt(2), tri.triangle_x - 5, tri.triangle_y, TFT_RED);
-		tri.triangle_y++;
-
-	}
 
 }
 
@@ -142,7 +98,7 @@ void Game::drawTriangles(){
 	for(int i = 0; i < triangleVector.size(); i++){
 
 		drawTriangle(triangleVector[i]);
-		checkIfDead(triangleVector[i]);
+
 	}
 }
 
@@ -217,7 +173,8 @@ void Game::checkIfEaten(Circle &blue){
 
 }
 
-void Game::states(uint t){
+void Game::states(Triangle &triangle, uint t){
+
 
 	if(instance->upState == 1){
 		playerY -= speed * t / 13000;
@@ -227,7 +184,7 @@ void Game::states(uint t){
 	}
 	if(instance->leftState == 1){
 		playerX -= speed * t / 13000;
-		if(playerX<= 5)
+		if(playerX <= 5)
 			playerX = 5;
 
 
@@ -264,7 +221,35 @@ void Game::states(uint t){
 
 	}
 
+	if(cnt % 20 == 0)
+		triangleVector.push_back({(float) random(10, 50), 0}); // vertical triangle
+	else if(cnt % 10 == 0)
+		triangleVector.push_back({0, (float) random(10, 50)}); // horizontal triangle
+
+/*
+	for(int i = 0; i < triangleVector.size(); i++){
+
+		if(i % 2 == 0)
+			triangle.horizontalNumber++;
+		else
+			triangle.verticalNumber++;
+	}
+*/
+
+	if(triangle.x > 127){
+		triangle.x = 0;
+		triangle.y = (float) random(20, 108);
+	}
+
+
+	if(triangle.y > 127){
+		triangle.x = (float) random(20, 108);
+		triangle.y = 0;
+	}
+
+
 	checkIfEaten(circleVector[0]);
+	checkIfDead(triangleVector[0]);
 
 }
 
