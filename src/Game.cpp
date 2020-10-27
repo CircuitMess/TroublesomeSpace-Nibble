@@ -74,7 +74,7 @@ void Game::drawCircle(Circle &circle){
 void Game::drawCircles(){
 	for(int i = 0; i < circleVector.size(); i++){
 
-		drawCircle(circleVector[i], i);
+		drawCircle(circleVector[i]);
 
 	}
 }
@@ -146,7 +146,7 @@ void Game::drawTriangles(){
 	}
 }
 
-void Game::checkIfDead(Triangle &tri){
+void Game::checkIfDead(Triangle &triangle){
 
 	if((sqrt(pow(tri.triangle_x + triangle_side * sqrt(3) / 6 - greenDot.dot_x, 2) +
 			 pow(tri.triangle_y - greenDot.dot_y, 2)) <
@@ -220,42 +220,42 @@ void Game::checkIfEaten(Circle &blue){
 void Game::states(uint t){
 
 	if(instance->upState == 1){
-		greenDot.dot_y -= speed * t / 13000;
-		if(greenDot.dot_y <= 5)
-			greenDot.dot_y = 5;
+		playerY -= speed * t / 13000;
+		if(playerY <= 5)
+			playerY = 5;
 
 	}
 	if(instance->leftState == 1){
-		greenDot.dot_x -= speed * t / 13000;
-		if(greenDot.dot_x <= 5)
-			greenDot.dot_x = 5;
+		playerX -= speed * t / 13000;
+		if(playerX<= 5)
+			playerX = 5;
 
 
 	}
 	if(instance->downState == 1){
-		greenDot.dot_y += speed * t / 13000;
-		if(greenDot.dot_y >= 122)
-			greenDot.dot_y = 122;
+		playerY += speed * t / 13000;
+		if(playerY >= 122)
+			playerY = 122;
 
 	}
 	if(instance->rightState == 1){
-		greenDot.dot_x += speed * t / 13000;
-		if(greenDot.dot_x >= 122)
-			greenDot.dot_x = 122;
+		playerX += speed * t / 13000;
+		if(playerX >= 122)
+			playerX = 122;
 
 	}
 	if(instance->aState == 1){
-		if(instance->upState == 1 && greenDot.dot_y > 5){
-			greenDot.dot_y -= speed * t / 13000;
+		if(instance->upState == 1 && playerY > 5){
+			playerY -= speed * t / 13000;
 		}
-		if(instance->downState == 1 && greenDot.dot_y < 122){
-			greenDot.dot_y += speed * t / 13000;
+		if(instance->downState == 1 && playerY < 122){
+			playerY += speed * t / 13000;
 		}
-		if(instance->rightState == 1 && greenDot.dot_x < 122){
-			greenDot.dot_x += speed * t / 13000;
+		if(instance->rightState == 1 && playerX < 122){
+			playerX += speed * t / 13000;
 		}
-		if(instance->leftState == 1 && greenDot.dot_x > 5){
-			greenDot.dot_x -= speed * t / 13000;
+		if(instance->leftState == 1 && playerY > 5){
+			playerX -= speed * t / 13000;
 		}
 
 
@@ -264,7 +264,7 @@ void Game::states(uint t){
 
 	}
 
-	check_if_eaten(circle[1]);
+	checkIfEaten(circleVector[0]);
 
 }
 
