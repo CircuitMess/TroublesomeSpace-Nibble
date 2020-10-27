@@ -140,6 +140,8 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
+			for(int i = 0; i < cnt/10; i++)
+				triangleVector.pop_back();
 			cnt = 0;
 			lives = 3;
 			baseSprite->clear(TFT_BLACK);
@@ -163,6 +165,8 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
+			for(int i = 0; i < cnt/10; i++)
+				triangleVector.pop_back();
 			cnt = 0;
 			lives = 3;
 			baseSprite->clear(TFT_BLACK);
