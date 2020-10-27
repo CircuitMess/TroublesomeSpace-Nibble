@@ -92,6 +92,8 @@ private:
 
 	void checkIfDead(Triangle &triangle);
 
+	void rampageMode();
+
 	void drawWarningMessage();
 
 	void drawCounterString();
@@ -105,6 +107,7 @@ private:
 
 	float playerX = 117;
 	float playerY = 10;
+	uint32_t playerColor = TFT_GOLD;
 
 
 	int upState = 0;
@@ -121,6 +124,7 @@ private:
 	int cnt = 0;
 
 	bool newTriangle = true;
+	bool rampageStatus = false;
 
 	String endMessage = "Game Over";
 	String livesRest = "Lives: ";

@@ -60,7 +60,7 @@ void Game::loop(uint time){
 }
 
 void Game::drawPlayer(){
-	baseSprite->fillCircle(playerX, playerY, radius, TFT_GOLD);
+	baseSprite->fillCircle(playerX, playerY, radius, playerColor);
 }
 
 void Game::drawCircle(Circle &circle){
@@ -155,6 +155,7 @@ void Game::checkIfDead(Triangle &triangle){
 			cnt = 0;
 			lives = 3;
 			baseSprite->clear(TFT_BLACK);
+			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
 			display->commit();
 			delay(2000);
@@ -180,6 +181,7 @@ void Game::checkIfDead(Triangle &triangle){
 			cnt = 0;
 			lives = 3;
 			baseSprite->clear(TFT_BLACK);
+			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
 			display->commit();
 			delay(2000);
@@ -187,6 +189,7 @@ void Game::checkIfDead(Triangle &triangle){
 		}
 
 	}
+
 }
 
 void Game::checkIfEaten(Circle &blue){
@@ -208,6 +211,10 @@ void Game::checkIfEaten(Circle &blue){
 
 	}
 
+}
+
+void Game::rampageMode(){
+	playerColor = TFT_VIOLET;
 }
 
 void Game::states(uint t){
@@ -252,18 +259,18 @@ void Game::states(uint t){
 			playerX -= speed * t / 13000;
 		}
 
+		rampageStatus = false;
 
 	}
 	if(instance->bState == 1){
-
+		rampageStatus = true;
 	}
 
 	if(newTriangle){
 		if(cnt > 0 && cnt % 20 == 0){
 			triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
 			lives++;
-		}
-		else if(cnt > 0 && cnt % 10 == 0){
+		}else if(cnt > 0 && cnt % 10 == 0){
 			triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
 			lives++;
 		}
@@ -277,6 +284,13 @@ void Game::states(uint t){
 	}
 
 	checkIfEaten(circleVector[0]);
+
+	if(rampageStatus){
+		rampageMode();
+
+	}
+	else
+		playerColor = TFT_GOLD;
 
 }
 
