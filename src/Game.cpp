@@ -104,15 +104,15 @@ void Game::drawTriangles(){
 
 void Game::checkIfDead(Triangle &triangle){
 
-	if((sqrt(pow(tri.triangle_x + triangle_side * sqrt(3) / 6 - greenDot.dot_x, 2) +
-			 pow(tri.triangle_y - greenDot.dot_y, 2)) <
-		(triangle_side * sqrt(3) / 6 + radius)) && (i % 2 == 0)){
+	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - playerX, 2) +
+			 pow(triangle.y - playerY, 2)) <
+		(triangleSide * sqrt(3) / 6 + radius)) && ( triangle.orientation == 'H')){
 
 		Piezo.tone(1000, 300);
 		delay(500);
 
-		greenDot.dot_x = 117;
-		greenDot.dot_y = 10;
+		playerX = 117;
+		playerY = 10;
 
 		lives--;
 
@@ -121,21 +121,21 @@ void Game::checkIfDead(Triangle &triangle){
 			cnt = 0;
 			lives = 3;
 			baseSprite->clear(TFT_BLACK);
-			baseSprite->drawString(end_message, 35, 55);
+			baseSprite->drawString(endMessage, 35, 55);
 			display->commit();
 			delay(2000);
 
 		}
 
-	}else if((sqrt(pow(tri.triangle_x - greenDot.dot_x, 2) +
-				   pow(tri.triangle_y + triangle_side * sqrt(3) / 6 - greenDot.dot_y, 2)) <
-			  (triangle_side * sqrt(3) / 6 + radius)) && (i % 2 == 1)){
+	}else if((sqrt(pow(triangle.x - playerX, 2) +
+				   pow(triangle.y + triangleSide * sqrt(3) / 6 - playerY, 2)) <
+			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == 'V')){
 
 		Piezo.tone(1000, 300);
 		delay(500);
 
-		greenDot.dot_x = 117;
-		greenDot.dot_y = 10;
+		playerX = 117;
+		playerY = 10;
 
 		lives--;
 
@@ -144,7 +144,7 @@ void Game::checkIfDead(Triangle &triangle){
 			cnt = 0;
 			lives = 3;
 			baseSprite->clear(TFT_BLACK);
-			baseSprite->drawString(end_message, 35, 55);
+			baseSprite->drawString(endMessage, 35, 55);
 			display->commit();
 			delay(2000);
 
@@ -155,15 +155,15 @@ void Game::checkIfDead(Triangle &triangle){
 
 void Game::checkIfEaten(Circle &blue){
 
-	if(abs(blueDot.dot_x - green_X) < (radius + 5) && abs(blueDot.dot_y - green_Y) < (radius + 5)){
+	if(sqrt(pow(blue.x - playerX,2) + pow(blue.y - playerY,2)) < (radius * 2)){
 
-		float pom_x = blueDot.dot_x;
-		float pom_y = blueDot.dot_y;
+		float pomX = blue.x;
+		float pomY = blue.y;
 
 		do {
-			blueDot.dot_x = (float) random(10, 117);
-			blueDot.dot_y = (float) random(10, 117);
-		} while(abs(pom_x - blueDot.dot_x) < 30 && abs(pom_y - blueDot.dot_y) < 30);
+			blue.x = (float) random(10, 117);
+			blue.y = (float) random(10, 117);
+		} while(abs(pomX - blue.x) < 30 && abs(pomY - blue.y) < 30);
 
 		cnt++;
 
@@ -247,9 +247,10 @@ void Game::states(Triangle &triangle, uint t){
 		triangle.y = 0;
 	}
 
-
 	checkIfEaten(circleVector[0]);
-	checkIfDead(triangleVector[0]);
+
+	for(int i = 0; i< triangleVector.size(); i++)
+		checkIfDead(triangleVector[i]);
 
 }
 
