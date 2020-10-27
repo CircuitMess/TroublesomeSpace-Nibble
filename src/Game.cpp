@@ -14,7 +14,7 @@ Game::Game(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-	Piezo.setMute(false);
+	Piezo.setMute(true);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -188,6 +188,7 @@ void Game::checkIfEaten(Circle &blue){
 		} while(abs(pomX - blue.x) < 30 && abs(pomY - blue.y) < 30);
 
 		cnt++;
+		newTriangle = true;
 
 		Piezo.tone(500, 200);
 
@@ -243,11 +244,15 @@ void Game::states(uint t){
 
 	}
 
+	if(newTriangle){
+		if(cnt > 0 && cnt % 20 == 0)
+			triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
 
-	if(cnt > 0 && cnt % 20 == 0)
-		triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
-	else if(cnt > 0 && cnt % 10 == 0)
-		triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
+		else if(cnt > 0 && cnt % 10 == 0)
+			triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
+
+		newTriangle = false;
+	}
 
 	for(int i = 0; i < triangleVector.size(); ++i){
 

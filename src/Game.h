@@ -120,6 +120,8 @@ private:
 	int lives = 3;
 	int cnt = 0;
 
+	bool newTriangle = true;
+
 	String endMessage = "Game Over";
 	String livesRest = "Lives: ";
 	String warning = "Warning!";
