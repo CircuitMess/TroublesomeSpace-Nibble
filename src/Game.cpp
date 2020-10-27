@@ -65,7 +65,7 @@ void Game::drawPlayer(){
 
 void Game::drawCircle(Circle &circle){
 
-	baseSprite->fillCircle(circle.x, circle.y, radius-1, TFT_BLUE);
+	baseSprite->fillCircle(circle.x, circle.y, radius - 1, TFT_BLUE);
 
 }
 
@@ -108,8 +108,13 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 		triangle.x += speed * t / 13000;
 
 		if(triangle.x > 127){
-			triangle.x = 0;
-			triangle.y = (float) random(30, 98);
+
+			float pomY = triangle.y;
+
+			do {
+				triangle.x = 0;
+				triangle.y = (float) random(30, 118);
+			} while(abs(pomY - triangle.y) < 30);
 		}
 	}
 
@@ -118,8 +123,13 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 		triangle.y += speed * t / 13000;
 
 		if(triangle.y > 127){
-			triangle.x = (float) random(30, 98);
-			triangle.y = 0;
+
+			float pomX = triangle.x;
+
+			do {
+				triangle.x = (float) random(10, 98);
+				triangle.y = 0;
+			} while(abs(pomX - triangle.x) < 30);
 		}
 	}
 }
@@ -140,7 +150,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
-			for(int i = 0; i < cnt/10; i++)
+			for(int i = 0; i < cnt / 10; i++)
 				triangleVector.pop_back();
 			cnt = 0;
 			lives = 3;
@@ -165,7 +175,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
-			for(int i = 0; i < cnt/10; i++)
+			for(int i = 0; i < cnt / 10; i++)
 				triangleVector.pop_back();
 			cnt = 0;
 			lives = 3;
@@ -181,7 +191,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 void Game::checkIfEaten(Circle &blue){
 
-	if(sqrt(pow(blue.x - playerX, 2) + pow(blue.y - playerY, 2)) < (radius * 2)){
+	if(sqrt(pow(blue.x - playerX, 2) + pow(blue.y - playerY, 2)) < (radius + radius - 1)){
 
 		float pomX = blue.x;
 		float pomY = blue.y;
@@ -189,7 +199,7 @@ void Game::checkIfEaten(Circle &blue){
 		do {
 			blue.x = (float) random(10, 117);
 			blue.y = (float) random(10, 117);
-		} while(abs(pomX - blue.x) < 30 && abs(pomY - blue.y) < 30);
+		} while(sqrt(pow(pomX - blue.x, 2) + pow(pomY - blue.y, 2)) < 30);
 
 		cnt++;
 		newTriangle = true;
