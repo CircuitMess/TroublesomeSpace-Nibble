@@ -355,7 +355,7 @@ void Game::inGameTones(){
 
 	unsigned long currentMillis = millis();
 
-	if(currentMillis - previousMillis > potcMelody[toneCnt]/2){
+	if(currentMillis - previousMillis > potcNoteDuration[toneCnt]){
 
 		previousMillis = currentMillis;
 		toneCnt++;
