@@ -283,7 +283,10 @@ void Game::states(uint t){
 		checkIfDead(triangleVector[i]);
 	}
 
-	checkIfEaten(circleVector[0]);
+	for(int i = 0; i < circleVector.size(); ++i){
+
+		checkIfEaten(circleVector[i]);
+	}
 
 
 	if(invisibilityButtonStatus){
