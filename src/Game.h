@@ -100,6 +100,10 @@ private:
 
 	void drawLivesString();
 
+	void startUpTones();
+
+	void inGameTones();
+
 
 	const float speed = 1;
 
@@ -127,6 +131,11 @@ private:
 	String endMessage = "Game Over";
 	String livesRest = "Lives: ";
 	String warning = "Warning!";
+
+	int note = 0;
+
+	int toneCnt = 0;
+	unsigned long previousMillis = 0;
 
 };
 

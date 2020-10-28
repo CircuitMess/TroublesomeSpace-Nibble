@@ -6,6 +6,8 @@
 #include <Nibble.h>
 #include "Pins.hpp"
 #include "Game.h"
+#include "pitches.h"
+#include "melody.h"
 
 
 Game *Game::instance = nullptr;
@@ -14,7 +16,7 @@ Game::Game(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-	Piezo.setMute(true);
+	Piezo.setMute(false);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -40,12 +42,14 @@ Game::Game(){
 	player.x = 117;
 	player.y = 10;
 
+	startUpTones();
 }
 
 void Game::loop(uint time){
 
-	states(time);
+	inGameTones();
 
+	states(time);
 	baseSprite->clear(TFT_BLACK);
 
 	drawCounterString();
@@ -323,6 +327,39 @@ void Game::drawLivesString(){
 
 	baseSprite->drawString(livesRest, 1, 110);
 	baseSprite->drawNumber(lives, 40, 110);
+}
+
+void Game::startUpTones(){
+
+	for(note = 0; note < 8; note++){
+
+		int noteDuration = 1000 / startUpNoteDurations[note];
+
+		Piezo.tone(startUpMelody[note], noteDuration);
+
+		int pauseBetweenNotes = (int) (noteDuration * 1.3);
+
+		delay(pauseBetweenNotes);
+
+		Piezo.noTone();
+	}
+
+}
+
+void Game::inGameTones(){
+
+	if(toneCnt >= 203)
+		toneCnt = 0;
+
+	Piezo.tone(potcMelody[toneCnt], potcNoteDuration[toneCnt]);
+
+	unsigned long currentMillis = millis();
+
+	if(currentMillis - previousMillis > potcMelody[toneCnt]/2){
+
+		previousMillis = currentMillis;
+		toneCnt++;
+	}
 }
 
 
