@@ -127,10 +127,10 @@ private:
 
 	bool invisibilityButtonStatus = false;
 
-	String endMessage = "Game Over";
-	String livesRest = "Lives: ";
-	String warning = "Warning!";
-	String startGame = "Starting game";
+	const char* endMessage = "Game Over";
+	const char* livesRest = "Lives: ";
+	const char* warning = "Warning!";
+	const char* startGame = "Starting game";
 
 	int note = 0;
 
