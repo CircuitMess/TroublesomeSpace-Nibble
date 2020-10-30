@@ -21,7 +21,7 @@ struct Triangle {
 
 	float x;
 	float y;
-	char orientation;
+	enum { H, V } orientation; // H-horizontal, V-vertical
 
 };
 
