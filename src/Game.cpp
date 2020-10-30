@@ -34,10 +34,11 @@ Game::Game(){
 
 	instance = this;
 
-	triangleVector.push_back({0, (float) random(30, 118), 'H'}); // horizontal triangle [0]
-	triangleVector.push_back({(float) random(10, 98), 'V', 0}); // vertical triangle [1]
 
-	circleVector.push_back({(float) random(10, 98), (float) random(30, 118)});    // circle[0] = blue
+	triangles.push_back({0, (float) random(30, 118), Triangle::H}); // horizontal triangle [0]
+	//triangles.push_back({(float) random(10, 98), 0, Triangle::V}); // vertical triangle [1]
+
+	circles.push_back({(float) random(10, 98), (float) random(30, 118)});    // circle[0] = blue
 
 	player.x = 118;
 	player.y = 10;
@@ -77,21 +78,21 @@ void Game::drawCircle(Circle &circle){
 }
 
 void Game::drawCircles(){
-	for(int i = 0; i < circleVector.size(); i++){
+	for(int i = 0; i < circles.size(); i++){
 
-		drawCircle(circleVector[i]);
+		drawCircle(circles[i]);
 
 	}
 }
 
 void Game::drawTriangle(Triangle &triangle){
 
-	if(triangle.orientation == 'H'){
+	if(triangle.orientation == Triangle::H){
 
 		baseSprite->fillTriangle(triangle.x, triangle.y - 5, 5 * sqrt(2) + triangle.x,
 								 triangle.y, triangle.x, triangle.y + 5, TFT_RED);
 	}
-	if(triangle.orientation == 'V'){
+	if(triangle.orientation == Triangle::V){
 
 		baseSprite->fillTriangle(triangle.x + 5, triangle.y, triangle.x,
 								 triangle.y + 5 * sqrt(2), triangle.x - 5, triangle.y, TFT_RED);
@@ -100,16 +101,16 @@ void Game::drawTriangle(Triangle &triangle){
 }
 
 void Game::drawTriangles(){
-	for(int i = 0; i < triangleVector.size(); i++){
+	for(int i = 0; i < triangles.size(); i++){
 
-		drawTriangle(triangleVector[i]);
+		drawTriangle(triangles[i]);
 
 	}
 }
 
 void Game::triangleMovement(Triangle &triangle, uint t){
 
-	if(triangle.orientation == 'H'){
+	if(triangle.orientation == Triangle::H){
 
 		triangle.x += speed * t / 13000;
 
@@ -124,7 +125,7 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 		}
 	}
 
-	if(triangle.orientation == 'V'){
+	if(triangle.orientation == Triangle::V){
 
 		triangle.y += speed * t / 13000;
 
@@ -144,7 +145,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - player.x, 2) +
 			 pow(triangle.y - player.y, 2)) <
-		(triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == 'H')){
+		(triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::H)){
 
 		Piezo.tone(1000, 300);
 		delay(500);
@@ -157,7 +158,7 @@ void Game::checkIfDead(Triangle &triangle){
 		if(lives == 0){
 
 			for(int i = 0; i < cnt / 10; i++)
-				triangleVector.pop_back();
+				triangles.pop_back();
 			cnt = 0;
 			lives = 3;
 			toneCnt = 0;
@@ -171,7 +172,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 	}else if((sqrt(pow(triangle.x - player.x, 2) +
 				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
-			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == 'V')){
+			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::V)){
 
 		Piezo.tone(1000, 300);
 		delay(500);
@@ -184,7 +185,7 @@ void Game::checkIfDead(Triangle &triangle){
 		if(lives == 0){
 
 			for(int i = 0; i < cnt / 10; i++)
-				triangleVector.pop_back();
+				triangles.pop_back();
 			cnt = 0;
 			lives = 3;
 			toneCnt = 0;
@@ -214,10 +215,10 @@ void Game::checkIfEaten(Circle &blue){
 		cnt++;
 
 		if(cnt > 0 && cnt % 20 == 0){
-			triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
+			triangles.push_back({0, (float) random(10, 50), Triangle::H}); // horizontal triangle
 			lives++;
 		}else if(cnt > 0 && cnt % 10 == 0){
-			triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
+			triangles.push_back({(float) random(10, 50), 0, Triangle::V}); // vertical triangle
 			lives++;
 		}
 
@@ -278,15 +279,15 @@ void Game::states(uint t){
 	}
 
 
-	for(int i = 0; i < triangleVector.size(); ++i){
+	for(int i = 0; i < triangles.size(); ++i){
 
-		triangleMovement(triangleVector[i], t);
-		checkIfDead(triangleVector[i]);
+		triangleMovement(triangles[i], t);
+		checkIfDead(triangles[i]);
 	}
 
-	for(int i = 0; i < circleVector.size(); ++i){
+	for(int i = 0; i < circles.size(); ++i){
 
-		checkIfEaten(circleVector[i]);
+		checkIfEaten(circles[i]);
 	}
 
 
