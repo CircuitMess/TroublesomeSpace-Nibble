@@ -71,8 +71,8 @@ private:
 	Display *display;
 	Sprite *baseSprite;
 
-	Vector<Triangle> triangleVector;
-	Vector<Circle> circleVector;
+	Vector<Triangle> triangles;
+	Vector<Circle> circles;
 
 	void states(uint time);
 
