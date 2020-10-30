@@ -34,12 +34,12 @@ Game::Game(){
 
 	instance = this;
 
-	triangleVector.push_back({0, (float) random(30, 98), 'H'}); // horizontal triangle [0]
-	triangleVector.push_back({(float) random(30, 98), 'V', 0}); // vertical triangle [1]
+	triangleVector.push_back({0, (float) random(30, 118), 'H'}); // horizontal triangle [0]
+	triangleVector.push_back({(float) random(10, 98), 'V', 0}); // vertical triangle [1]
 
-	circleVector.push_back({(float) random(10, 80), (float) random(40, 117)});    // circle[0] = blue
+	circleVector.push_back({(float) random(10, 98), (float) random(30, 118)});    // circle[0] = blue
 
-	player.x = 117;
+	player.x = 118;
 	player.y = 10;
 
 	startUpMessage();
@@ -113,7 +113,7 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 
 		triangle.x += speed * t / 13000;
 
-		if(triangle.x > 127){
+		if(triangle.x > 128){
 
 			float pomY = triangle.y;
 
@@ -128,7 +128,7 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 
 		triangle.y += speed * t / 13000;
 
-		if(triangle.y > 127){
+		if(triangle.y > 128){
 
 			float pomX = triangle.x;
 
@@ -149,7 +149,7 @@ void Game::checkIfDead(Triangle &triangle){
 		Piezo.tone(1000, 300);
 		delay(500);
 
-		player.x = 117;
+		player.x = 118;
 		player.y = 10;
 
 		lives--;
@@ -176,7 +176,7 @@ void Game::checkIfDead(Triangle &triangle){
 		Piezo.tone(1000, 300);
 		delay(500);
 
-		player.x = 117;
+		player.x = 118;
 		player.y = 10;
 
 		lives--;
