@@ -157,9 +157,9 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
-			for(int i = 0; i < cnt / 10; i++)
+			for(int i = 0; i < score / 10; i++)
 				triangles.pop_back();
-			cnt = 0;
+			score = 0;
 			lives = 3;
 			toneCnt = 0;
 			baseSprite->clear(TFT_BLACK);
@@ -184,9 +184,9 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
-			for(int i = 0; i < cnt / 10; i++)
+			for(int i = 0; i < score / 10; i++)
 				triangles.pop_back();
-			cnt = 0;
+			score = 0;
 			lives = 3;
 			toneCnt = 0;
 			baseSprite->clear(TFT_BLACK);
@@ -212,12 +212,12 @@ void Game::checkIfEaten(Circle &blue){
 			blue.y = (float) random(10, 117);
 		} while(sqrt(pow(pomX - blue.x, 2) + pow(pomY - blue.y, 2)) < 30);
 
-		cnt++;
+		score++;
 
-		if(cnt > 0 && cnt % 20 == 0){
+		if(score > 0 && score % 20 == 0){
 			triangles.push_back({0, (float) random(10, 50), Triangle::H}); // horizontal triangle
 			lives++;
-		}else if(cnt > 0 && cnt % 10 == 0){
+		}else if(score > 0 && score % 10 == 0){
 			triangles.push_back({(float) random(10, 50), 0, Triangle::V}); // vertical triangle
 			lives++;
 		}
@@ -299,11 +299,11 @@ void Game::states(uint t){
 }
 
 void Game::drawWarningMessage(){
-	if((cnt + 1) % 20 == 0){
+	if((score + 1) % 20 == 0){
 		baseSprite->setTextColor(TFT_RED);
 		baseSprite->drawString(warning, 35, 55);
 
-	}else if((cnt + 1) % 10 == 0){
+	}else if((score + 1) % 10 == 0){
 		baseSprite->setTextColor(TFT_RED);
 		baseSprite->drawString(warning, 35, 55);
 
@@ -326,7 +326,7 @@ void Game::drawCounterString(){
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawNumber(cnt, 5, 3);
+	baseSprite->drawNumber(score, 5, 3);
 
 }
 

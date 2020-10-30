@@ -123,7 +123,7 @@ private:
 	const float triangleSide = 10;
 
 	int lives = 3;
-	int cnt = 0;
+	int score = 0;
 
 	bool invisibilityButtonStatus = false;
 
