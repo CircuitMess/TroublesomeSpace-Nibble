@@ -159,6 +159,7 @@ void Game::checkIfDead(Triangle &triangle){
 				triangleVector.pop_back();
 			cnt = 0;
 			lives = 3;
+			toneCnt = 0;
 			baseSprite->clear(TFT_BLACK);
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
@@ -185,6 +186,7 @@ void Game::checkIfDead(Triangle &triangle){
 				triangleVector.pop_back();
 			cnt = 0;
 			lives = 3;
+			toneCnt = 0;
 			baseSprite->clear(TFT_BLACK);
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
