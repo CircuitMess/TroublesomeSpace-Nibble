@@ -16,7 +16,7 @@ Game::Game(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-	Piezo.setMute(true);
+	Piezo.setMute(false);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -365,14 +365,14 @@ void Game::startUpTones(){
 
 void Game::inGameTones(){
 
-	if(toneCnt >= 203)
+	if(toneCnt >= 32)
 		toneCnt = 0;
 
-	Piezo.tone(potcMelody[toneCnt], potcNoteDuration[toneCnt]);
+	Piezo.tone(loopMelody[toneCnt], loopNoteDuration[toneCnt]);
 
 	unsigned long currentMillis = millis();
 
-	if(currentMillis - previousMillis > potcNoteDuration[toneCnt]){
+	if(currentMillis - previousMillis > loopNoteDuration[toneCnt]){
 
 		previousMillis = currentMillis;
 		toneCnt++;
