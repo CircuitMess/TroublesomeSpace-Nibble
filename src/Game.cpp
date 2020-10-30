@@ -16,7 +16,7 @@ Game::Game(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-	Piezo.setMute(false);
+	Piezo.setMute(true);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -42,6 +42,7 @@ Game::Game(){
 	player.x = 117;
 	player.y = 10;
 
+	startUpMessage();
 	startUpTones();
 }
 
@@ -308,6 +309,17 @@ void Game::drawWarningMessage(){
 		baseSprite->drawString(warning, 35, 55);
 
 	}
+}
+
+void Game::startUpMessage(){
+
+	baseSprite->clear(TFT_BLACK);
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(2);
+	baseSprite->setTextColor(TFT_WHITE);
+	baseSprite->drawString(startGame, 25, 55);
+	display->commit();
+
 }
 
 void Game::drawCounterString(){
