@@ -125,7 +125,6 @@ private:
 	int lives = 3;
 	int cnt = 0;
 
-	bool newTriangle = true;
 	bool invisibilityButtonStatus = false;
 
 	String endMessage = "Game Over";
