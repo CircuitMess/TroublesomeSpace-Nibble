@@ -94,6 +94,8 @@ private:
 
 	void drawWarningMessage();
 
+	void startUpMessage();
+
 	void drawCounterString();
 
 	void drawSpawnPoint();
@@ -109,7 +111,6 @@ private:
 
 	Circle player;
 	uint32_t playerColor = TFT_GOLD;
-
 
 	int upState = 0;
 	int downState = 0;
@@ -127,10 +128,10 @@ private:
 	bool newTriangle = true;
 	bool invisibilityButtonStatus = false;
 
-
 	String endMessage = "Game Over";
 	String livesRest = "Lives: ";
 	String warning = "Warning!";
+	String startGame = "Starting game";
 
 	int note = 0;
 
