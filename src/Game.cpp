@@ -212,7 +212,15 @@ void Game::checkIfEaten(Circle &blue){
 		} while(sqrt(pow(pomX - blue.x, 2) + pow(pomY - blue.y, 2)) < 30);
 
 		cnt++;
-		newTriangle = true;
+
+		if(cnt > 0 && cnt % 20 == 0){
+			triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
+			lives++;
+		}else if(cnt > 0 && cnt % 10 == 0){
+			triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
+			lives++;
+		}
+
 
 		Piezo.tone(500, 200);
 
@@ -269,16 +277,6 @@ void Game::states(uint t){
 		instance->aState = 0;
 	}
 
-	if(newTriangle){
-		if(cnt > 0 && cnt % 20 == 0){
-			triangleVector.push_back({0, (float) random(10, 50), 'H'}); // horizontal triangle
-			lives++;
-		}else if(cnt > 0 && cnt % 10 == 0){
-			triangleVector.push_back({(float) random(10, 50), 0, 'V'}); // vertical triangle
-			lives++;
-		}
-		newTriangle = false;
-	}
 
 	for(int i = 0; i < triangleVector.size(); ++i){
 
