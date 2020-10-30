@@ -110,7 +110,7 @@ private:
 	const float speed = 1;
 
 	Circle player;
-	uint32_t playerColor = TFT_GOLD;
+	uint playerColor = TFT_GOLD;
 
 	bool upState = false;
 	bool downState = false;
@@ -125,7 +125,7 @@ private:
 	int lives = 3;
 	int score = 0;
 
-	bool invisibilityButtonStatus = false;
+	bool playerInvisible = false;
 
 	const char* endMessage = "Game Over";
 	const char* livesRest = "Lives: ";
