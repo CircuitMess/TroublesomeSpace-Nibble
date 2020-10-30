@@ -38,9 +38,9 @@ Game::Game(){
 	triangles.push_back({0, (float) random(30, 118), Triangle::H}); // horizontal triangle [0]
 	//triangles.push_back({(float) random(10, 98), 0, Triangle::V}); // vertical triangle [1]
 
-	circles.push_back({(float) random(10, 98), (float) random(30, 118)});    // circle[0] = blue
+	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle[0] = blue
 
-	player.x = 118;
+	player.x = 117;
 	player.y = 10;
 
 	startUpMessage();
@@ -68,6 +68,8 @@ void Game::loop(uint time){
 }
 
 void Game::drawPlayer(){
+
+	playerColor = playerInvisible ? TFT_PURPLE : TFT_GOLD;
 	baseSprite->fillCircle(player.x, player.y, radius, playerColor);
 }
 
@@ -150,7 +152,7 @@ void Game::checkIfDead(Triangle &triangle){
 		Piezo.tone(1000, 300);
 		delay(500);
 
-		player.x = 118;
+		player.x = 117;
 		player.y = 10;
 
 		lives--;
@@ -177,7 +179,7 @@ void Game::checkIfDead(Triangle &triangle){
 		Piezo.tone(1000, 300);
 		delay(500);
 
-		player.x = 118;
+		player.x = 117;
 		player.y = 10;
 
 		lives--;
@@ -270,11 +272,11 @@ void Game::states(uint t){
 			player.x -= speed * t / 13000;
 		}
 
-		invisibilityButtonStatus = false;
+		playerInvisible = false;
 
 	}
 	if(instance->bState){
-		invisibilityButtonStatus = true;
+		playerInvisible = true;
 		instance->aState = false;
 	}
 
@@ -290,11 +292,6 @@ void Game::states(uint t){
 		checkIfEaten(circles[i]);
 	}
 
-
-	if(invisibilityButtonStatus){
-		playerColor = TFT_VIOLET;
-	}else
-		playerColor = TFT_GOLD;
 
 }
 
