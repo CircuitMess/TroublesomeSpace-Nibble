@@ -16,7 +16,7 @@ Game::Game(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-	Piezo.setMute(false);
+	Piezo.setMute(true);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -230,51 +230,51 @@ void Game::checkIfEaten(Circle &blue){
 
 void Game::states(uint t){
 
-	if(instance->upState == 1){
+	if(instance->upState){
 		player.y -= speed * t / 13000;
 		if(player.y <= 5)
 			player.y = 5;
 
 	}
-	if(instance->leftState == 1){
+	if(instance->leftState){
 		player.x -= speed * t / 13000;
 		if(player.x <= 5)
 			player.x = 5;
 
 
 	}
-	if(instance->downState == 1){
+	if(instance->downState){
 		player.y += speed * t / 13000;
 		if(player.y >= 122)
 			player.y = 122;
 
 	}
-	if(instance->rightState == 1){
+	if(instance->rightState){
 		player.x += speed * t / 13000;
 		if(player.x >= 122)
 			player.x = 122;
 
 	}
-	if(instance->aState == 1){
-		if(instance->upState == 1 && player.y > 5){
+	if(instance->aState){
+		if(instance->upState && player.y > 5){
 			player.y -= speed * t / 13000;
 		}
-		if(instance->downState == 1 && player.y < 122){
+		if(instance->downState && player.y < 122){
 			player.y += speed * t / 13000;
 		}
-		if(instance->rightState == 1 && player.x < 122){
+		if(instance->rightState && player.x < 122){
 			player.x += speed * t / 13000;
 		}
-		if(instance->leftState == 1 && player.y > 5){
+		if(instance->leftState && player.y > 5){
 			player.x -= speed * t / 13000;
 		}
 
 		invisibilityButtonStatus = false;
 
 	}
-	if(instance->bState == 1){
+	if(instance->bState){
 		invisibilityButtonStatus = true;
-		instance->aState = 0;
+		instance->aState = false;
 	}
 
 
@@ -380,73 +380,73 @@ void Game::inGameTones(){
 
 void Game::buttonUpPressed(){
 
-	instance->upState = 1;
+	instance->upState = true;
 
 }
 
 void Game::buttonDownPressed(){
 
-	instance->downState = 1;
+	instance->downState = true;
 
 }
 
 void Game::buttonLeftPressed(){
 
-	instance->leftState = 1;
+	instance->leftState = true;
 
 }
 
 void Game::buttonRightPressed(){
 
-	instance->rightState = 1;
+	instance->rightState = true;
 
 }
 
 void Game::buttonAPressed(){
 
-	instance->aState = 1;
+	instance->aState = true;
 
 }
 
 void Game::buttonBPressed(){
 
-	instance->bState = 1;
+	instance->bState = true;
 
 }
 
 void Game::buttonUpReleased(){
 
-	instance->upState = 0;
+	instance->upState = false;
 
 }
 
 void Game::buttonDownReleased(){
 
-	instance->downState = 0;
+	instance->downState = false;
 
 }
 
 void Game::buttonLeftReleased(){
 
-	instance->leftState = 0;
+	instance->leftState = false;
 
 }
 
 void Game::buttonRightReleased(){
 
-	instance->rightState = 0;
+	instance->rightState = false;
 
 
 }
 
 void Game::buttonAReleased(){
 
-	instance->aState = 0;
+	instance->aState = false;
 
 }
 
 void Game::buttonBReleased(){
 
-	instance->bState = 0;
+	instance->bState = false;
 }
 

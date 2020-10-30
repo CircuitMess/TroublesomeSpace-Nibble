@@ -112,12 +112,12 @@ private:
 	Circle player;
 	uint32_t playerColor = TFT_GOLD;
 
-	int upState = 0;
-	int downState = 0;
-	int rightState = 0;
-	int leftState = 0;
-	int aState = 0;
-	int bState = 0;
+	bool upState = false;
+	bool downState = false;
+	bool rightState = false;
+	bool leftState = false;
+	bool aState = false;
+	bool bState = false;
 
 	const float radius = 5;
 	const float triangleSide = 10;
