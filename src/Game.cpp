@@ -166,6 +166,8 @@ void Game::checkIfDead(Triangle &triangle){
 			lives = 3;
 			toneCnt = 0;
 			baseSprite->clear(TFT_BLACK);
+			baseSprite->setTextSize(1);
+			baseSprite->setTextFont(2);
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
 			display->commit();
@@ -173,9 +175,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 		}
 
-	}
-
-	else if((sqrt(pow(triangle.x - player.x, 2) +
+	}else if((sqrt(pow(triangle.x - player.x, 2) +
 				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
 			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::V)){
 
@@ -195,6 +195,8 @@ void Game::checkIfDead(Triangle &triangle){
 			lives = 3;
 			toneCnt = 0;
 			baseSprite->clear(TFT_BLACK);
+			baseSprite->setTextSize(1);
+			baseSprite->setTextFont(2);
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
 			display->commit();
@@ -320,11 +322,11 @@ void Game::states(uint t){
 void Game::drawWarningMessage(){
 	if((score + 1) % 20 == 0){
 		baseSprite->setTextColor(TFT_RED);
-		baseSprite->drawString(warning, 35, 55);
+		baseSprite->drawString(warning, 45, 60);
 
 	}else if((score + 1) % 10 == 0){
 		baseSprite->setTextColor(TFT_RED);
-		baseSprite->drawString(warning, 35, 55);
+		baseSprite->drawString(warning, 45, 60);
 
 	}
 }
@@ -343,9 +345,9 @@ void Game::startUpMessage(){
 void Game::drawCounterString(){
 
 	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawNumber(score, 110, 110);
+	baseSprite->setTextFont(1);
+	baseSprite->setTextColor(TFT_LIGHTGREY);
+	baseSprite->drawNumber(score, 110, 120);
 
 }
 
@@ -361,19 +363,19 @@ void Game::drawSpawnPoint(){
 void Game::drawLivesString(){
 
 	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(livesRest, 5, 3);
-	baseSprite->drawNumber(lives, 45, 3);
+	baseSprite->setTextFont(1);
+	baseSprite->setTextColor(TFT_LIGHTGREY);
+	baseSprite->drawString(livesRest, 2, 3);
+	baseSprite->drawNumber(lives, 42, 3);
 }
 
 void Game::drawInvisibilityCounter(){
 
 	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(invisibleTimes, 1, 110);
-	baseSprite->drawNumber(invisibilityCounter, 75, 110);
+	baseSprite->setTextFont(1);
+	baseSprite->setTextColor(TFT_LIGHTGREY);
+	baseSprite->drawString(invisibleTimes, 1, 120);
+	baseSprite->drawNumber(invisibilityCounter, 85, 120);
 }
 
 void Game::startUpTones(){
