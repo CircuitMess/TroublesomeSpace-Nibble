@@ -15,7 +15,7 @@ Note startUpMelody[] = {
 		{NOTE_G3, 125},
 		{NOTE_A3, 250},
 		{NOTE_G3, 250},
-		{0,  250},
+		{0,       250},
 		{NOTE_B3, 250},
 		{NOTE_C4, 250}
 
@@ -57,6 +57,36 @@ Note inGameMelody[] = {
 		{NOTE_F4, 250},
 		{NOTE_D5, 250},
 		{NOTE_B4, 250}
+};
+
+Note victoryMelody[] = {
+
+		{NOTE_G3,  125},
+		{NOTE_G3,  125},
+		{NOTE_G3,  125},
+		{NOTE_G3,  125},
+		{0,  125},
+		{NOTE_FS3, 125},
+		{NOTE_F3,  125},
+
+		{NOTE_G3,  125},
+		{NOTE_G3,  125},
+		{NOTE_G3,  125},
+		{NOTE_G3,  125},
+		{0,  125},
+		{NOTE_FS3, 125},
+		{NOTE_F3,  125}
+
+};
+
+Note gameOverMelody[] = {
+
+		{NOTE_A3, 250},
+		{NOTE_F3, 250},
+		{NOTE_D3, 250},
+		{NOTE_B2, 250},
+		{NOTE_G2, 1000}
+
 };
 
 #endif //NIBBLE_NEW_MELODY_H
