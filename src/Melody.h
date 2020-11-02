@@ -8,7 +8,7 @@
 #include "Pitches.h"
 #include "Audio.h"
 
-StartUpTone startUpMelody[] = {
+Note startUpMelody[] = {
 
 		{NOTE_C4, 250},
 		{NOTE_G3, 125},
@@ -21,7 +21,7 @@ StartUpTone startUpMelody[] = {
 
 };
 
-InGameTone inGameMelody[] = {
+Note inGameMelody[] = {
 
 		{NOTE_E5, 250},
 		{NOTE_C5, 250},
