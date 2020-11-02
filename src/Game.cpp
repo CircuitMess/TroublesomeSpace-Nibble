@@ -172,7 +172,9 @@ void Game::checkIfDead(Triangle &triangle){
 
 		}
 
-	}else if((sqrt(pow(triangle.x - player.x, 2) +
+	}
+
+	else if((sqrt(pow(triangle.x - player.x, 2) +
 				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
 			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::V)){
 
@@ -200,6 +202,7 @@ void Game::checkIfDead(Triangle &triangle){
 		}
 
 	}
+
 }
 
 void Game::checkIfEaten(Circle &blue){
@@ -275,16 +278,33 @@ void Game::states(uint t){
 		playerInvisible = false;
 
 	}
+
+
 	if(instance->bState){
-		playerInvisible = true;
+
+		if(invisibilityCounter > 0)
+			playerInvisible = true;
+
+		previousInvisibilityTime = currentInvisibilityTime;
+
 		instance->aState = false;
 	}
 
+	if(playerInvisible)
+		currentInvisibilityTime = millis();
+
+	if(currentInvisibilityTime - previousInvisibilityTime > invisibilityTime){
+
+		playerInvisible = false;
+		invisibilityCounter--;
+		currentInvisibilityTime = previousInvisibilityTime = millis();
+	}
 
 	for(int i = 0; i < triangles.size(); ++i){
 
 		triangleMovement(triangles[i], t);
-		checkIfDead(triangles[i]);
+		if(!playerInvisible)
+			checkIfDead(triangles[i]);
 	}
 
 	for(int i = 0; i < circles.size(); ++i){
