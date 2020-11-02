@@ -16,6 +16,7 @@
 #include <Input/InputI2C.h>
 #include "Pins.hpp"
 #include <Audio/Piezo.h>
+#include "Melody.h"
 
 struct Triangle {
 
@@ -139,7 +140,8 @@ private:
 	const char* startGame = "Starting game";
 	const char* invisibleTimes = "Invisibility: ";
 
-	int note = 0;
+	StartUpMelody startUp;
+	InGameMelody inGame;
 
 	int toneCnt = 0;
 	unsigned long previousMillis = 0;

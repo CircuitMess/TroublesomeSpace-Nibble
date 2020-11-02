@@ -6,8 +6,6 @@
 #include <Nibble.h>
 #include "Pins.hpp"
 #include "Game.h"
-#include "pitches.h"
-#include "melody.h"
 
 
 Game *Game::instance = nullptr;
@@ -16,7 +14,7 @@ Game::Game(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-	Piezo.setMute(true);
+	Piezo.setMute(false);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -380,11 +378,11 @@ void Game::drawInvisibilityCounter(){
 
 void Game::startUpTones(){
 
-	for(note = 0; note < 8; note++){
+	for(int n = 0; n < sizeof(startUp.note); n++){
 
-		int noteDuration = 1000 / startUpNoteDurations[note];
+		int noteDuration = 1000 / startUp.duration[n];
 
-		Piezo.tone(startUpMelody[note], noteDuration);
+		Piezo.tone(startUp.note[n], noteDuration);
 
 		int pauseBetweenNotes = (int) (noteDuration * 1.3);
 
@@ -397,14 +395,14 @@ void Game::startUpTones(){
 
 void Game::inGameTones(){
 
-	if(toneCnt >= 32)
+	if(toneCnt >= sizeof(inGame.note))
 		toneCnt = 0;
 
-	Piezo.tone(loopMelody[toneCnt], loopNoteDuration[toneCnt]);
+	Piezo.tone(inGame.note[toneCnt], inGame.duration[toneCnt]);
 
 	unsigned long currentMillis = millis();
 
-	if(currentMillis - previousMillis > loopNoteDuration[toneCnt]){
+	if(currentMillis - previousMillis > inGame.duration[toneCnt]){
 
 		previousMillis = currentMillis;
 		toneCnt++;
