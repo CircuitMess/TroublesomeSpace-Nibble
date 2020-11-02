@@ -58,6 +58,7 @@ void Game::loop(uint time){
 	drawSpawnPoint();
 	drawLivesString();
 	drawWarningMessage();
+	drawInvisibilityCounter();
 
 	drawPlayer();
 	drawCircles();
@@ -343,7 +344,7 @@ void Game::drawCounterString(){
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawNumber(score, 5, 3);
+	baseSprite->drawNumber(score, 110, 110);
 
 }
 
@@ -358,8 +359,20 @@ void Game::drawSpawnPoint(){
 
 void Game::drawLivesString(){
 
-	baseSprite->drawString(livesRest, 1, 110);
-	baseSprite->drawNumber(lives, 40, 110);
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(2);
+	baseSprite->setTextColor(TFT_WHITE);
+	baseSprite->drawString(livesRest, 5, 3);
+	baseSprite->drawNumber(lives, 45, 3);
+}
+
+void Game::drawInvisibilityCounter(){
+
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(2);
+	baseSprite->setTextColor(TFT_WHITE);
+	baseSprite->drawString(invisibleTimes, 1, 110);
+	baseSprite->drawNumber(invisibilityCounter, 75, 110);
 }
 
 void Game::startUpTones(){
