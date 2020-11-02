@@ -167,7 +167,8 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
 			display->commit();
-			delay(2000);
+			gameOverTones();
+			delay(500);
 
 		}
 
@@ -196,7 +197,8 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
 			display->commit();
-			delay(2000);
+			gameOverTones();
+			delay(500);
 
 		}
 
@@ -501,7 +503,26 @@ void Game::states(uint t){
 		checkIfEaten(circles[i]);
 	}
 
+	if(score == 70)
+		victory();
 
+}
+
+void Game::victory(){
+
+	for(int i = 0; i < score / 10; i++)
+		triangles.pop_back();
+	score = 0;
+	lives = 3;
+	noteNum = 0;
+	baseSprite->clear(TFT_BLACK);
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(2);
+	baseSprite->setTextColor(TFT_WHITE);
+	baseSprite->drawString(victoryMessage, 35, 55);
+	display->commit();
+	victoryTones();
+	delay(500);
 }
 
 void Game::drawWarningMessage(){
@@ -591,6 +612,34 @@ void Game::inGameTones(){
 	}
 }
 
+void Game::victoryTones(){
+
+	for(auto &n : victoryMelody){
+
+		Piezo.tone(n.note, n.duration);
+
+		int pauseBetweenNotes = (int) (n.duration * 1.2);
+
+		delay(pauseBetweenNotes);
+
+		Piezo.noTone();
+	}
+}
+
+void Game::gameOverTones(){
+
+	for(auto &n : gameOverMelody){
+
+		Piezo.tone(n.note, n.duration);
+
+		int pauseBetweenNotes = (int) (n.duration * 1.2);
+
+		delay(pauseBetweenNotes);
+
+		Piezo.noTone();
+	}
+
+}
 
 void Game::buttonUpPressed(){
 
