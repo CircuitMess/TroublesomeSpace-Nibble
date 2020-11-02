@@ -6,6 +6,8 @@
 #include <Nibble.h>
 #include "Pins.hpp"
 #include "Game.h"
+#include "Melody.h"
+#include "Audio.h"
 
 
 Game *Game::instance = nullptr;
@@ -144,6 +146,133 @@ void Game::triangleMovement(Triangle &triangle, uint t){
 
 void Game::checkIfDead(Triangle &triangle){
 
+	float firstEdgePX = player.x - triangle.x;
+	float firstEdgePY = player.y - (triangle.y - 5);
+	float firstEdgeKX = 0;
+	float firstEdgeKY = 10;
+
+	float firstK = firstEdgePX * firstEdgeKX + firstEdgePY * firstEdgeKY;
+
+	if(firstK > 0){
+		float firstLen = sqrt(firstEdgeKX * firstEdgeKX + firstEdgeKY * firstEdgeKY);
+		firstK = firstK / firstLen;
+
+		if(firstK < firstLen){
+			if(sqrt(firstEdgePX * firstEdgePX + firstEdgePY * firstEdgePY - firstK * firstK) <= radius){
+
+				Piezo.tone(1000, 300);
+				delay(500);
+
+				player.x = 117;
+				player.y = 10;
+
+				lives--;
+
+				if(lives == 0){
+
+					for(int i = 0; i < score / 10; i++)
+						triangles.pop_back();
+					score = 0;
+					lives = 3;
+					toneCnt = 0;
+					baseSprite->clear(TFT_BLACK);
+					baseSprite->setTextSize(1);
+					baseSprite->setTextFont(2);
+					baseSprite->setTextColor(TFT_WHITE);
+					baseSprite->drawString(endMessage, 35, 55);
+					display->commit();
+					delay(2000);
+
+				}
+			}
+		}
+	}
+
+	float secondEdgePX = player.x - triangle.x;
+	float secondEdgePY = player.y - (triangle.y + 5);
+	float secondEdgeKX = 10 * sqrt(3) / 2;
+	float secondEdgeKY = 5;
+
+	float secondK = secondEdgePX * secondEdgeKX + secondEdgePY * secondEdgeKY;
+
+	if(secondK > 0){
+		float secondLen = sqrt(secondEdgeKX * secondEdgeKX + secondEdgeKY * secondEdgeKY);
+		secondK = secondK / secondLen;
+
+		if(secondK < secondLen){
+			if(sqrt(secondEdgePX * secondEdgePX + secondEdgePY * secondEdgePY - secondK * secondK) <= radius){
+
+				Piezo.tone(1000, 300);
+				delay(500);
+
+				player.x = 117;
+				player.y = 10;
+
+				lives--;
+
+				if(lives == 0){
+
+					for(int i = 0; i < score / 10; i++)
+						triangles.pop_back();
+					score = 0;
+					lives = 3;
+					toneCnt = 0;
+					baseSprite->clear(TFT_BLACK);
+					baseSprite->setTextSize(1);
+					baseSprite->setTextFont(2);
+					baseSprite->setTextColor(TFT_WHITE);
+					baseSprite->drawString(endMessage, 35, 55);
+					display->commit();
+					delay(2000);
+
+				}
+			}
+		}
+	}
+
+	float thirdEdgePX = player.x - triangle.x;
+	float thirdEdgePY = player.y - (triangle.y - 5);
+	float thirdEdgeKX = 10 * sqrt(3) / 2;
+	float thirdEdgeKY = 5;
+
+	float thirdK = thirdEdgePX * thirdEdgeKX + thirdEdgePY * thirdEdgeKY;
+
+	if(thirdK > 0){
+		float thirdLen = sqrt(thirdEdgeKX * thirdEdgeKX + thirdEdgeKY * thirdEdgeKY);
+		thirdK = thirdK / thirdLen;
+
+		if(thirdK < thirdLen){
+			if(sqrt(thirdEdgePX * thirdEdgePX + thirdEdgePY * thirdEdgePY - thirdK * thirdK) <= radius){
+
+				Piezo.tone(1000, 300);
+				delay(500);
+
+				player.x = 117;
+				player.y = 10;
+
+				lives--;
+
+				if(lives == 0){
+
+					for(int i = 0; i < score / 10; i++)
+						triangles.pop_back();
+					score = 0;
+					lives = 3;
+					toneCnt = 0;
+					baseSprite->clear(TFT_BLACK);
+					baseSprite->setTextSize(1);
+					baseSprite->setTextFont(2);
+					baseSprite->setTextColor(TFT_WHITE);
+					baseSprite->drawString(endMessage, 35, 55);
+					display->commit();
+					delay(2000);
+
+				}
+			}
+		}
+	}
+
+/*
 	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - player.x, 2) +
 			 pow(triangle.y - player.y, 2)) <
 		(triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::H)){
@@ -203,7 +332,7 @@ void Game::checkIfDead(Triangle &triangle){
 		}
 
 	}
-
+*/
 }
 
 void Game::checkIfEaten(Circle &blue){
@@ -378,13 +507,11 @@ void Game::drawInvisibilityCounter(){
 
 void Game::startUpTones(){
 
-	for(int n = 0; n < sizeof(startUp.note); n++){
+	for(auto & n : startUpMelody){
 
-		int noteDuration = 1000 / startUp.duration[n];
+		Piezo.tone(n.note, n.duration);
 
-		Piezo.tone(startUp.note[n], noteDuration);
-
-		int pauseBetweenNotes = (int) (noteDuration * 1.3);
+		int pauseBetweenNotes = (int) (n.duration * 1.2);
 
 		delay(pauseBetweenNotes);
 
@@ -395,14 +522,14 @@ void Game::startUpTones(){
 
 void Game::inGameTones(){
 
-	if(toneCnt >= sizeof(inGame.note))
+	if(toneCnt >= sizeof(InGameTone))
 		toneCnt = 0;
 
-	Piezo.tone(inGame.note[toneCnt], inGame.duration[toneCnt]);
+	Piezo.tone(inGameMelody[toneCnt].note, inGameMelody[toneCnt].duration);
 
 	unsigned long currentMillis = millis();
 
-	if(currentMillis - previousMillis > inGame.duration[toneCnt]){
+	if(currentMillis - previousMillis > inGameMelody[toneCnt].duration){
 
 		previousMillis = currentMillis;
 		toneCnt++;
