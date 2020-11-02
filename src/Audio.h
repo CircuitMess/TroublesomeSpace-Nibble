@@ -5,14 +5,7 @@
 #ifndef NIBBLE_NEW_AUDIO_H
 #define NIBBLE_NEW_AUDIO_H
 
-struct StartUpTone {
-
-	int note;
-	int duration;
-
-};
-
-struct InGameTone {
+struct Note {
 
 	int note;
 	int duration;
