@@ -86,7 +86,7 @@ private:
 
 	void drawTriangles();
 
-	void triangleMovement(Triangle &triangle, uint t);
+	void triangleMovement(Triangle &triangle, uint t) const;
 
 	void checkIfEaten(Circle &circle);
 

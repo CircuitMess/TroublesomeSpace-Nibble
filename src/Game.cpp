@@ -107,7 +107,7 @@ void Game::drawTriangles(){
 	}
 }
 
-void Game::triangleMovement(Triangle &triangle, uint t){
+void Game::triangleMovement(Triangle &triangle, uint t) const{
 
 	if(triangle.orientation == Triangle::H){
 
