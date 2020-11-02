@@ -126,6 +126,10 @@ private:
 	int score = 0;
 
 	bool playerInvisible = false;
+	int invisibilityCounter = 3;
+	unsigned long invisibilityTime = 4000; // t = 4000 ms
+	unsigned long currentInvisibilityTime = 0;
+	unsigned long previousInvisibilityTime = 0;
 
 	const char* endMessage = "Game Over";
 	const char* livesRest = "Lives: ";
