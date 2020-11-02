@@ -21,7 +21,9 @@ struct Triangle {
 
 	float x;
 	float y;
-	enum { H, V } orientation; // H-horizontal, V-vertical
+	enum {
+		H, V
+	} orientation; // H-horizontal, V-vertical
 
 };
 
@@ -92,6 +94,8 @@ private:
 
 	void checkIfDead(Triangle &triangle);
 
+	void victory();
+
 	void drawWarningMessage();
 
 	void startUpMessage();
@@ -108,10 +112,14 @@ private:
 
 	void inGameTones();
 
+	static void victoryTones();
+
+	static void gameOverTones();
+
 
 	const float speed = 1;
 
-	Circle player{117,10};
+	Circle player{117, 10};
 	uint playerColor = TFT_GOLD;
 
 	bool upState = false;
@@ -133,11 +141,12 @@ private:
 	unsigned long currentInvisibilityTime = 0;
 	unsigned long previousInvisibilityTime = 0;
 
-	const char* endMessage = "Game Over";
-	const char* livesRest = "Lives: ";
-	const char* warning = "Warning!";
-	const char* startGame = "Starting game";
-	const char* invisibleTimes = "Invisibility: ";
+	const char *endMessage = "Game Over";
+	const char *livesRest = "Lives: ";
+	const char *warning = "Warning!";
+	const char *startGame = "Starting game";
+	const char *invisibleTimes = "Invisibility: ";
+	const char *victoryMessage = "Victory!";
 
 	int noteNum = 0;
 	unsigned long previousMillis = 0;
