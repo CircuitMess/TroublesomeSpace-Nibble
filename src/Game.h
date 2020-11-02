@@ -121,7 +121,7 @@ private:
 	bool aState = false;
 	bool bState = false;
 
-	const float radius = 5;
+	const float radius = 4;
 	const float triangleSide = 10;
 
 	int lives = 3;
