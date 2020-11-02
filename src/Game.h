@@ -111,7 +111,7 @@ private:
 
 	const float speed = 1;
 
-	Circle player;
+	Circle player{117,10};
 	uint playerColor = TFT_GOLD;
 
 	bool upState = false;

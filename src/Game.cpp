@@ -34,14 +34,10 @@ Game::Game(){
 
 	instance = this;
 
-
 	triangles.push_back({0, (float) random(30, 118), Triangle::H}); // horizontal triangle [0]
 	//triangles.push_back({(float) random(10, 98), 0, Triangle::V}); // vertical triangle [1]
 
 	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle[0] = blue
-
-	player.x = 117;
-	player.y = 10;
 
 	startUpMessage();
 	startUpTones();
