@@ -102,6 +102,8 @@ private:
 
 	void drawLivesString();
 
+	void drawInvisibilityCounter();
+
 	void startUpTones();
 
 	void inGameTones();
@@ -135,6 +137,7 @@ private:
 	const char* livesRest = "Lives: ";
 	const char* warning = "Warning!";
 	const char* startGame = "Starting game";
+	const char* invisibleTimes = "Invisibility: ";
 
 	int note = 0;
 
