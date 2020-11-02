@@ -104,7 +104,7 @@ private:
 
 	void drawInvisibilityCounter();
 
-	void startUpTones();
+	static void startUpTones();
 
 	void inGameTones();
 
