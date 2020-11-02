@@ -174,7 +174,7 @@ void Game::checkIfDead(Triangle &triangle){
 						triangles.pop_back();
 					score = 0;
 					lives = 3;
-					toneCnt = 0;
+					noteNum = 0;
 					baseSprite->clear(TFT_BLACK);
 					baseSprite->setTextSize(1);
 					baseSprite->setTextFont(2);
@@ -216,7 +216,7 @@ void Game::checkIfDead(Triangle &triangle){
 						triangles.pop_back();
 					score = 0;
 					lives = 3;
-					toneCnt = 0;
+					noteNum = 0;
 					baseSprite->clear(TFT_BLACK);
 					baseSprite->setTextSize(1);
 					baseSprite->setTextFont(2);
@@ -258,7 +258,7 @@ void Game::checkIfDead(Triangle &triangle){
 						triangles.pop_back();
 					score = 0;
 					lives = 3;
-					toneCnt = 0;
+					noteNum = 0;
 					baseSprite->clear(TFT_BLACK);
 					baseSprite->setTextSize(1);
 					baseSprite->setTextFont(2);
@@ -291,7 +291,7 @@ void Game::checkIfDead(Triangle &triangle){
 				triangles.pop_back();
 			score = 0;
 			lives = 3;
-			toneCnt = 0;
+			noteNum = 0;
 			baseSprite->clear(TFT_BLACK);
 			baseSprite->setTextSize(1);
 			baseSprite->setTextFont(2);
@@ -320,7 +320,7 @@ void Game::checkIfDead(Triangle &triangle){
 				triangles.pop_back();
 			score = 0;
 			lives = 3;
-			toneCnt = 0;
+			noteNum = 0;
 			baseSprite->clear(TFT_BLACK);
 			baseSprite->setTextSize(1);
 			baseSprite->setTextFont(2);
@@ -507,7 +507,7 @@ void Game::drawInvisibilityCounter(){
 
 void Game::startUpTones(){
 
-	for(auto & n : startUpMelody){
+	for(auto &n : startUpMelody){
 
 		Piezo.tone(n.note, n.duration);
 
@@ -522,17 +522,17 @@ void Game::startUpTones(){
 
 void Game::inGameTones(){
 
-	if(toneCnt >= sizeof(InGameTone))
-		toneCnt = 0;
+	if(noteNum >= sizeof(InGameTone))
+		noteNum = 0;
 
-	Piezo.tone(inGameMelody[toneCnt].note, inGameMelody[toneCnt].duration);
+	Piezo.tone(inGameMelody[noteNum].note, inGameMelody[noteNum].duration);
 
 	unsigned long currentMillis = millis();
 
-	if(currentMillis - previousMillis > inGameMelody[toneCnt].duration){
+	if(currentMillis - previousMillis > inGameMelody[noteNum].duration){
 
 		previousMillis = currentMillis;
-		toneCnt++;
+		noteNum++;
 	}
 }
 

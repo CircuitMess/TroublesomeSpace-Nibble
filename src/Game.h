@@ -139,7 +139,7 @@ private:
 	const char* startGame = "Starting game";
 	const char* invisibleTimes = "Invisibility: ";
 
-	int toneCnt = 0;
+	int noteNum = 0;
 	unsigned long previousMillis = 0;
 
 };
