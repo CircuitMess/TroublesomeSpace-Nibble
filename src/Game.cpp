@@ -142,6 +142,67 @@ void Game::triangleMovement(Triangle &triangle, uint t) const{
 
 void Game::checkIfDead(Triangle &triangle){
 
+	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - player.x, 2) +
+			 pow(triangle.y - player.y, 2)) <
+		(triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::H)){
+
+		Piezo.tone(1000, 300);
+		delay(500);
+
+		player.x = 117;
+		player.y = 10;
+
+		lives--;
+
+		if(lives == 0){
+
+			for(int i = 0; i < score / 10; i++)
+				triangles.pop_back();
+			score = 0;
+			lives = 3;
+			noteNum = 0;
+			baseSprite->clear(TFT_BLACK);
+			baseSprite->setTextSize(1);
+			baseSprite->setTextFont(2);
+			baseSprite->setTextColor(TFT_WHITE);
+			baseSprite->drawString(endMessage, 35, 55);
+			display->commit();
+			delay(2000);
+
+		}
+
+	}else if((sqrt(pow(triangle.x - player.x, 2) +
+				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
+			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::V)){
+
+		Piezo.tone(1000, 300);
+		delay(500);
+
+		player.x = 117;
+		player.y = 10;
+
+		lives--;
+
+		if(lives == 0){
+
+			for(int i = 0; i < score / 10; i++)
+				triangles.pop_back();
+			score = 0;
+			lives = 3;
+			noteNum = 0;
+			baseSprite->clear(TFT_BLACK);
+			baseSprite->setTextSize(1);
+			baseSprite->setTextFont(2);
+			baseSprite->setTextColor(TFT_WHITE);
+			baseSprite->drawString(endMessage, 35, 55);
+			display->commit();
+			delay(2000);
+
+		}
+
+	}
+
+	/*
 	float firstEdgePX = player.x - triangle.x;
 	float firstEdgePY = player.y - (triangle.y - 5);
 	float firstEdgeKX = 0;
@@ -267,6 +328,7 @@ void Game::checkIfDead(Triangle &triangle){
 			}
 		}
 	}
+*/
 
 /*
 	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - player.x, 2) +
