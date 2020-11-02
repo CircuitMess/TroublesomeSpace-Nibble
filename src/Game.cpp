@@ -577,7 +577,7 @@ void Game::startUpTones(){
 
 void Game::inGameTones(){
 
-	if(noteNum >= sizeof(InGameTone))
+	if(noteNum >= sizeof(Note))
 		noteNum = 0;
 
 	Piezo.tone(inGameMelody[noteNum].note, inGameMelody[noteNum].duration);
