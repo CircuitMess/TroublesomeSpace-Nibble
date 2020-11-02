@@ -263,20 +263,21 @@ void Game::states(uint t){
 
 	}
 	if(instance->aState){
-		if(instance->upState && player.y > 5){
-			player.y -= speed * t / 13000;
-		}
-		if(instance->downState && player.y < 122){
-			player.y += speed * t / 13000;
-		}
-		if(instance->rightState && player.x < 122){
-			player.x += speed * t / 13000;
-		}
-		if(instance->leftState && player.y > 5){
-			player.x -= speed * t / 13000;
-		}
+		if(!playerInvisible){
 
-		playerInvisible = false;
+			if(instance->upState && player.y > 5){
+				player.y -= speed * t / 13000;
+			}
+			if(instance->downState && player.y < 122){
+				player.y += speed * t / 13000;
+			}
+			if(instance->rightState && player.x < 122){
+				player.x += speed * t / 13000;
+			}
+			if(instance->leftState && player.y > 5){
+				player.x -= speed * t / 13000;
+			}
+		}
 
 	}
 
@@ -286,7 +287,7 @@ void Game::states(uint t){
 		if(invisibilityCounter > 0)
 			playerInvisible = true;
 
-		previousInvisibilityTime = currentInvisibilityTime;
+		previousInvisibilityTime = currentInvisibilityTime = millis();
 
 		instance->aState = false;
 	}
