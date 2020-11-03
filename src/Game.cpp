@@ -16,7 +16,7 @@ Game::Game(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-	Piezo.setMute(false);
+	Piezo.setMute(true);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -45,7 +45,7 @@ Game::Game(){
 
 void Game::loop(uint time){
 
-	//inGameTones();
+	inGameTones();
 
 	states(time);
 	baseSprite->clear(TFT_BLACK);
