@@ -147,6 +147,7 @@ private:
 	const char *startGame = "Starting game";
 	const char *invisibleTimes = "Invisibility: ";
 	const char *victoryMessage = "Victory!";
+	const char *finalScore = "Score: ";
 
 	int noteNum = 0;
 	unsigned long previousMillis = 0;
