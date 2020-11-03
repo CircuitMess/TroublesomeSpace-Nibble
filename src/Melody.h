@@ -98,11 +98,26 @@ Note victoryMelody[] = {
 		{NOTE_G3,  125},
 		{NOTE_G3,  125},
 		{0, 500},
-
 		{NOTE_G3,  125},
 		{NOTE_E3,  125},
 		{NOTE_C3,  125},
+		{0, 500},
+
+		{NOTE_G3,  125},
+		{NOTE_G3,  125},
+		{NOTE_A3,  125},
+		{NOTE_A3,  125},
+		{NOTE_B3,  125},
+		{NOTE_B3,  125},
+		{0, 500},
+		{NOTE_G3,  125},
+		{NOTE_G3,  125},
+		{NOTE_A3,  125},
+		{NOTE_A3,  125},
+		{NOTE_B3,  125},
+		{NOTE_B3,  125},
 		{0, 500}
+
 };
 
 Note gameOverMelody[] = {
