@@ -16,7 +16,7 @@
 #include <Input/InputI2C.h>
 #include "Pins.hpp"
 #include <Audio/Piezo.h>
-#include "../melody/Melody.h"
+#include "melody/Melody.h"
 
 struct Triangle {
 
@@ -35,11 +35,11 @@ struct Circle {
 };
 
 
-class Game : public LoopListener, public Melody {
+class Game : public LoopListener {
 
 public:
 
-	Game();
+	explicit Game(Melody *m);
 
 	void loop(uint t) override;
 
@@ -70,6 +70,7 @@ public:
 private:
 
 	static Game *instance;
+	Melody *melody;
 
 	Display *display;
 	Sprite *baseSprite;

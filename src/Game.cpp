@@ -6,20 +6,14 @@
 #include <Nibble.h>
 #include "Pins.hpp"
 #include "Game.h"
-#include "../melody/Melody.h"
-#include "../melody/Melodies.h"
 
 
 Game *Game::instance = nullptr;
-Melody *melody;
 
-Game::Game(){
+Game::Game(Melody *m){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-
-	melody = new Melody;
-	LoopManager::addListener(melody);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -43,13 +37,15 @@ Game::Game(){
 	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle[0] = blue
 
 	startUpMessage();
-	Melody::playMelody((char *)START, false);
+
+	melody = m;
+	melody->playMelody(START, false);
 
 }
 
 void Game::loop(uint time){
 
-	Melody::playMelody((char *)LOOP, true);
+	//Melody::playMelody((char *)LOOP, true);
 
 	states(time);
 	baseSprite->clear(TFT_BLACK);
@@ -175,7 +171,7 @@ void Game::checkIfDead(Triangle &triangle){
 			score = 0;
 			lives = 3;
 
-			Melody::playMelody((char *)LOSE, false);
+			//Melody::playMelody((char *)LOSE, false);
 			delay(500);
 
 		}
@@ -209,7 +205,7 @@ void Game::checkIfDead(Triangle &triangle){
 			score = 0;
 			lives = 3;
 
-			Melody::playMelody((char *)LOSE, false);
+			//Melody::playMelody((char *)LOSE, false);
 			delay(500);
 
 		}
@@ -546,7 +542,7 @@ void Game::victory(){
 	score = 0;
 	lives = 3;
 
-	Melody::playMelody((char *)VICTORY, false);
+	//Melody::playMelody((char *)VICTORY, false);
 
 	delay(500);
 }
@@ -753,4 +749,3 @@ void Game::buttonBReleased(){
 
 	instance->bState = false;
 }
-

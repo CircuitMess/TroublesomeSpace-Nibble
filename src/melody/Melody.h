@@ -9,6 +9,7 @@
 #include <CircuitOS.h>
 #include <Nibble.h>
 #include <Loop/LoopManager.h>
+#include "Melodies.h"
 
 
 class Melody : public LoopListener {
@@ -18,15 +19,12 @@ public:
 	Melody();
 
 	void loop(uint) override;
-	void playMelody(char *melody , bool loop);
+	static void playMelody(mel melody , bool loop);
 
 private:
 
 	void play();
 	void stop();
-
-	bool state;
-	char *melodyType;
 
 	int noteNum = 0;
 	unsigned long previousMillis = 0;

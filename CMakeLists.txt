@@ -34,6 +34,7 @@ include_directories(${Arduino15}/packages/cm/hardware/esp8266/1.0.0/libraries/Ni
 
 
 AUX_SOURCE_DIRECTORY(src SOURCES)
+AUX_SOURCE_DIRECTORY(src/melody SOURCES)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
@@ -55,4 +56,4 @@ add_custom_target(CMUpload ALL
         DEPENDS CMBuild
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-add_executable(${CMAKE_PROJECT_NAME}.bin ${CMAKE_PROJECT_NAME}.ino ${SOURCES} melody/Melody.cpp melody/Melody.h melody/StartUpMelody.h melody/LoopMelody.h melody/GameOverMelody.h melody/VictoryMelody.h melody/Melodies.h)
+add_executable(${CMAKE_PROJECT_NAME}.bin ${CMAKE_PROJECT_NAME}.ino ${SOURCES} src/melody/Melody.cpp src/melody/Melody.h src/melody/StartUpMelody.h src/melody/LoopMelody.h src/melody/GameOverMelody.h src/melody/VictoryMelody.h src/melody/Melodies.h)

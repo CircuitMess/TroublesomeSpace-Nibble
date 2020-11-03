@@ -5,7 +5,7 @@
 #ifndef NIBBLE_NEW_MELODIES_H
 #define NIBBLE_NEW_MELODIES_H
 
-enum {
+enum mel{
 
 	START,
 	VICTORY,
