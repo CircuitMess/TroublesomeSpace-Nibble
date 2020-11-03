@@ -7,7 +7,6 @@
 #include "Pins.hpp"
 #include "Game.h"
 #include "Melody.h"
-#include "Audio.h"
 
 
 Game *Game::instance = nullptr;
@@ -164,8 +163,8 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->setTextFont(2);
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 50);
-			baseSprite->drawString(finalScore, 40, 75);
-			baseSprite->drawNumber(score, 85, 75);
+			baseSprite->drawString(finalScore, 40, 80);
+			baseSprite->drawNumber(score, 90, 80);
 			display->commit();
 
 			score = 0;
@@ -198,9 +197,9 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->setTextSize(1);
 			baseSprite->setTextFont(2);
 			baseSprite->setTextColor(TFT_WHITE);
-			baseSprite->drawString(endMessage, 35, 55);
-			baseSprite->drawString(finalScore, 40, 70);
-			baseSprite->drawNumber(score, 80, 70);
+			baseSprite->drawString(endMessage, 35, 50);
+			baseSprite->drawString(finalScore, 40, 80);
+			baseSprite->drawNumber(score, 90, 80);
 			display->commit();
 
 			score = 0;
@@ -214,7 +213,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 	}
 
-	/*
+/*
 	float firstEdgePX = player.x - triangle.x;
 	float firstEdgePY = player.y - (triangle.y - 5);
 	float firstEdgeKX = 0;
@@ -227,7 +226,7 @@ void Game::checkIfDead(Triangle &triangle){
 		firstK = firstK / firstLen;
 
 		if(firstK < firstLen){
-			if(sqrt(firstEdgePX * firstEdgePX + firstEdgePY * firstEdgePY - firstK * firstK) <= radius){
+			if(sqrt(firstEdgePX * firstEdgePX + firstEdgePY * firstEdgePY - firstK * firstK) < radius){
 
 				Piezo.tone(1000, 300);
 				delay(500);
@@ -241,16 +240,22 @@ void Game::checkIfDead(Triangle &triangle){
 
 					for(int i = 0; i < score / 10; i++)
 						triangles.pop_back();
-					score = 0;
-					lives = 3;
-					noteNum = 0;
+
 					baseSprite->clear(TFT_BLACK);
 					baseSprite->setTextSize(1);
 					baseSprite->setTextFont(2);
 					baseSprite->setTextColor(TFT_WHITE);
-					baseSprite->drawString(endMessage, 35, 55);
+					baseSprite->drawString(endMessage, 35, 50);
+					baseSprite->drawString(finalScore, 40, 80);
+					baseSprite->drawNumber(score, 90, 80);
 					display->commit();
-					delay(2000);
+
+					score = 0;
+					lives = 3;
+					noteNum = 0;
+
+					gameOverTones();
+					delay(500);
 
 				}
 			}
@@ -269,7 +274,7 @@ void Game::checkIfDead(Triangle &triangle){
 		secondK = secondK / secondLen;
 
 		if(secondK < secondLen){
-			if(sqrt(secondEdgePX * secondEdgePX + secondEdgePY * secondEdgePY - secondK * secondK) <= radius){
+			if(sqrt(secondEdgePX * secondEdgePX + secondEdgePY * secondEdgePY - secondK * secondK) < radius){
 
 				Piezo.tone(1000, 300);
 				delay(500);
@@ -283,26 +288,32 @@ void Game::checkIfDead(Triangle &triangle){
 
 					for(int i = 0; i < score / 10; i++)
 						triangles.pop_back();
-					score = 0;
-					lives = 3;
-					noteNum = 0;
+
 					baseSprite->clear(TFT_BLACK);
 					baseSprite->setTextSize(1);
 					baseSprite->setTextFont(2);
 					baseSprite->setTextColor(TFT_WHITE);
-					baseSprite->drawString(endMessage, 35, 55);
+					baseSprite->drawString(endMessage, 35, 50);
+					baseSprite->drawString(finalScore, 40, 80);
+					baseSprite->drawNumber(score, 90, 80);
 					display->commit();
-					delay(2000);
+
+					score = 0;
+					lives = 3;
+					noteNum = 0;
+
+					gameOverTones();
+					delay(500);
 
 				}
 			}
 		}
 	}
 
-	float thirdEdgePX = player.x - triangle.x;
-	float thirdEdgePY = player.y - (triangle.y - 5);
-	float thirdEdgeKX = 10 * sqrt(3) / 2;
-	float thirdEdgeKY = 5;
+	float thirdEdgePX = player.x - (triangle.x + 10 * sqrt(3) / 2);
+	float thirdEdgePY = player.y - triangle.y;
+	float thirdEdgeKX = -10 * sqrt(3) / 2;
+	float thirdEdgeKY = -5;
 
 	float thirdK = thirdEdgePX * thirdEdgeKX + thirdEdgePY * thirdEdgeKY;
 
@@ -311,7 +322,7 @@ void Game::checkIfDead(Triangle &triangle){
 		thirdK = thirdK / thirdLen;
 
 		if(thirdK < thirdLen){
-			if(sqrt(thirdEdgePX * thirdEdgePX + thirdEdgePY * thirdEdgePY - thirdK * thirdK) <= radius){
+			if(sqrt(thirdEdgePX * thirdEdgePX + thirdEdgePY * thirdEdgePY - thirdK * thirdK) < radius){
 
 				Piezo.tone(1000, 300);
 				delay(500);
@@ -325,16 +336,22 @@ void Game::checkIfDead(Triangle &triangle){
 
 					for(int i = 0; i < score / 10; i++)
 						triangles.pop_back();
-					score = 0;
-					lives = 3;
-					noteNum = 0;
+
 					baseSprite->clear(TFT_BLACK);
 					baseSprite->setTextSize(1);
 					baseSprite->setTextFont(2);
 					baseSprite->setTextColor(TFT_WHITE);
-					baseSprite->drawString(endMessage, 35, 55);
+					baseSprite->drawString(endMessage, 35, 50);
+					baseSprite->drawString(finalScore, 40, 80);
+					baseSprite->drawNumber(score, 90, 80);
 					display->commit();
-					delay(2000);
+
+					score = 0;
+					lives = 3;
+					noteNum = 0;
+
+					gameOverTones();
+					delay(500);
 
 				}
 			}
