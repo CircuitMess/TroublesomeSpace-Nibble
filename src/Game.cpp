@@ -424,7 +424,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 void Game::checkIfEaten(Circle &blue){
 
-	if(sqrt(pow(blue.x - player.x, 2) + pow(blue.y - player.y, 2)) < (radius + radius - 1)){
+	if(sqrt(pow(blue.x - player.x, 2) + pow(blue.y - player.y, 2)) < (radius * 2)){
 
 		float pomX = blue.x;
 		float pomY = blue.y;
@@ -443,7 +443,6 @@ void Game::checkIfEaten(Circle &blue){
 			triangles.push_back({(float) random(10, 50), 0, Triangle::V}); // vertical triangle
 			lives++;
 		}
-
 
 		Piezo.tone(500, 200);
 
@@ -504,9 +503,9 @@ void Game::states(uint t){
 			previousInvisibilityTime = currentInvisibilityTime = millis();
 
 			instance->aState = false; // disable faster movement while invisible
-			instance->bState = false; // if btn b is held for a longer period of time
 		}
 
+		Input::getInstance()->removeBtnPressCallback(BTN_B);
 	}
 
 	invisibility();
@@ -533,15 +532,18 @@ void Game::victory(){
 
 	for(int i = 0; i < score / 10; i++)
 		triangles.pop_back();
-	score = 0;
-	lives = 3;
-	noteNum = 0;
+
 	baseSprite->clear(TFT_BLACK);
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_WHITE);
 	baseSprite->drawString(victoryMessage, 35, 55);
 	display->commit();
+
+	score = 0;
+	lives = 3;
+	noteNum = 0;
+
 	victoryTones();
 	delay(500);
 }
@@ -556,6 +558,8 @@ void Game::invisibility(){
 		playerInvisible = false;
 		invisibilityCounter--;
 		currentInvisibilityTime = previousInvisibilityTime = millis();
+
+		Input::getInstance()->setBtnPressCallback(BTN_B,buttonBPressed);
 	}
 }
 
