@@ -166,6 +166,8 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->setTextFont(2);
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
+			baseSprite->drawString(finalScore, 40, 70);
+			baseSprite->drawNumber(score, 80, 70);
 			display->commit();
 			gameOverTones();
 			delay(500);
@@ -196,6 +198,8 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->setTextFont(2);
 			baseSprite->setTextColor(TFT_WHITE);
 			baseSprite->drawString(endMessage, 35, 55);
+			baseSprite->drawString(finalScore, 40, 70);
+			baseSprite->drawNumber(score, 80, 70);
 			display->commit();
 			gameOverTones();
 			delay(500);
