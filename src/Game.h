@@ -94,6 +94,8 @@ private:
 
 	void checkIfDead(Triangle &triangle);
 
+	void invisibility();
+
 	void victory();
 
 	void drawWarningMessage();
