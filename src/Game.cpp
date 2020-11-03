@@ -163,9 +163,9 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->setTextSize(1);
 			baseSprite->setTextFont(2);
 			baseSprite->setTextColor(TFT_WHITE);
-			baseSprite->drawString(endMessage, 35, 55);
-			baseSprite->drawString(finalScore, 40, 70);
-			baseSprite->drawNumber(score, 80, 70);
+			baseSprite->drawString(endMessage, 35, 50);
+			baseSprite->drawString(finalScore, 40, 75);
+			baseSprite->drawNumber(score, 85, 75);
 			display->commit();
 
 			score = 0;
@@ -479,8 +479,6 @@ void Game::states(uint t){
 		}
 
 	}
-
-
 	if(instance->bState){
 
 		if(invisibilityCounter > 0)
@@ -488,18 +486,13 @@ void Game::states(uint t){
 
 		previousInvisibilityTime = currentInvisibilityTime = millis();
 
-		instance->aState = false;
+		instance->aState = false; // disable faster movement while invisible
+		instance->bState = false; // if btn b is held for a longer period of time
+
 	}
 
-	if(playerInvisible)
-		currentInvisibilityTime = millis();
+	invisibility();
 
-	if(currentInvisibilityTime - previousInvisibilityTime > invisibilityTime){
-
-		playerInvisible = false;
-		invisibilityCounter--;
-		currentInvisibilityTime = previousInvisibilityTime = millis();
-	}
 
 	for(int i = 0; i < triangles.size(); ++i){
 
@@ -533,6 +526,19 @@ void Game::victory(){
 	display->commit();
 	victoryTones();
 	delay(500);
+}
+
+void Game::invisibility(){
+
+	if(playerInvisible)
+		currentInvisibilityTime = millis();
+
+	if(currentInvisibilityTime - previousInvisibilityTime > invisibilityTime){
+
+		playerInvisible = false;
+		invisibilityCounter--;
+		currentInvisibilityTime = previousInvisibilityTime = millis();
+	}
 }
 
 void Game::drawWarningMessage(){
