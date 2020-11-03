@@ -16,6 +16,7 @@
 #include <Input/InputI2C.h>
 #include "Pins.hpp"
 #include <Audio/Piezo.h>
+#include "../melody/Melody.h"
 
 struct Triangle {
 
@@ -34,7 +35,7 @@ struct Circle {
 };
 
 
-class Game : public LoopListener {
+class Game : public LoopListener, public Melody {
 
 public:
 
@@ -151,8 +152,6 @@ private:
 	const char *victoryMessage = "Victory!";
 	const char *finalScore = "Score: ";
 
-	int noteNum = 0;
-	unsigned long previousMillis = 0;
 
 };
 

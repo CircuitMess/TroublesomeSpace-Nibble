@@ -55,4 +55,4 @@ add_custom_target(CMUpload ALL
         DEPENDS CMBuild
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-add_executable(${CMAKE_PROJECT_NAME}.bin ${CMAKE_PROJECT_NAME}.ino ${SOURCES})
+add_executable(${CMAKE_PROJECT_NAME}.bin ${CMAKE_PROJECT_NAME}.ino ${SOURCES} melody/Melody.cpp melody/Melody.h melody/StartUpMelody.h melody/LoopMelody.h melody/GameOverMelody.h melody/VictoryMelody.h melody/Melodies.h)

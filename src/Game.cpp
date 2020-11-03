@@ -6,16 +6,20 @@
 #include <Nibble.h>
 #include "Pins.hpp"
 #include "Game.h"
-#include "Melody.h"
+#include "../melody/Melody.h"
+#include "../melody/Melodies.h"
 
 
 Game *Game::instance = nullptr;
+Melody *melody;
 
 Game::Game(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
-	Piezo.setMute(true);
+
+	melody = new Melody;
+	LoopManager::addListener(melody);
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -39,12 +43,13 @@ Game::Game(){
 	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle[0] = blue
 
 	startUpMessage();
-	startUpTones();
+	Melody::playMelody((char *)START, false);
+
 }
 
 void Game::loop(uint time){
 
-	inGameTones();
+	Melody::playMelody((char *)LOOP, true);
 
 	states(time);
 	baseSprite->clear(TFT_BLACK);
@@ -169,9 +174,8 @@ void Game::checkIfDead(Triangle &triangle){
 
 			score = 0;
 			lives = 3;
-			noteNum = 0;
 
-			gameOverTones();
+			Melody::playMelody((char *)LOSE, false);
 			delay(500);
 
 		}
@@ -204,9 +208,8 @@ void Game::checkIfDead(Triangle &triangle){
 
 			score = 0;
 			lives = 3;
-			noteNum = 0;
 
-			gameOverTones();
+			Melody::playMelody((char *)LOSE, false);
 			delay(500);
 
 		}
@@ -444,7 +447,7 @@ void Game::checkIfEaten(Circle &blue){
 			lives++;
 		}
 
-		Piezo.tone(500, 200);
+		//Piezo.tone(500, 200);
 
 	}
 
@@ -542,9 +545,9 @@ void Game::victory(){
 
 	score = 0;
 	lives = 3;
-	noteNum = 0;
 
-	victoryTones();
+	Melody::playMelody((char *)VICTORY, false);
+
 	delay(500);
 }
 
@@ -618,7 +621,7 @@ void Game::drawInvisibilityCounter(){
 	baseSprite->drawString(invisibleTimes, 1, 120);
 	baseSprite->drawNumber(invisibilityCounter, 85, 120);
 }
-
+/*
 void Game::startUpTones(){
 
 	for(auto &n : startUpMelody){
@@ -678,7 +681,7 @@ void Game::gameOverTones(){
 	}
 
 }
-
+*/
 void Game::buttonUpPressed(){
 
 	instance->upState = true;
