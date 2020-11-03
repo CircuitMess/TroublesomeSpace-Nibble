@@ -158,9 +158,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 			for(int i = 0; i < score / 10; i++)
 				triangles.pop_back();
-			score = 0;
-			lives = 3;
-			noteNum = 0;
+
 			baseSprite->clear(TFT_BLACK);
 			baseSprite->setTextSize(1);
 			baseSprite->setTextFont(2);
@@ -169,6 +167,11 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->drawString(finalScore, 40, 70);
 			baseSprite->drawNumber(score, 80, 70);
 			display->commit();
+
+			score = 0;
+			lives = 3;
+			noteNum = 0;
+
 			gameOverTones();
 			delay(500);
 
@@ -190,9 +193,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 			for(int i = 0; i < score / 10; i++)
 				triangles.pop_back();
-			score = 0;
-			lives = 3;
-			noteNum = 0;
+
 			baseSprite->clear(TFT_BLACK);
 			baseSprite->setTextSize(1);
 			baseSprite->setTextFont(2);
@@ -201,6 +202,11 @@ void Game::checkIfDead(Triangle &triangle){
 			baseSprite->drawString(finalScore, 40, 70);
 			baseSprite->drawNumber(score, 80, 70);
 			display->commit();
+
+			score = 0;
+			lives = 3;
+			noteNum = 0;
+
 			gameOverTones();
 			delay(500);
 
