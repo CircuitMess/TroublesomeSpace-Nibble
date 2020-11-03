@@ -481,13 +481,14 @@ void Game::states(uint t){
 	}
 	if(instance->bState){
 
-		if(invisibilityCounter > 0)
+		if(invisibilityCounter > 0){
+
 			playerInvisible = true;
+			previousInvisibilityTime = currentInvisibilityTime = millis();
 
-		previousInvisibilityTime = currentInvisibilityTime = millis();
-
-		instance->aState = false; // disable faster movement while invisible
-		instance->bState = false; // if btn b is held for a longer period of time
+			instance->aState = false; // disable faster movement while invisible
+			instance->bState = false; // if btn b is held for a longer period of time
+		}
 
 	}
 
