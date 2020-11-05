@@ -15,6 +15,7 @@ Melody *melody;
 void setup(){
 
 	Nibble.begin();
+	Serial.begin(115200);
 
 	melody = new Melody;
 	game = new Game(melody);
