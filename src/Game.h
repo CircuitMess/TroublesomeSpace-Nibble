@@ -112,14 +112,6 @@ private:
 
 	void drawInvisibilityCounter();
 
-	static void startUpTones();
-
-	void inGameTones();
-
-	static void victoryTones();
-
-	static void gameOverTones();
-
 
 	const float speed = 1;
 
@@ -153,6 +145,7 @@ private:
 	const char *victoryMessage = "Victory!";
 	const char *finalScore = "Score: ";
 
+	unsigned long melodyPreviousMillis = 0;
 
 };
 

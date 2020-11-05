@@ -38,14 +38,17 @@ Game::Game(Melody *m){
 	startUpMessage();
 
 	melody = m;
-
 	melody->playMelody(START, false);
-
-	//melody->playMelody(LOOP, true);
 
 }
 
 void Game::loop(uint time){
+
+	unsigned int melodyCurrentMillis = millis();
+
+	if(melodyCurrentMillis - melodyPreviousMillis > melody->melodyTime){
+		melody->playMelody(LOOP, true);
+	}
 
 	states(time);
 	baseSprite->clear(TFT_BLACK);
@@ -156,6 +159,8 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
+
+
 			for(int i = 0; i < score / 10; i++)
 				triangles.pop_back();
 
@@ -174,7 +179,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 			melody->playMelody(LOSE, false);
 			delay(500);
-			//melody->playMelody(LOOP, true);
+			melody->playMelody(LOOP, true);
 
 		}
 
@@ -210,7 +215,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 			melody->playMelody(LOSE, false);
 			delay(500);
-			//melody->playMelody(LOOP, true);
+			melody->playMelody(LOOP, true);
 
 		}
 
