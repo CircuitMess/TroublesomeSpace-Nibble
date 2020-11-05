@@ -176,6 +176,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 			score = 0;
 			lives = 3;
+			invisibilityCounter = 3;
 
 			melody->playMelody(LOSE, false);
 			delay(500);
@@ -212,6 +213,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 			score = 0;
 			lives = 3;
+			invisibilityCounter = 3;
 
 			melody->playMelody(LOSE, false);
 			delay(500);
