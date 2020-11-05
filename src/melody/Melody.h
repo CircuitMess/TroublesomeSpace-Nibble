@@ -27,8 +27,6 @@ public:
 
 private:
 
-	//void loopPlay();
-	//void oneTimePLay();
 	void play(bool loop);
 	void stop();
 
