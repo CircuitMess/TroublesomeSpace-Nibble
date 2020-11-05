@@ -7,73 +7,85 @@
 #include "VictoryMelody.h"
 #include "GameOverMelody.h"
 #include "LoopMelody.h"
-#include "Note.h"
 
 
 Melody::Melody(){
 
 	Piezo.setMute(false);
+
+	loopMelodySize = sizeof(loopMelody) / sizeof(loopMelody[0]);
+	loopMelodyNote = loopMelody;
 }
 
 void Melody::loop(uint t){
 
-	play();
+
+	if(!loopCheck){
+
+		oneTimePLay();
+		stop();
+
+	}
+	else{
+		loopPlay();
+	}
 
 }
 
-void Melody::playMelody(mel melody , bool loop){
+void Melody::playMelody(mel melody, bool loop){
 
+	loopCheck = loop;
 
-	if(melody == START){
+	switch(melody){
 
-		for(auto &n : startUpMelody){
+		case START:
+			melodySize = sizeof(startUpMelody) / sizeof(startUpMelody[0]);
+			melodyNote = startUpMelody;
+			break;
 
-			Piezo.tone(n.note, n.duration);
+		case VICTORY:
+			melodySize = sizeof(victoryMelody) / sizeof(victoryMelody[0]);
+			melodyNote = victoryMelody;
+			break;
 
-			int pauseBetweenNotes = (int) (n.duration * 1.2);
+		case LOSE:
+			melodySize = sizeof(gameOverMelody) / sizeof(gameOverMelody[0]);
+			melodyNote = gameOverMelody;
+			break;
 
-			delay(pauseBetweenNotes);
+		case LOOP:
+			melodySize = sizeof(loopMelody) / sizeof(loopMelody[0]);
+			melodyNote = loopMelody;
+			break;
 
-			Piezo.noTone();
-		}
+		default:
+			return;
 	}
-	/*
-	for(auto &n : victoryMelody){
-
-		Piezo.tone(n.note, n.duration);
-
-		int pauseBetweenNotes = (int) (n.duration * 1.2);
-
-		delay(pauseBetweenNotes);
-
-		Piezo.noTone();
-	}
-
-	for(auto &n : gameOverMelody){
-
-		Piezo.tone(n.note, n.duration);
-
-		int pauseBetweenNotes = (int) (n.duration * 1.2);
-
-		delay(pauseBetweenNotes);
-
-		Piezo.noTone();
-	}
-*/
 
 }
 
-void Melody::play(){
+void Melody::oneTimePLay(){
 
+	for(int i = 0; i < melodySize; i++){
 
-	if(noteNum >= sizeof(Note))
+		Piezo.tone((melodyNote + i)->note, (melodyNote + i)->duration);
+
+		delay((melodyNote + i)->duration);
+
+		Piezo.noTone();
+	}
+}
+
+void Melody::loopPlay(){
+
+	if(noteNum >= loopMelodySize)
 		noteNum = 0;
 
-	Piezo.tone(loopMelody[noteNum].note, loopMelody[noteNum].duration);
+	Piezo.tone((loopMelodyNote + noteNum)->note, (loopMelodyNote + noteNum)->duration);
 
 	unsigned long currentMillis = millis();
 
-	if(currentMillis - previousMillis > loopMelody[noteNum].duration){
+	if(currentMillis - previousMillis > (loopMelodyNote + noteNum)->duration){
 
 		previousMillis = currentMillis;
 		noteNum++;
@@ -83,5 +95,10 @@ void Melody::play(){
 
 void Melody::stop(){
 
+	melodySize = 0;
+	melodyNote = NULL;
+	noteNum = 0;
+	loopCheck = true;
 
 }
+

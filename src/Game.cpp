@@ -7,7 +7,6 @@
 #include "Pins.hpp"
 #include "Game.h"
 
-
 Game *Game::instance = nullptr;
 
 Game::Game(Melody *m){
@@ -39,13 +38,14 @@ Game::Game(Melody *m){
 	startUpMessage();
 
 	melody = m;
+
 	melody->playMelody(START, false);
+
+	//melody->playMelody(LOOP, true);
 
 }
 
 void Game::loop(uint time){
-
-	//Melody::playMelody((char *)LOOP, true);
 
 	states(time);
 	baseSprite->clear(TFT_BLACK);
@@ -159,6 +159,7 @@ void Game::checkIfDead(Triangle &triangle){
 			for(int i = 0; i < score / 10; i++)
 				triangles.pop_back();
 
+
 			baseSprite->clear(TFT_BLACK);
 			baseSprite->setTextSize(1);
 			baseSprite->setTextFont(2);
@@ -171,8 +172,9 @@ void Game::checkIfDead(Triangle &triangle){
 			score = 0;
 			lives = 3;
 
-			//Melody::playMelody((char *)LOSE, false);
+			melody->playMelody(LOSE, false);
 			delay(500);
+			//melody->playMelody(LOOP, true);
 
 		}
 
@@ -193,6 +195,7 @@ void Game::checkIfDead(Triangle &triangle){
 			for(int i = 0; i < score / 10; i++)
 				triangles.pop_back();
 
+
 			baseSprite->clear(TFT_BLACK);
 			baseSprite->setTextSize(1);
 			baseSprite->setTextFont(2);
@@ -205,8 +208,9 @@ void Game::checkIfDead(Triangle &triangle){
 			score = 0;
 			lives = 3;
 
-			//Melody::playMelody((char *)LOSE, false);
+			melody->playMelody(LOSE, false);
 			delay(500);
+			//melody->playMelody(LOOP, true);
 
 		}
 
@@ -542,9 +546,11 @@ void Game::victory(){
 	score = 0;
 	lives = 3;
 
-	//Melody::playMelody((char *)VICTORY, false);
+	melody->playMelody(VICTORY, false);
 
 	delay(500);
+
+	melody->playMelody(LOOP, true);
 }
 
 void Game::invisibility(){
@@ -558,7 +564,7 @@ void Game::invisibility(){
 		invisibilityCounter--;
 		currentInvisibilityTime = previousInvisibilityTime = millis();
 
-		Input::getInstance()->setBtnPressCallback(BTN_B,buttonBPressed);
+		Input::getInstance()->setBtnPressCallback(BTN_B, buttonBPressed);
 	}
 }
 
@@ -617,67 +623,7 @@ void Game::drawInvisibilityCounter(){
 	baseSprite->drawString(invisibleTimes, 1, 120);
 	baseSprite->drawNumber(invisibilityCounter, 85, 120);
 }
-/*
-void Game::startUpTones(){
 
-	for(auto &n : startUpMelody){
-
-		Piezo.tone(n.note, n.duration);
-
-		int pauseBetweenNotes = (int) (n.duration * 1.2);
-
-		delay(pauseBetweenNotes);
-
-		Piezo.noTone();
-	}
-
-}
-
-void Game::inGameTones(){
-
-	if(noteNum >= sizeof(Note))
-		noteNum = 0;
-
-	Piezo.tone(inGameMelody[noteNum].note, inGameMelody[noteNum].duration);
-
-	unsigned long currentMillis = millis();
-
-	if(currentMillis - previousMillis > inGameMelody[noteNum].duration){
-
-		previousMillis = currentMillis;
-		noteNum++;
-	}
-}
-
-void Game::victoryTones(){
-
-	for(auto &n : victoryMelody){
-
-		Piezo.tone(n.note, n.duration);
-
-		int pauseBetweenNotes = (int) (n.duration * 1.2);
-
-		delay(pauseBetweenNotes);
-
-		Piezo.noTone();
-	}
-}
-
-void Game::gameOverTones(){
-
-	for(auto &n : gameOverMelody){
-
-		Piezo.tone(n.note, n.duration);
-
-		int pauseBetweenNotes = (int) (n.duration * 1.2);
-
-		delay(pauseBetweenNotes);
-
-		Piezo.noTone();
-	}
-
-}
-*/
 void Game::buttonUpPressed(){
 
 	instance->upState = true;

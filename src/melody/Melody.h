@@ -10,6 +10,7 @@
 #include <Nibble.h>
 #include <Loop/LoopManager.h>
 #include "Melodies.h"
+#include "Note.h"
 
 
 class Melody : public LoopListener {
@@ -19,15 +20,28 @@ public:
 	Melody();
 
 	void loop(uint) override;
-	static void playMelody(mel melody , bool loop);
+	void playMelody(mel melody , bool loop);
+
+
+
 
 private:
 
-	void play();
+	void loopPlay();
+	void oneTimePLay();
 	void stop();
+
+	int melodySize = 0;
+	Note *melodyNote;
+
+	int loopMelodySize = 0;
+	Note *loopMelodyNote;
 
 	int noteNum = 0;
 	unsigned long previousMillis = 0;
+
+	bool loopCheck = false;
+
 };
 
 
