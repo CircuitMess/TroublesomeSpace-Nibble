@@ -22,20 +22,18 @@ public:
 	void loop(uint) override;
 	void playMelody(mel melody , bool loop);
 
-
+	unsigned int melodyTime = 0;
 
 
 private:
 
-	void loopPlay();
-	void oneTimePLay();
+	//void loopPlay();
+	//void oneTimePLay();
+	void play(bool loop);
 	void stop();
 
 	int melodySize = 0;
 	Note *melodyNote;
-
-	int loopMelodySize = 0;
-	Note *loopMelodyNote;
 
 	int noteNum = 0;
 	unsigned long previousMillis = 0;
