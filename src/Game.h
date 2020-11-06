@@ -157,6 +157,9 @@ private:
 	unsigned long gameOverMillis = 0;
 	unsigned long victoryMillis = 0;
 
+	bool gameOverPlaying = false;
+	bool loopPlaying = true;
+	bool victoryPlaying = false;
 };
 
 #endif //NIBBLE_NEW_GAME_H

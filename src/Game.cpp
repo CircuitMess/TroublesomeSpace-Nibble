@@ -44,7 +44,7 @@ void Game::loop(uint time){
 
 	unsigned int melodyCurrentMillis = millis();
 
-	if(melodyCurrentMillis - melodyPreviousMillis > melodyTime){
+	if(loopPlaying && melodyCurrentMillis - melodyPreviousMillis > melodyTime){
 		melodyTime = melody->playMelody(LOOP, true);
 	}
 
@@ -61,6 +61,26 @@ void Game::loop(uint time){
 	drawPlayer();
 	drawCircles();
 	drawTriangles();
+
+	if(gameOverPlaying){
+
+		gameOverMessage();
+
+		if(millis() - gameOverMillis > melodyTime){
+			gameOverPlaying = false;
+			loopPlaying = true;
+		}
+	}
+
+	if(victoryPlaying){
+
+		victoryMessage();
+
+		if(millis() - victoryMillis > melodyTime){
+			victoryPlaying = false;
+			loopPlaying = true;
+		}
+	}
 
 	display->commit();
 
@@ -174,7 +194,7 @@ void Game::checkIfDead(Triangle &triangle){
 		lives--;
 
 		if(lives == 0){
-			gameOverMillis = millis();
+
 			gameOver();
 
 		}
@@ -491,8 +511,7 @@ void Game::states(uint t){
 		checkIfEaten(circles[i]);
 	}
 
-	if(score == 20){
-		victoryMillis = millis();
+	if(score == 5){
 		victory();
 	}
 }
@@ -504,11 +523,13 @@ void Game::victory(){
 
 	score = 0;
 	lives = 3;
+	invisibilityCounter = 3;
 
-	victoryMessage();
-
+	victoryPlaying = true;
+	loopPlaying = false;
+	victoryMillis = millis();
 	melodyTime = melody->playMelody(VICTORY, false);
-	//melody->playMelody(LOOP, true);
+
 }
 
 void Game::victoryMessage(){
@@ -531,10 +552,11 @@ void Game::gameOver(){
 	lives = 3;
 	invisibilityCounter = 3;
 
-	gameOverMessage();
-
+	gameOverPlaying = true;
+	loopPlaying = false;
+	gameOverMillis = millis();
 	melodyTime = melody->playMelody(LOSE, false);
-	//melody->playMelody(LOOP, true);
+
 }
 
 void Game::gameOverMessage(){
