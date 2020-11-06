@@ -20,10 +20,7 @@ public:
 	Melody();
 
 	void loop(uint) override;
-	void playMelody(mel melody , bool loop);
-
-	unsigned int melodyTime = 0;
-
+	uint playMelody(mel melody , bool loop);
 
 private:
 
@@ -38,6 +35,7 @@ private:
 
 	bool loopCheck = false;
 
+	unsigned int melodyTime = 0;
 };
 
 

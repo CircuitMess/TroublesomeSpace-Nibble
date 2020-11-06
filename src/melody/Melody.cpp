@@ -29,7 +29,7 @@ void Melody::loop(uint t){
 
 }
 
-void Melody::playMelody(mel melody, bool loop){
+uint Melody::playMelody(mel melody, bool loop){
 
 	loopCheck = loop;
 
@@ -62,39 +62,13 @@ void Melody::playMelody(mel melody, bool loop){
 			break;
 
 		default:
-			return;
+			return 0;
 	}
 
-}
-/*
-void Melody::oneTimePLay(){
-
-	for(int i = 0; i < melodySize; i++){
-
-		Piezo.tone((melodyNote + i)->note, (melodyNote + i)->duration);
-
-		delay((melodyNote + i)->duration);
-
-		Piezo.noTone();
-	}
-}
-void Melody::loopPlay(){
-
-	if(noteNum >= melodySize)
-		noteNum = 0;
-
-	Piezo.tone((melodyNote + noteNum)->note, (melodyNote + noteNum)->duration);
-
-	unsigned long currentMillis = millis();
-
-	if(currentMillis - previousMillis > (melodyNote + noteNum)->duration){
-
-		previousMillis = currentMillis;
-		noteNum++;
-	}
+	return melodyTime;
 
 }
-*/
+
 void Melody::play(bool loop){
 	if(loop){
 
@@ -110,8 +84,7 @@ void Melody::play(bool loop){
 			previousMillis = currentMillis;
 			noteNum++;
 		}
-	}
-	else{
+	}else{
 		for(int i = 0; i < melodySize; i++){
 
 			Piezo.tone((melodyNote + i)->note, (melodyNote + i)->duration);
