@@ -102,6 +102,10 @@ private:
 
 	void gameOver();
 
+	void victoryMessage();
+
+	void gameOverMessage();
+
 	void drawWarningMessage();
 
 	void startUpMessage();
@@ -144,11 +148,14 @@ private:
 	const char *warning = "Warning!";
 	const char *startGame = "Starting game";
 	const char *invisibleTimes = "Invisibility: ";
-	const char *victoryMessage = "Victory!";
+	const char *winMessage = "Victory!";
 	const char *finalScore = "Score: ";
 
 	unsigned long melodyPreviousMillis = 0;
 	uint melodyTime = 0;
+
+	unsigned long gameOverMillis = 0;
+	unsigned long victoryMillis = 0;
 
 };
 

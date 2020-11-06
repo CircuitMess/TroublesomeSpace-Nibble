@@ -157,7 +157,7 @@ void Game::checkIfDead(Triangle &triangle){
 		lives--;
 
 		if(lives == 0){
-
+			gameOverMillis = millis();
 			gameOver();
 		}
 
@@ -174,7 +174,7 @@ void Game::checkIfDead(Triangle &triangle){
 		lives--;
 
 		if(lives == 0){
-
+			gameOverMillis = millis();
 			gameOver();
 
 		}
@@ -491,9 +491,10 @@ void Game::states(uint t){
 		checkIfEaten(circles[i]);
 	}
 
-	if(score == 20)
+	if(score == 20){
+		victoryMillis = millis();
 		victory();
-
+	}
 }
 
 void Game::victory(){
@@ -501,24 +502,42 @@ void Game::victory(){
 	for(int i = 0; i < score / 10; i++)
 		triangles.pop_back();
 
+	score = 0;
+	lives = 3;
+
+	victoryMessage();
+
+	melodyTime = melody->playMelody(VICTORY, false);
+	//melody->playMelody(LOOP, true);
+}
+
+void Game::victoryMessage(){
+
 	baseSprite->clear(TFT_BLACK);
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(victoryMessage, 35, 55);
+	baseSprite->drawString(winMessage, 35, 55);
 	display->commit();
 
-	score = 0;
-	lives = 3;
-
-	melodyTime = melody->playMelody(VICTORY, false);
-	//melody->playMelody(LOOP, true);
 }
 
 void Game::gameOver(){
 
 	for(int i = 0; i < score / 10; i++)
 		triangles.pop_back();
+
+	score = 0;
+	lives = 3;
+	invisibilityCounter = 3;
+
+	gameOverMessage();
+
+	melodyTime = melody->playMelody(LOSE, false);
+	//melody->playMelody(LOOP, true);
+}
+
+void Game::gameOverMessage(){
 
 	baseSprite->clear(TFT_BLACK);
 	baseSprite->setTextSize(1);
@@ -528,13 +547,6 @@ void Game::gameOver(){
 	baseSprite->drawString(finalScore, 40, 80);
 	baseSprite->drawNumber(score, 90, 80);
 	display->commit();
-
-	score = 0;
-	lives = 3;
-	invisibilityCounter = 3;
-
-	melodyTime = melody->playMelody(LOSE, false);
-	//melody->playMelody(LOOP, true);
 }
 
 void Game::invisibility(){
