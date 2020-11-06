@@ -9,7 +9,7 @@
 
 Game *Game::instance = nullptr;
 
-Game::Game(Melody *m){
+Game::Game(Melody *melody1){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
@@ -30,15 +30,13 @@ Game::Game(Melody *m){
 
 	instance = this;
 
-	triangles.push_back({0, (float) random(30, 118), Triangle::H}); // horizontal triangle [0]
-	//triangles.push_back({(float) random(10, 98), 0, Triangle::V}); // vertical triangle [1]
-
-	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle[0] = blue
+	triangles.push_back({0, (float) random(30, 118), Triangle::H});
+	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle = blue
 
 	startUpMessage();
 
-	melody = m;
-	melody->playMelody(START, false);
+	melody = melody1;
+	melodyTime = melody->playMelody(START, false);
 
 }
 
@@ -46,11 +44,12 @@ void Game::loop(uint time){
 
 	unsigned int melodyCurrentMillis = millis();
 
-	if(melodyCurrentMillis - melodyPreviousMillis > melody->melodyTime){
-		melody->playMelody(LOOP, true);
+	if(melodyCurrentMillis - melodyPreviousMillis > melodyTime){
+		melodyTime = melody->playMelody(LOOP, true);
 	}
 
 	states(time);
+
 	baseSprite->clear(TFT_BLACK);
 
 	drawCounterString();
@@ -159,26 +158,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
-			for(int i = 0; i < score / 10; i++)
-				triangles.pop_back();
-
-			baseSprite->clear(TFT_BLACK);
-			baseSprite->setTextSize(1);
-			baseSprite->setTextFont(2);
-			baseSprite->setTextColor(TFT_WHITE);
-			baseSprite->drawString(endMessage, 35, 50);
-			baseSprite->drawString(finalScore, 40, 80);
-			baseSprite->drawNumber(score, 90, 80);
-			display->commit();
-
-			score = 0;
-			lives = 3;
-			invisibilityCounter = 3;
-
-			delay(1000);
-			melody->playMelody(LOSE, false);
-			//melody->playMelody(LOOP, true);
-
+			gameOver();
 		}
 
 	}else if((sqrt(pow(triangle.x - player.x, 2) +
@@ -195,25 +175,7 @@ void Game::checkIfDead(Triangle &triangle){
 
 		if(lives == 0){
 
-			for(int i = 0; i < score / 10; i++)
-				triangles.pop_back();
-
-			baseSprite->clear(TFT_BLACK);
-			baseSprite->setTextSize(1);
-			baseSprite->setTextFont(2);
-			baseSprite->setTextColor(TFT_WHITE);
-			baseSprite->drawString(endMessage, 35, 50);
-			baseSprite->drawString(finalScore, 40, 80);
-			baseSprite->drawNumber(score, 90, 80);
-			display->commit();
-
-			score = 0;
-			lives = 3;
-			invisibilityCounter = 3;
-
-			delay(1000);
-			melody->playMelody(LOSE, false);
-			//melody->playMelody(LOOP, true);
+			gameOver();
 
 		}
 
@@ -529,7 +491,7 @@ void Game::states(uint t){
 		checkIfEaten(circles[i]);
 	}
 
-	if(score == 100)
+	if(score == 20)
 		victory();
 
 }
@@ -549,11 +511,32 @@ void Game::victory(){
 	score = 0;
 	lives = 3;
 
-	melody->playMelody(VICTORY, false);
-
 	delay(500);
+	melodyTime = melody->playMelody(VICTORY, false);
+	//melody->playMelody(LOOP, true);
+}
 
-	melody->playMelody(LOOP, true);
+void Game::gameOver(){
+
+	for(int i = 0; i < score / 10; i++)
+		triangles.pop_back();
+
+	baseSprite->clear(TFT_BLACK);
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(2);
+	baseSprite->setTextColor(TFT_WHITE);
+	baseSprite->drawString(endMessage, 35, 50);
+	baseSprite->drawString(finalScore, 40, 80);
+	baseSprite->drawNumber(score, 90, 80);
+	display->commit();
+
+	score = 0;
+	lives = 3;
+	invisibilityCounter = 3;
+
+	delay(1000);
+	melodyTime = melody->playMelody(LOSE, false);
+	//melody->playMelody(LOOP, true);
 }
 
 void Game::invisibility(){

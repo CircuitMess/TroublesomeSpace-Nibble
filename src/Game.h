@@ -100,6 +100,8 @@ private:
 
 	void victory();
 
+	void gameOver();
+
 	void drawWarningMessage();
 
 	void startUpMessage();
@@ -146,6 +148,7 @@ private:
 	const char *finalScore = "Score: ";
 
 	unsigned long melodyPreviousMillis = 0;
+	uint melodyTime = 0;
 
 };
 
