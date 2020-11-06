@@ -511,7 +511,6 @@ void Game::victory(){
 	score = 0;
 	lives = 3;
 
-	delay(500);
 	melodyTime = melody->playMelody(VICTORY, false);
 	//melody->playMelody(LOOP, true);
 }
@@ -534,7 +533,6 @@ void Game::gameOver(){
 	lives = 3;
 	invisibilityCounter = 3;
 
-	delay(1000);
 	melodyTime = melody->playMelody(LOSE, false);
 	//melody->playMelody(LOOP, true);
 }
