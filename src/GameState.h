@@ -74,9 +74,9 @@ public:
 
 	static void buttonBReleased();
 
-	int lives = 3;
-	int score = 0;
-	int invisibilityCounter = 3;
+	int lives;
+	int score;
+	int invisibilityCounter;
 
 	uint melodyTime = 0;
 	bool loopPlaying = true;
@@ -85,8 +85,6 @@ private:
 
 	static GameState *instance;
 	Melody *melody;
-
-	GameState *gameState;
 
 	Vector<Triangle> triangles;
 	Vector<Circle> circles;
@@ -114,11 +112,7 @@ private:
 	void victory();
 
 	void gameOver();
-/*
-	void victoryMessage();
 
-	void gameOverMessage();
-*/
 	void drawWarningMessage();
 
 	void startUpMessage();
@@ -153,21 +147,13 @@ private:
 	unsigned long currentInvisibilityTime = 0;
 	unsigned long previousInvisibilityTime = 0;
 
-//	const char *endMessage = "GameState Over";
 	const char *livesRest = "Lives: ";
 	const char *warning = "Warning!";
 	const char *startGame = "Starting game";
 	const char *invisibleTimes = "Invisibility: ";
-//	const char *winMessage = "Victory!";
-//	const char *finalScore = "Score: ";
 
 	unsigned long melodyPreviousMillis = 0;
 
-	//unsigned long gameOverMillis = 0;
-	//unsigned long victoryMillis = 0;
-
-	//bool gameOverPlaying = false;
-	//bool victoryPlaying = false;
 
 };
 

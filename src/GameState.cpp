@@ -67,6 +67,12 @@ void GameState::enter(Game &_game){
 
 	game = &_game;
 
+	score = 0;
+	lives = 3;
+	invisibilityCounter = 3;
+	melodyTime = 0;
+	loopPlaying = false;
+
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_LEFT, buttonLeftPressed);
@@ -538,7 +544,7 @@ void GameState::victory(){
 	for(int i = 0; i < score / 10; i++)
 		triangles.pop_back();
 
-	game->changeState(new GameOverState(W, gameState, melody));
+	game->changeState(new GameOverState(W, melody, score, loopPlaying, melodyTime));
 
 }
 
@@ -547,7 +553,7 @@ void GameState::gameOver(){
 	for(int i = 0; i < score / 10; i++)
 		triangles.pop_back();
 
-	game->changeState(new GameOverState(L, gameState, melody));
+	game->changeState(new GameOverState(L, melody, score, loopPlaying, melodyTime));
 
 }
 
