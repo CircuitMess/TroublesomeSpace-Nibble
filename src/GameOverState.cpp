@@ -50,10 +50,6 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool _l
 
 }
 
-GameOverState::~GameOverState(){
-	//exit();
-}
-
 void GameOverState::loop(uint){
 
 	if(gameOverPlaying){

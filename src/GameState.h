@@ -42,7 +42,6 @@ class GameState : public State {
 public:
 
 	explicit GameState(Melody *m);
-	~GameState() override;
 
 	void loop(uint t) override;
 

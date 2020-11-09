@@ -31,10 +31,6 @@ GameState::GameState(Melody *melody1){
 
 }
 
-GameState::~GameState(){
-	exit();
-}
-
 void GameState::loop(uint time){
 
 	Serial.println("game state loop");
@@ -534,7 +530,7 @@ void GameState::states(uint t){
 		checkIfEaten(circles[i]);
 	}
 
-	if(score == 5){
+	if(score >= 80){
 		victory();
 	}
 }

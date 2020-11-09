@@ -18,8 +18,6 @@ public:
 
 	GameOverState(gameOverType type,Melody *mel, int score, bool loopPlaying, uint melodyTime);
 
-	~GameOverState() override;
-
 	void loop(uint) override;
 
 	void enter(Game& game) override;
