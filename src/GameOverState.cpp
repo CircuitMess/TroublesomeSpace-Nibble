@@ -8,13 +8,15 @@
 
 GameOverState *GameOverState::instance = nullptr;
 
-GameOverState::GameOverState(gameOverType type, GameState *gameState1, Melody *mel){
+GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool _loopPlaying, uint _melodyTime){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
 	melody = mel;
-	gameState = gameState1;
+	score = _score;
+	loopPlaying = _loopPlaying;
+	melodyTime = _melodyTime;
 
 	instance = this;
 
@@ -33,27 +35,23 @@ GameOverState::GameOverState(gameOverType type, GameState *gameState1, Melody *m
 
 	}
 
-	gameState->score = 0;
-	gameState->lives = 3;
-	gameState->invisibilityCounter = 3;
-
 
 	if(victory){
 		victoryPlaying = true;
-		gameState->loopPlaying = false;
+		loopPlaying = false;
 		victoryMillis = millis();
-		gameState->melodyTime = melody->playMelody(VICTORY, false);
+		melodyTime = melody->playMelody(VICTORY, false);
 	}else if(gameOver){
 		gameOverPlaying = true;
-		gameState->loopPlaying = false;
+		loopPlaying = false;
 		gameOverMillis = millis();
-		gameState->melodyTime = melody->playMelody(LOSE, false);
+		melodyTime = melody->playMelody(LOSE, false);
 	}
 
 }
 
 GameOverState::~GameOverState(){
-	exit();
+	//exit();
 }
 
 void GameOverState::loop(uint){
@@ -62,9 +60,9 @@ void GameOverState::loop(uint){
 
 		gameOverMessage();
 
-		if(millis() - gameOverMillis > gameState->melodyTime){
+		if(millis() - gameOverMillis > melodyTime){
 			gameOverPlaying = false;
-			gameState->loopPlaying = true;
+			//loopPlaying = true;
 
 			game->changeState(new GameState(melody));
 		}
@@ -74,16 +72,16 @@ void GameOverState::loop(uint){
 
 		victoryMessage();
 
-		if(millis() - victoryMillis > gameState->melodyTime){
+		if(millis() - victoryMillis > melodyTime){
 			victoryPlaying = false;
-			gameState->loopPlaying = true;
+			//loopPlaying = true;
 
 			game->changeState(new GameState(melody));
 		}
 	}
 }
 
-void GameOverState::enter(Game& _game){
+void GameOverState::enter(Game &_game){
 
 	game = &_game;
 
@@ -94,27 +92,11 @@ void GameOverState::enter(Game& _game){
 
 void GameOverState::exit(){
 
-	Input::getInstance()->removeBtnPressCallback(BTN_A);
-	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
+	//Input::getInstance()->removeBtnPressCallback(BTN_A);
+	//Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 
 }
-/*
-void GameOverState::victory(){
 
-	for(int i = 0; i < score / 10; i++)
-		triangles.pop_back();
-
-	score = 0;
-	lives = 3;
-	invisibilityCounter = 3;
-
-	victoryPlaying = true;
-	loopPlaying = false;
-	victoryMillis = millis();
-	melodyTime = melody->playMelody(VICTORY, false);
-
-}
-*/
 void GameOverState::victoryMessage(){
 
 	baseSprite->clear(TFT_BLACK);
@@ -125,23 +107,7 @@ void GameOverState::victoryMessage(){
 	display->commit();
 
 }
-/*
-void GameOverState::gameOver(){
 
-	for(int i = 0; i < score / 10; i++)
-		triangles.pop_back();
-
-	score = 0;
-	lives = 3;
-	invisibilityCounter = 3;
-
-	gameOverPlaying = true;
-	loopPlaying = false;
-	gameOverMillis = millis();
-	melodyTime = melody->playMelody(LOSE, false);
-
-}
-*/
 void GameOverState::gameOverMessage(){
 
 	baseSprite->clear(TFT_BLACK);
@@ -150,17 +116,6 @@ void GameOverState::gameOverMessage(){
 	baseSprite->setTextColor(TFT_WHITE);
 	baseSprite->drawString(endMessage, 35, 50);
 	baseSprite->drawString(finalScore, 40, 80);
-	baseSprite->drawNumber(gameState->score, 90, 80);
+	baseSprite->drawNumber(score, 90, 80);
 	display->commit();
 }
-/*
-void GameOverState::buttonAPressed(){
-
-	instance->aState = true;
-}
-
-void GameOverState::buttonAReleased(){
-
-	instance->aState = false;
-}
- */
