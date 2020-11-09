@@ -28,7 +28,7 @@ private:
 	void stop();
 
 	int melodySize = 0;
-	Note *melodyNote;
+	Note *melodyNote{};
 
 	int noteNum = 0;
 	unsigned long previousMillis = 0;

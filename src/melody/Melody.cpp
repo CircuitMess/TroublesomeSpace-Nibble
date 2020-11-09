@@ -11,7 +11,7 @@
 
 Melody::Melody(){
 
-	Piezo.setMute(false);
+	Piezo.setMute(true);
 
 }
 
@@ -99,7 +99,7 @@ void Melody::play(bool loop){
 void Melody::stop(){
 
 	melodySize = 0;
-	melodyNote = NULL;
+	melodyNote = nullptr;
 	noteNum = 0;
 
 }
