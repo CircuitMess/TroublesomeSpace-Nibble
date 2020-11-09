@@ -5,7 +5,6 @@
 #include <Arduino.h>
 #include <Nibble.h>
 #include "Pins.hpp"
-#include <Input/Input.h>
 #include "GameState.h"
 #include "GameOverState.h"
 

@@ -73,9 +73,9 @@ public:
 
 	static void buttonBReleased();
 
-	int lives;
-	int score;
-	int invisibilityCounter;
+	int lives{};
+	int score{};
+	int invisibilityCounter{};
 
 	uint melodyTime = 0;
 	bool loopPlaying = true;
