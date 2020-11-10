@@ -25,12 +25,12 @@ public:
 	void exit() override;
 
 
-//	static void buttonUpPressed();
-//	static void buttonDownPressed();
+	static void buttonUpPressed();
+	static void buttonDownPressed();
 	static void buttonAPressed();
-//
-//	static void buttonUpReleased();
-//	static void buttonDownReleased();
+
+	static void buttonUpReleased();
+	static void buttonDownReleased();
 	static void buttonAReleased();
 
 private:
@@ -48,6 +48,8 @@ private:
 	const char *endMessage = "Game Over";
 
 	bool aState = false;
+	bool upState = false;
+	bool downState = false;
 
 	bool victory = false;
 	bool gameOver = false;

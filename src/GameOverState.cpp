@@ -68,7 +68,12 @@ void GameOverState::enter(Game &_game){
 
 	game = &_game;
 
+	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
+	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
+
+	Input::getInstance()->setBtnReleaseCallback(BTN_UP, buttonUpReleased);
+	Input::getInstance()->setBtnReleaseCallback(BTN_DOWN, buttonDownReleased);
 	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
 
 }
@@ -78,6 +83,10 @@ void GameOverState::exit(){
 	victory = false;
 	gameOver = false;
 
+	Input::getInstance()->removeBtnPressCallback(BTN_UP);
+	Input::getInstance()->removeBtnReleaseCallback(BTN_UP);
+	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
+	Input::getInstance()->removeBtnReleaseCallback(BTN_DOWN);
 	Input::getInstance()->removeBtnPressCallback(BTN_A);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 
@@ -106,12 +115,33 @@ void GameOverState::gameOverMessage(){
 	display->commit();
 }
 
+void GameOverState::buttonUpPressed(){
+
+	instance->upState = true;
+}
+
+void GameOverState::buttonDownPressed(){
+
+	instance->downState = true;
+}
+
 void GameOverState::buttonAPressed(){
 
 	instance->aState = true;
+}
+
+void GameOverState::buttonUpReleased(){
+
+	instance->upState = false;
+}
+
+void GameOverState::buttonDownReleased(){
+
+	instance->downState = false;
 }
 
 void GameOverState::buttonAReleased(){
 
 	instance->aState = false;
 }
+
