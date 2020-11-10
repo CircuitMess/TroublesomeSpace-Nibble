@@ -11,7 +11,7 @@
 
 Melody::Melody(){
 
-	Piezo.setMute(true);
+	Piezo.setMute(false);
 
 }
 
