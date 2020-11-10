@@ -8,8 +8,3 @@ State::State(){
 
 
 }
-
-State::~State(){
-
-
-}

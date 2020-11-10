@@ -78,7 +78,7 @@ public:
 	int invisibilityCounter{};
 
 	uint melodyTime = 0;
-	bool loopPlaying = true;
+	bool loopPlaying = false;
 
 private:
 

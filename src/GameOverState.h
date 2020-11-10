@@ -16,7 +16,7 @@ class GameOverState : public State {
 
 public:
 
-	GameOverState(gameOverType type,Melody *mel, int score, bool loopPlaying, uint melodyTime);
+	GameOverState(gameOverType type,Melody *mel, int score);
 
 	void loop(uint) override;
 
@@ -27,11 +27,11 @@ public:
 
 //	static void buttonUpPressed();
 //	static void buttonDownPressed();
-//	static void buttonAPressed();
+	static void buttonAPressed();
 //
 //	static void buttonUpReleased();
 //	static void buttonDownReleased();
-//	static void buttonAReleased();
+	static void buttonAReleased();
 
 private:
 
@@ -51,13 +51,11 @@ private:
 
 	bool victory = false;
 	bool gameOver = false;
-	bool gameOverPlaying = false;
-	bool victoryPlaying = false;
+
 	unsigned long gameOverMillis = 0;
 	unsigned long victoryMillis = 0;
 
 	int score;
-	bool loopPlaying;
 	uint melodyTime;
 };
 

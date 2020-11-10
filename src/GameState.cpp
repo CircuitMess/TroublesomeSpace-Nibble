@@ -26,18 +26,15 @@ GameState::GameState(Melody *melody1){
 
 	melodyTime = melody->playMelody(START, false);
 
-	Serial.println("game state constructor passed");
-
 }
 
 void GameState::loop(uint time){
-
-	Serial.println("game state loop");
 
 	unsigned int melodyCurrentMillis = millis();
 
 	if(loopPlaying && melodyCurrentMillis - melodyPreviousMillis > melodyTime){
 		melodyTime = melody->playMelody(LOOP, true);
+		Serial.println("loop melody");
 	}
 
 	states(time);
@@ -66,7 +63,8 @@ void GameState::enter(Game &_game){
 	lives = 3;
 	invisibilityCounter = 3;
 	melodyTime = 0;
-	loopPlaying = false;
+	loopPlaying = true;
+	melodyPreviousMillis = 0;
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -87,6 +85,11 @@ void GameState::enter(Game &_game){
 }
 
 void GameState::exit(){
+
+	for(int i = 0; i < score / 10; i++)
+		triangles.pop_back();
+
+	loopPlaying = false;
 
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
 	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
@@ -195,7 +198,6 @@ void GameState::checkIfDead(Triangle &triangle){
 		lives--;
 
 		if(lives == 0){
-			//gameOverMillis = millis();
 			gameOver();
 		}
 
@@ -212,7 +214,6 @@ void GameState::checkIfDead(Triangle &triangle){
 		lives--;
 
 		if(lives == 0){
-
 			gameOver();
 
 		}
@@ -536,46 +537,15 @@ void GameState::states(uint t){
 
 void GameState::victory(){
 
-	for(int i = 0; i < score / 10; i++)
-		triangles.pop_back();
-
-	game->changeState(new GameOverState(W, melody, score, loopPlaying, melodyTime));
-
+	game->changeState(new GameOverState(W, melody, score));
 }
 
 void GameState::gameOver(){
 
-	for(int i = 0; i < score / 10; i++)
-		triangles.pop_back();
-
-	game->changeState(new GameOverState(L, melody, score, loopPlaying, melodyTime));
+	game->changeState(new GameOverState(L, melody, score));
 
 }
 
-/*
-void GameState::victoryMessage(){
-
-	baseSprite->clear(TFT_BLACK);
-	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(winMessage, 35, 55);
-	display->commit();
-
-}
-
-void GameState::gameOverMessage(){
-
-	baseSprite->clear(TFT_BLACK);
-	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(endMessage, 35, 50);
-	baseSprite->drawString(finalScore, 40, 80);
-	baseSprite->drawNumber(score, 90, 80);
-	display->commit();
-}
-*/
 void GameState::invisibility(){
 
 	if(playerInvisible)

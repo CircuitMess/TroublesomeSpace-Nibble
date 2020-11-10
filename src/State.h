@@ -20,8 +20,6 @@ public:
 
 	State();
 
-	virtual ~State();
-
 	virtual void enter(Game& game) = 0;
 
 	virtual void exit() = 0;

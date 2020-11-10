@@ -8,15 +8,13 @@
 
 GameOverState *GameOverState::instance = nullptr;
 
-GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool _loopPlaying, uint _melodyTime){
+GameOverState::GameOverState(gameOverType type, Melody *mel, int _score){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
 	melody = mel;
 	score = _score;
-	loopPlaying = _loopPlaying;
-	melodyTime = _melodyTime;
 
 	instance = this;
 
@@ -24,10 +22,12 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool _l
 
 		case State::W:
 			victory = true;
+			melodyTime = melody->playMelody(VICTORY, false);
 			break;
 
 		case State::L:
 			gameOver = true;
+			melodyTime = melody->playMelody(LOSE, false);
 			break;
 
 		default:
@@ -35,45 +35,32 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool _l
 
 	}
 
-
-	if(victory){
-		victoryPlaying = true;
-		loopPlaying = false;
-		victoryMillis = millis();
-		melodyTime = melody->playMelody(VICTORY, false);
-	}else if(gameOver){
-		gameOverPlaying = true;
-		loopPlaying = false;
-		gameOverMillis = millis();
-		melodyTime = melody->playMelody(LOSE, false);
-	}
-
 }
 
 void GameOverState::loop(uint){
 
-	if(gameOverPlaying){
+	if(gameOver){
 
 		gameOverMessage();
 
 		if(millis() - gameOverMillis > melodyTime){
-			gameOverPlaying = false;
-			//loopPlaying = true;
 
-			game->changeState(new GameState(melody));
+			if(instance->aState)
+				game->changeState(new GameState(melody));
 		}
-	}
 
-	if(victoryPlaying){
+
+	}else if(victory){
 
 		victoryMessage();
 
 		if(millis() - victoryMillis > melodyTime){
-			victoryPlaying = false;
-			//loopPlaying = true;
 
-			game->changeState(new GameState(melody));
+			if(instance->aState)
+				game->changeState(new GameState(melody));
 		}
+
+
 	}
 }
 
@@ -81,15 +68,18 @@ void GameOverState::enter(Game &_game){
 
 	game = &_game;
 
-	//Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
-	//Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
+	Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
+	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
 
 }
 
 void GameOverState::exit(){
 
-	//Input::getInstance()->removeBtnPressCallback(BTN_A);
-	//Input::getInstance()->removeBtnReleaseCallback(BTN_A);
+	victory = false;
+	gameOver = false;
+
+	Input::getInstance()->removeBtnPressCallback(BTN_A);
+	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 
 }
 
@@ -114,4 +104,14 @@ void GameOverState::gameOverMessage(){
 	baseSprite->drawString(finalScore, 40, 80);
 	baseSprite->drawNumber(score, 90, 80);
 	display->commit();
+}
+
+void GameOverState::buttonAPressed(){
+
+	instance->aState = true;
+}
+
+void GameOverState::buttonAReleased(){
+
+	instance->aState = false;
 }
