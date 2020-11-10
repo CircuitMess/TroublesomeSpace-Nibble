@@ -140,6 +140,8 @@ private:
 	const float radius = 4;
 	const float triangleSide = 10;
 
+	bool dead = false;
+
 	bool playerInvisible = false;
 
 	unsigned long invisibilityTime = 4000; // t = 4000 ms

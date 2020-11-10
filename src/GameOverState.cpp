@@ -26,8 +26,12 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score){
 			break;
 
 		case State::L:
+			gameOverMessage();
+			newGameOption();
+			Serial.println("case lose passed");
 			gameOver = true;
 			melodyTime = melody->playMelody(LOSE, false);
+			Serial.println("end case passed");
 			break;
 
 		default:
@@ -40,11 +44,12 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score){
 void GameOverState::loop(uint){
 
 	if(gameOver){
-
+		Serial.println("if(gameover) passed");
 		gameOverMessage();
-
+		newGameOption();
+		Serial.println("message display passed");
 		if(millis() - gameOverMillis > melodyTime){
-
+			Serial.println("melody time passed");
 			if(instance->aState)
 				game->changeState(new GameState(melody));
 		}
@@ -53,6 +58,7 @@ void GameOverState::loop(uint){
 	}else if(victory){
 
 		victoryMessage();
+		newGameOption();
 
 		if(millis() - victoryMillis > melodyTime){
 
@@ -62,6 +68,7 @@ void GameOverState::loop(uint){
 
 
 	}
+	display->commit();
 }
 
 void GameOverState::enter(Game &_game){
@@ -99,7 +106,7 @@ void GameOverState::victoryMessage(){
 	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_WHITE);
 	baseSprite->drawString(winMessage, 35, 55);
-	display->commit();
+
 
 }
 
@@ -109,10 +116,21 @@ void GameOverState::gameOverMessage(){
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(endMessage, 35, 50);
-	baseSprite->drawString(finalScore, 40, 80);
-	baseSprite->drawNumber(score, 90, 80);
-	display->commit();
+	baseSprite->drawString(endMessage, 35, 10);
+	baseSprite->drawString(finalScore, 35, 30);
+	baseSprite->drawNumber(score, 85, 30);
+
+}
+
+void GameOverState::newGameOption(){
+
+	baseSprite->drawString(newGame, 35, 70);
+
+	if(instance->downState == 1){
+		baseSprite->drawRect(30, 65, 70, 30, TFT_GREEN);
+	}else if(instance->upState == 1){
+
+	}
 }
 
 void GameOverState::buttonUpPressed(){

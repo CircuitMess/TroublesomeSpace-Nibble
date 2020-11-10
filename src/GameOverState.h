@@ -43,9 +43,12 @@ private:
 
 	void gameOverMessage();
 
+	void newGameOption();
+
 	const char *winMessage = "Victory!";
 	const char *finalScore = "Score: ";
 	const char *endMessage = "Game Over";
+	const char *newGame = "New Game";
 
 	bool aState = false;
 	bool upState = false;

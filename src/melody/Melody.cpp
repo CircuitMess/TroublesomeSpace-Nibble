@@ -11,7 +11,7 @@
 
 Melody::Melody(){
 
-	Piezo.setMute(false);
+	Piezo.setMute(true);
 
 }
 
@@ -54,6 +54,7 @@ uint Melody::playMelody(mel melody, bool loop){
 			melodyNote = gameOverMelody;
 			for(int i = 0; i < melodySize; ++i)
 				melodyTime += gameOverMelody[i].duration;
+			Serial.println("play melody passed");
 			break;
 
 		case LOOP:

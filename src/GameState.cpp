@@ -108,7 +108,7 @@ void GameState::exit(){
 }
 
 void GameState::drawPlayer(){
-
+	
 	playerColor = playerInvisible ? TFT_PURPLE : TFT_GOLD;
 	baseSprite->fillCircle(player.x, player.y, radius, playerColor);
 }
@@ -190,11 +190,9 @@ void GameState::checkIfDead(Triangle &triangle){
 		(triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::H)){
 
 		Piezo.tone(1000, 300);
-		delay(500);
 
 		player.x = 117;
 		player.y = 10;
-
 		lives--;
 
 		if(lives == 0){
@@ -206,11 +204,9 @@ void GameState::checkIfDead(Triangle &triangle){
 			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::V)){
 
 		Piezo.tone(1000, 300);
-		delay(500);
 
 		player.x = 117;
 		player.y = 10;
-
 		lives--;
 
 		if(lives == 0){
