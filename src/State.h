@@ -9,6 +9,7 @@
 #include <CircuitOS.h>
 #include <Nibble.h>
 #include <Loop/LoopManager.h>
+#include <Input/Input.h>
 #include <Display/Display.h>
 #include <Display/Sprite.h>
 
