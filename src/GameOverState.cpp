@@ -27,7 +27,8 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score){
 
 		case State::L:
 			gameOverMessage();
-			newGameOption();
+			//newGameOption();
+			display->commit();
 			Serial.println("case lose passed");
 			gameOver = true;
 			melodyTime = melody->playMelody(LOSE, false);

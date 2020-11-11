@@ -31,7 +31,6 @@ GameState::GameState(Melody *melody1){
 void GameState::loop(uint time){
 
 	unsigned int melodyCurrentMillis = millis();
-
 	if(loopPlaying && melodyCurrentMillis - melodyPreviousMillis > melodyTime){
 		melodyTime = melody->playMelody(LOOP, true);
 		Serial.println("loop melody");
@@ -65,6 +64,7 @@ void GameState::enter(Game &_game){
 	melodyTime = 0;
 	loopPlaying = true;
 	melodyPreviousMillis = 0;
+	dead = false;
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -196,6 +196,7 @@ void GameState::checkIfDead(Triangle &triangle){
 		lives--;
 
 		if(lives == 0){
+			dead = true;
 			gameOver();
 		}
 
@@ -210,6 +211,7 @@ void GameState::checkIfDead(Triangle &triangle){
 		lives--;
 
 		if(lives == 0){
+			dead = true;
 			gameOver();
 
 		}
@@ -519,6 +521,8 @@ void GameState::states(uint t){
 		triangleMovement(triangles[i], t);
 		if(!playerInvisible)
 			checkIfDead(triangles[i]);
+		if(dead)
+			break;
 	}
 
 	for(int i = 0; i < circles.size(); ++i){
