@@ -7,6 +7,7 @@
 
 enum mel{
 
+	MENU,
 	START,
 	VICTORY,
 	LOSE,

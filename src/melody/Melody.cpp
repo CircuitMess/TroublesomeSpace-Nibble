@@ -7,11 +7,12 @@
 #include "VictoryMelody.h"
 #include "GameOverMelody.h"
 #include "LoopMelody.h"
+#include "MenuMelody.h"
 
 
 Melody::Melody(){
 
-	Piezo.setMute(true);
+	Piezo.setMute(false);
 
 }
 
@@ -34,6 +35,13 @@ uint Melody::playMelody(mel melody, bool loop){
 	loopCheck = loop;
 
 	switch(melody){
+
+		case MENU:
+			melodySize = sizeof(menuMelody) / sizeof(menuMelody[0]);
+			melodyNote = menuMelody;
+			for(int i = 0; i < melodySize; ++i)
+				melodyTime += menuMelody[i].duration;
+			break;
 
 		case START:
 			melodySize = sizeof(startUpMelody) / sizeof(startUpMelody[0]);
