@@ -8,6 +8,7 @@
 #include <gpio.h>
 #include "src/melody/Melody.h"
 #include "src/Game.h"
+#include "src/Highscore.h"
 
 Game *game;
 

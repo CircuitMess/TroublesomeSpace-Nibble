@@ -12,7 +12,6 @@ Game::Game(){
 	melody = new Melody;
 	LoopManager::addListener(melody);
 
-	//state = new GameState(melody);
 	state = new Menu(melody);
 
 	state->enter(*this);
@@ -28,10 +27,8 @@ void Game::changeState(State *s){
 
 	state->exit();
 	delete state;
-	Serial.println("State deleted passed");
 	state = s;
 	state->enter(*this);
-	Serial.println("state changed passed");
 
 }
 

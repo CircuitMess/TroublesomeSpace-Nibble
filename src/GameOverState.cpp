@@ -5,16 +5,18 @@
 
 #include "GameOverState.h"
 #include "GameState.h"
+#include "Highscore.h"
 
 GameOverState *GameOverState::instance = nullptr;
 
-GameOverState::GameOverState(gameOverType type, Melody *mel, int _score){
+GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool prevState){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
 	melody = mel;
 	score = _score;
+	previousState = prevState;
 
 	instance = this;
 
@@ -22,17 +24,18 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score){
 
 		case State::W:
 			victory = true;
-			melodyTime = melody->playMelody(VICTORY, false);
+			if(previousState)
+				previousState = false;
+			else
+				melodyTime = melody->playMelody(VICTORY, false);
 			break;
 
 		case State::L:
-			gameOverMessage();
-			//newGameOption();
-			display->commit();
-			Serial.println("case lose passed");
 			gameOver = true;
-			melodyTime = melody->playMelody(LOSE, false);
-			Serial.println("end case passed");
+			if(previousState)
+				previousState = false;
+			else
+				melodyTime = melody->playMelody(LOSE, false);
 			break;
 
 		default:
@@ -40,31 +43,38 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score){
 
 	}
 
+
 }
 
 void GameOverState::loop(uint){
 
+	states();
+
 	if(gameOver){
-		Serial.println("if(gameover) passed");
+
 		gameOverMessage();
-		newGameOption();
-		Serial.println("message display passed");
+		drawGameOver();
+
 		if(millis() - gameOverMillis > melodyTime){
-			Serial.println("melody time passed");
-			if(instance->aState)
+
+			if(aState && pointer.y == 68)
 				game->changeState(new GameState(melody));
+			if(aState && pointer.y == 88)
+				game->changeState(new Highscore(score, true, melody));
 		}
 
 
 	}else if(victory){
 
 		victoryMessage();
-		newGameOption();
+		drawGameOver();
 
 		if(millis() - victoryMillis > melodyTime){
 
-			if(instance->aState)
+			if(aState && pointer.y == 68)
 				game->changeState(new GameState(melody));
+			if(aState && pointer.y == 88)
+				game->changeState(new Highscore(score, true, melody));
 		}
 
 
@@ -75,6 +85,8 @@ void GameOverState::loop(uint){
 void GameOverState::enter(Game &_game){
 
 	game = &_game;
+
+	pointer  = {30, 68, 70, 20};
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -100,6 +112,28 @@ void GameOverState::exit(){
 
 }
 
+void GameOverState::states(){
+
+	if(upState)
+		pointer = {30, 68, 70, 20};
+	else if(downState)
+		pointer = {25, 88, 80, 20};
+
+}
+
+void GameOverState::drawGameOver(){
+
+
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(2);
+	baseSprite->setTextColor(TFT_WHITE);
+	baseSprite->drawString(newGame, 35, 70);
+	baseSprite->drawString(highScore, 30, 90);
+
+	baseSprite->drawRect(pointer.x, pointer.y, pointer.width, pointer.height, TFT_GOLD);
+
+}
+
 void GameOverState::victoryMessage(){
 
 	baseSprite->clear(TFT_BLACK);
@@ -121,17 +155,6 @@ void GameOverState::gameOverMessage(){
 	baseSprite->drawString(finalScore, 35, 30);
 	baseSprite->drawNumber(score, 85, 30);
 
-}
-
-void GameOverState::newGameOption(){
-
-	baseSprite->drawString(newGame, 35, 70);
-
-	if(instance->downState == 1){
-		baseSprite->drawRect(30, 65, 70, 30, TFT_GREEN);
-	}else if(instance->upState == 1){
-
-	}
 }
 
 void GameOverState::buttonUpPressed(){

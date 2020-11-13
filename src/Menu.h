@@ -26,6 +26,7 @@ public:
 	void enter(Game &game) override;
 	void exit() override;
 	void loop(uint) override;
+	void drawMenu();
 
 	static void buttonUpPressed();
 	static void buttonDownPressed();
@@ -40,21 +41,19 @@ private:
 
 	Melody *melody;
 
-	void drawMenu();
 	void states();
 
-	rectPointer pointer = {30, 70, 70, 20};
+	rectPointer pointer = {30, 68, 70, 20};
 
-	bool upState = false;
-	bool downState = false;
-	bool aState = false;
+	bool upState;
+	bool downState;
+	bool aState;
 
 	uint melodyTime = 0;
 
 	const char *title = "The Hardest Game";
 	const char *newGame = "New Game";
 	const char *highScore = "High Score";
-
 };
 
 

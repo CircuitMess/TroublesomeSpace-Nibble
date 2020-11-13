@@ -4,6 +4,7 @@
 
 #include "Menu.h"
 #include "GameState.h"
+#include "Highscore.h"
 
 Menu *Menu::instance = nullptr;
 
@@ -14,8 +15,11 @@ Menu::Menu(Melody *mel){
 
 	instance = this;
 
+	drawMenu();
+	display->commit();
+
 	melody = mel;
-	melodyTime = melody->playMelody(MENU, false);
+
 }
 
 void Menu::loop(uint t){
@@ -32,7 +36,13 @@ void Menu::enter(Game &_game){
 
 	game = &_game;
 
-	pointer = {30, 65, 70, 30};
+	melodyTime = melody->playMelody(MENU, false);
+
+	upState = false;
+	downState = false;
+	aState = false;
+
+	pointer  = {30, 68, 70, 20};
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -57,13 +67,14 @@ void Menu::exit(){
 void Menu::states(){
 
 	if(upState)
-		pointer = {30, 70, 70, 20};
+		pointer = {30, 68, 70, 20};
 	else if(downState)
-		pointer = {25, 90, 80, 20};
+		pointer = {25, 88, 80, 20};
 
-	if(aState)
+	if(aState && pointer.y == 68)
 		game->changeState(new GameState(melody));
-
+	if(aState && pointer.y == 88)
+		game->changeState(new Highscore(0, false, melody));
 }
 
 void Menu::drawMenu(){

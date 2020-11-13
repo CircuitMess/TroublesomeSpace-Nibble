@@ -8,15 +8,25 @@
 
 
 #include "State.h"
+#include "Menu.h"
 #include "melody/Melody.h"
+/*
+struct rectPointer{
 
+	int x;
+	int y;
+	int width;
+	int height;
+
+};
+*/
 class GameState;
 
 class GameOverState : public State {
 
 public:
 
-	GameOverState(gameOverType type,Melody *mel, int score);
+	GameOverState(gameOverType type,Melody *mel, int score, bool prevState);
 
 	void loop(uint) override;
 
@@ -39,16 +49,23 @@ private:
 
 	Melody *melody;
 
+	rectPointer pointer;
+
+	void states();
+
+	void drawGameOver();
+
 	void victoryMessage();
 
 	void gameOverMessage();
-
-	void newGameOption();
 
 	const char *winMessage = "Victory!";
 	const char *finalScore = "Score: ";
 	const char *endMessage = "Game Over";
 	const char *newGame = "New Game";
+
+	const char *title = "The Hardest Game";
+	const char *highScore = "High Score";
 
 	bool aState = false;
 	bool upState = false;
@@ -62,6 +79,8 @@ private:
 
 	int score;
 	uint melodyTime;
+
+	bool previousState;
 };
 
 

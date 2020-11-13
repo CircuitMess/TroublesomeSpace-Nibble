@@ -58,6 +58,9 @@ void GameState::enter(Game &_game){
 
 	game = &_game;
 
+	player.x = 117;
+	player.y = 10;
+
 	score = 0;
 	lives = 3;
 	invisibilityCounter = 3;
@@ -191,14 +194,15 @@ void GameState::checkIfDead(Triangle &triangle){
 
 		Piezo.tone(1000, 300);
 
-		player.x = 117;
-		player.y = 10;
 		lives--;
 
 		if(lives == 0){
 			dead = true;
 			gameOver();
 		}
+
+		player.x = 117;
+		player.y = 10;
 
 	}else if((sqrt(pow(triangle.x - player.x, 2) +
 				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
@@ -206,8 +210,6 @@ void GameState::checkIfDead(Triangle &triangle){
 
 		Piezo.tone(1000, 300);
 
-		player.x = 117;
-		player.y = 10;
 		lives--;
 
 		if(lives == 0){
@@ -215,6 +217,9 @@ void GameState::checkIfDead(Triangle &triangle){
 			gameOver();
 
 		}
+
+		player.x = 117;
+		player.y = 10;
 
 	}
 
@@ -537,12 +542,12 @@ void GameState::states(uint t){
 
 void GameState::victory(){
 
-	game->changeState(new GameOverState(W, melody, score));
+	game->changeState(new GameOverState(W, melody, score, false));
 }
 
 void GameState::gameOver(){
 
-	game->changeState(new GameOverState(L, melody, score));
+	game->changeState(new GameOverState(L, melody, score, false));
 
 }
 
