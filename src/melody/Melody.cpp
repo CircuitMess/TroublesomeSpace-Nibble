@@ -62,7 +62,7 @@ uint Melody::playMelody(mel melody, bool loop){
 			melodyNote = gameOverMelody;
 			for(int i = 0; i < melodySize; ++i)
 				melodyTime += gameOverMelody[i].duration;
-			Serial.println("play melody passed");
+
 			break;
 
 		case LOOP:
@@ -94,6 +94,7 @@ void Melody::play(bool loop){
 			noteNum++;
 		}
 	}else{
+
 		for(int i = 0; i < melodySize; i++){
 
 			Piezo.tone((melodyNote + i)->note, (melodyNote + i)->duration);
@@ -104,6 +105,7 @@ void Melody::play(bool loop){
 		}
 	}
 }
+
 
 void Melody::stop(){
 
