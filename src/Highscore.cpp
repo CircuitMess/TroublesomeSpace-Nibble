@@ -69,6 +69,10 @@ void Highscore::loop(uint){
 
 		draw();
 
+		baseSprite->setTextSize(1);
+		baseSprite->setTextFont(1);
+		baseSprite->setTextColor(TFT_LIGHTGREY);
+		baseSprite->drawString(confirfmMessage, 1, 120);
 
 		display->commit();
 	}else{                            // Menu -> Highscore
@@ -76,6 +80,11 @@ void Highscore::loop(uint){
 		baseSprite->clear(TFT_BLACK);
 
 		draw();
+
+		baseSprite->setTextSize(1);
+		baseSprite->setTextFont(1);
+		baseSprite->setTextColor(TFT_LIGHTGREY);
+		baseSprite->drawString(deleteMessage, 1, 120);
 
 		display->commit();
 	}
@@ -109,6 +118,21 @@ void Highscore::states(){
 
 void Highscore::draw(){
 
+	baseSprite->drawLine(40,40,70,40,TFT_GOLD);
+	baseSprite->drawLine(80,40,100,40,TFT_GOLD);
+
+	baseSprite->drawLine(40,55,70,55,TFT_GOLD);
+	baseSprite->drawLine(80,55,100,55,TFT_GOLD);
+
+	baseSprite->drawLine(40,70,70,70,TFT_GOLD);
+	baseSprite->drawLine(80,70,100,70,TFT_GOLD);
+
+	baseSprite->drawLine(40,85,70,85,TFT_GOLD);
+	baseSprite->drawLine(80,85,100,85,TFT_GOLD);
+
+	baseSprite->drawLine(40,100,70,100,TFT_GOLD);
+	baseSprite->drawLine(80,100,100,100,TFT_GOLD);
+
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_WHITE);
@@ -120,11 +144,6 @@ void Highscore::draw(){
 	baseSprite->drawNumber(3, 30, 65);
 	baseSprite->drawNumber(4, 30, 80);
 	baseSprite->drawNumber(5, 30, 95);
-
-	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(1);
-	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawString(confirfmMessage, 1, 120);
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);

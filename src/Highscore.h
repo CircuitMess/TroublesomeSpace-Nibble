@@ -83,6 +83,7 @@ private:
 	const char *highscore = "Highscore";
 	const char *backMessage = "B: Back";
 	const char *confirfmMessage = "A: Accept";
+	const char *deleteMessage = "A: Delete";
 };
 
 
