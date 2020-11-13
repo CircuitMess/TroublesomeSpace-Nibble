@@ -31,6 +31,7 @@ include_directories(${Arduino15}/packages/cm/hardware/esp8266/1.0.0/libraries/Ci
 include_directories(${Arduino15}/packages/cm/hardware/esp8266/1.0.0/libraries/TFT_eSPI)
 include_directories(${Arduino15}/packages/cm/hardware/esp8266/1.0.0/libraries/TFT_eSPI/Extensions)
 include_directories(${Arduino15}/packages/cm/hardware/esp8266/1.0.0/libraries/Nibble/src)
+include_directories(${Arduino15}/packages/cm/hardware/esp8266/1.0.0/libraries/LittleFS/src)
 
 
 AUX_SOURCE_DIRECTORY(src SOURCES)
@@ -56,4 +57,4 @@ add_custom_target(CMUpload ALL
         DEPENDS CMBuild
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-add_executable(${CMAKE_PROJECT_NAME}.bin ${CMAKE_PROJECT_NAME}.ino ${SOURCES} src/melody/Melody.cpp src/melody/Melody.h src/melody/StartUpMelody.h src/melody/LoopMelody.h src/melody/GameOverMelody.h src/melody/VictoryMelody.h src/melody/Melodies.h src/State.cpp src/State.h src/Game.cpp src/Game.h src/GameOverState.cpp src/GameOverState.h src/Menu.cpp src/Menu.h src/melody/MenuMelody.h)
+add_executable(${CMAKE_PROJECT_NAME}.bin ${CMAKE_PROJECT_NAME}.ino ${SOURCES} src/melody/Melody.cpp src/melody/Melody.h src/melody/StartUpMelody.h src/melody/LoopMelody.h src/melody/GameOverMelody.h src/melody/VictoryMelody.h src/melody/Melodies.h src/State.cpp src/State.h src/Game.cpp src/Game.h src/GameOverState.cpp src/GameOverState.h src/Menu.cpp src/Menu.h src/melody/MenuMelody.h src/Highscore.cpp src/Highscore.h)
