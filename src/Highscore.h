@@ -45,6 +45,10 @@ public:
 
 	static void buttonDownPressed();
 
+	static void buttonLeftPressed();
+
+	static void buttonRightPressed();
+
 	static void buttonAPressed();
 
 	static void buttonBPressed();
@@ -52,6 +56,10 @@ public:
 	static void buttonUpReleased();
 
 	static void buttonDownReleased();
+
+	static void buttonLeftReleased();
+
+	static void buttonRightReleased();
 
 	static void buttonAReleased();
 
@@ -81,9 +89,15 @@ private:
 	bool downState;
 	bool aState;
 	bool bState;
+	bool leftState;
+	bool rightState;
 
 	Score score;
 	bool previousState; // 0-menu ; 1-game over
+	bool addScore = true;
+
+	char* name;
+	uint8_t charCursor;
 
 	const char *highscore = "Highscore";
 	const char *backMessage = "B: Back";
