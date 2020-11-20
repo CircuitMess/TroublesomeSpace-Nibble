@@ -192,11 +192,9 @@ void Highscore::draw(){
 	baseSprite->drawString(highscore, 30, 10);
 
 	baseSprite->setTextFont(1);
-	baseSprite->drawNumber(1, 30, 35);
-	baseSprite->drawNumber(2, 30, 50);
-	baseSprite->drawNumber(3, 30, 65);
-	//baseSprite->drawNumber(4, 30, 80);
-	//baseSprite->drawNumber(5, 30, 95);
+	baseSprite->drawNumber(1, 30, 30);
+	baseSprite->drawNumber(2, 30, 45);
+	baseSprite->drawNumber(3, 30, 60);
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
@@ -221,13 +219,13 @@ void Highscore::draw(){
 		baseSprite->drawLine(80, 100, 100, 100, TFT_GOLD);
 	}
 
-	baseSprite->drawString(data.scores[0].name, 30, 30);
+	baseSprite->drawString(data.scores[0].name, 40, 30);
 	baseSprite->drawNumber(data.scores[0].score, 85, 30);
 
-	baseSprite->drawString(data.scores[1].name, 30, 45);
+	baseSprite->drawString(data.scores[1].name, 40, 45);
 	baseSprite->drawNumber(data.scores[1].score, 85, 45);
 
-	baseSprite->drawString(data.scores[2].name, 30, 60);
+	baseSprite->drawString(data.scores[2].name, 40, 60);
 	baseSprite->drawNumber(data.scores[2].score, 85, 60);
 
 

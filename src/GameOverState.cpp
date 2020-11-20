@@ -43,7 +43,6 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool pr
 
 	}
 
-
 }
 
 void GameOverState::loop(uint){
