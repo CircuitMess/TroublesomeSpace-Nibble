@@ -80,7 +80,8 @@ private:
 	int score;
 	uint melodyTime;
 
-	bool previousState;
+	bool previousState; // 0-previous state was gameState
+						// 1-previous state was highscoreState
 };
 
 

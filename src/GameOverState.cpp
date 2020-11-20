@@ -25,7 +25,7 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool pr
 		case State::W:
 			victory = true;
 			if(previousState)
-				previousState = false;
+				break;
 			else
 				melodyTime = melody->playMelody(VICTORY, false);
 			break;
@@ -33,7 +33,7 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool pr
 		case State::L:
 			gameOver = true;
 			if(previousState)
-				previousState = false;
+				break;
 			else
 				melodyTime = melody->playMelody(LOSE, false);
 			break;
@@ -53,14 +53,21 @@ void GameOverState::loop(uint){
 	if(gameOver){
 
 		gameOverMessage();
-		drawGameOver();
+
 
 		if(millis() - gameOverMillis > melodyTime){
 
-			if(aState && pointer.y == 68)
-				game->changeState(new GameState(melody));
-			if(aState && pointer.y == 88)
+			if(!previousState){
 				game->changeState(new Highscore(score, true, melody));
+				previousState = true;
+			}else{
+				drawGameOver();
+				if(aState && pointer.y == 68)
+					game->changeState(new GameState(melody));
+				if(aState && pointer.y == 88)
+					game->changeState(new Highscore(score, true, melody));
+
+			}
 		}
 
 
@@ -86,7 +93,7 @@ void GameOverState::enter(Game &_game){
 
 	game = &_game;
 
-	pointer  = {30, 68, 70, 20};
+	pointer = {30, 68, 70, 20};
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -102,6 +109,7 @@ void GameOverState::exit(){
 
 	victory = false;
 	gameOver = false;
+	score = 0;
 
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_UP);

@@ -7,6 +7,8 @@
 #include "Pins.hpp"
 #include "GameState.h"
 #include "GameOverState.h"
+#include "Highscore.h"
+
 
 GameState *GameState::instance = nullptr;
 
@@ -543,6 +545,7 @@ void GameState::states(uint t){
 void GameState::victory(){
 
 	game->changeState(new GameOverState(W, melody, score, false));
+
 }
 
 void GameState::gameOver(){

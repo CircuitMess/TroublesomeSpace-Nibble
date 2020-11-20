@@ -33,9 +33,13 @@ public:
 
 	void begin();
 
-	void add(Score &score);
+	void addData(Score &score);
 
-	void clear();
+	void clearData();
+
+	const Score& get(uint8_t i);
+
+	uint8_t dataCount();
 
 	static void buttonUpPressed();
 
@@ -59,6 +63,7 @@ private:
 
 	Menu *menu;
 	Melody *melody;
+	uint melodyTime = 0;
 
 	void states();
 
@@ -69,21 +74,22 @@ private:
 		Score scores[MAX_SCORE_PLAYERS];
 	} data;
 
-	void save();
-	void load();
+	void saveData();
+	void loadData();
 
 	bool upState;
 	bool downState;
 	bool aState;
 	bool bState;
 
-	int score;
+	Score score;
 	bool previousState; // 0-menu ; 1-game over
 
 	const char *highscore = "Highscore";
 	const char *backMessage = "B: Back";
 	const char *confirfmMessage = "A: Accept";
 	const char *deleteMessage = "A: Delete";
+
 };
 
 
