@@ -9,12 +9,11 @@
 
 GameOverState *GameOverState::instance = nullptr;
 
-GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool prevState){
+GameOverState::GameOverState(gameOverType type, uint _score, bool prevState){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
-	melody = mel;
 	score = _score;
 	previousState = prevState;
 
@@ -27,7 +26,7 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool pr
 			if(previousState)
 				break;
 			else
-				melodyTime = melody->playMelody(VICTORY, false);
+				melodyTime = Melody.playMelody(VICTORY, false);
 			break;
 
 		case State::L:
@@ -35,7 +34,7 @@ GameOverState::GameOverState(gameOverType type, Melody *mel, int _score, bool pr
 			if(previousState)
 				break;
 			else
-				melodyTime = melody->playMelody(LOSE, false);
+				melodyTime = Melody.playMelody(LOSE, false);
 			break;
 
 		default:
@@ -57,14 +56,14 @@ void GameOverState::loop(uint){
 		if(millis() - gameOverMillis > melodyTime){
 
 			if(!previousState){
-				game->changeState(new Highscore(score, true, melody));
+				game->changeState(new Highscore(score, true));
 				previousState = true;
 			}else{
 				drawGameOver();
 				if(aState && pointer.y == 68)
-					game->changeState(new GameState(melody));
+					game->changeState(new GameState());
 				if(aState && pointer.y == 88)
-					game->changeState(new Highscore(score, true, melody));
+					game->changeState(new Highscore(score,true));
 
 			}
 		}
@@ -78,9 +77,9 @@ void GameOverState::loop(uint){
 		if(millis() - victoryMillis > melodyTime){
 
 			if(aState && pointer.y == 68)
-				game->changeState(new GameState(melody));
+				game->changeState(new GameState());
 			if(aState && pointer.y == 88)
-				game->changeState(new Highscore(score, true, melody));
+				game->changeState(new Highscore(score, true));
 		}
 
 

@@ -23,7 +23,7 @@ class Highscore : public State {
 
 public:
 
-	Highscore(int score, bool previousState, Melody *melody);
+	Highscore(uint score, bool previousState);
 
 	void enter(Game &game) override;
 
@@ -70,8 +70,6 @@ private:
 	static Highscore *instance;
 
 	Menu *menu;
-	Melody *melody;
-	uint melodyTime = 0;
 
 	void states();
 
@@ -92,7 +90,7 @@ private:
 	bool leftState;
 	bool rightState;
 
-	Score score;
+	Score _score;
 	bool previousState; // 0-menu ; 1-game over
 	bool addScore = true;
 
@@ -106,5 +104,6 @@ private:
 
 };
 
+extern Highscore HS;
 
 #endif //NIBBLE_NEW_HIGHSCORE_H

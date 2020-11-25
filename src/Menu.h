@@ -21,7 +21,7 @@ class Menu : public State {
 
 public:
 
-	explicit Menu(Melody *melody);
+	Menu();
 
 	void enter(Game &game) override;
 	void exit() override;
@@ -38,8 +38,6 @@ public:
 private:
 
 	static Menu *instance;
-
-	Melody *melody;
 
 	void states();
 

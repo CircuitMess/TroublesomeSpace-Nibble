@@ -26,8 +26,6 @@ public:
 private:
 
 	State *state{};
-	Melody *melody;
-
 };
 
 

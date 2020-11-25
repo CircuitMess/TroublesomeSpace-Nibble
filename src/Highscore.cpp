@@ -1,26 +1,26 @@
+
 //
 // Created by Domagoj on 13/11/2020.
 //
 
 #include "Highscore.h"
+#include "GameState.h"
 #include "GameOverState.h"
 #include <FS.h>
 #include <LittleFS.h>
 
 Highscore *Highscore::instance = nullptr;
 
-Highscore::Highscore(int _score, bool _previousState, Melody *mel){
+Highscore::Highscore(uint score, bool _previousState){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
 
-	melody = mel;
 	previousState = _previousState;
 
-	begin();
-	score.score = _score;
+	_score.score = score;
 	charCursor = 0;
 }
 
@@ -33,7 +33,7 @@ void Highscore::enter(Game &_game){
 	aState = false;
 	bState = false;
 
-	for(char &i : score.name)
+	for(char &i : _score.name)
 		i = 'A';
 
 	loadData();
@@ -109,13 +109,13 @@ void Highscore::states(){
 
 		if(upState){
 
-			(score.name[charCursor])--;
+			(_score.name[charCursor])--;
 
 			upState = false;
 
 		}else if(downState){
 
-			score.name[charCursor]++;
+			_score.name[charCursor]++;
 
 			downState = false;
 
@@ -137,9 +137,8 @@ void Highscore::states(){
 			if(charCursor > 4){
 
 				if(addScore && previousState){
-					addData(score);
+					addData(_score);
 					addScore = false;
-					saveData();
 				}
 
 			}
@@ -149,7 +148,7 @@ void Highscore::states(){
 		}else if(bState){
 
 			baseSprite->clear(TFT_BLACK);
-			game->changeState(new GameOverState(L, melody, score.score, true));
+			game->changeState(new GameOverState(L, _score.score, true));
 			display->commit();
 
 		}
@@ -165,7 +164,7 @@ void Highscore::states(){
 		if(bState){
 
 			baseSprite->clear(TFT_BLACK);
-			game->changeState(new Menu(melody));
+			game->changeState(new Menu());
 			display->commit();
 
 		}
@@ -204,16 +203,16 @@ void Highscore::draw(){
 	if(previousState){
 
 		if(charCursor >= 0)
-			baseSprite->drawChar(score.name[0], 40, 90);
+			baseSprite->drawChar(_score.name[0], 40, 90);
 		if(charCursor >= 1)
-			baseSprite->drawChar(score.name[1], 45, 90);
+			baseSprite->drawChar(_score.name[1], 45, 90);
 		if(charCursor >= 2)
-			baseSprite->drawChar(score.name[2], 50, 90);
+			baseSprite->drawChar(_score.name[2], 50, 90);
 		if(charCursor >= 3)
-			baseSprite->drawChar(score.name[3], 55, 90);
+			baseSprite->drawChar(_score.name[3], 55, 90);
 		if(charCursor >= 4)
-			baseSprite->drawChar(score.name[4], 60, 90);
-		baseSprite->drawNumber(score.score, 85, 90);
+			baseSprite->drawChar(_score.name[4], 60, 90);
+		baseSprite->drawNumber(_score.score, 85, 90);
 
 		baseSprite->drawLine(40, 100, 70, 100, TFT_GOLD);
 		baseSprite->drawLine(80, 100, 100, 100, TFT_GOLD);
@@ -233,14 +232,16 @@ void Highscore::draw(){
 
 void Highscore::begin(){
 
-	if(!LittleFS.exists(FILENAME)){
+	bool exist = LittleFS.exists(FILENAME);
+	if(!exist){
 		data.count = 0;
 		saveData();
-	}else
+	}else{
 		loadData();
+	}
 }
 
-void Highscore::addData(Score &_score){
+void Highscore::addData(Score &score){
 
 	if(data.count == MAX_SCORE_PLAYERS && score.score < data.scores[data.count - 1].score)
 		return;
@@ -249,7 +250,7 @@ void Highscore::addData(Score &_score){
 
 	for(i = 0; i < data.count; i++){
 
-		if(score.score <= data.scores[i].score)
+		if(_score.score <= data.scores[i].score)
 			continue;
 
 		uint8_t firstToMove = i;

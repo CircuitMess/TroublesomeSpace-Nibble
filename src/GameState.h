@@ -41,7 +41,7 @@ class GameState : public State {
 
 public:
 
-	explicit GameState(Melody *m);
+	GameState();
 
 	void loop(uint t) override;
 
@@ -73,8 +73,8 @@ public:
 
 	static void buttonBReleased();
 
+	uint score{};
 	int lives{};
-	int score{};
 	int invisibilityCounter{};
 
 	uint melodyTime = 0;
@@ -83,7 +83,6 @@ public:
 private:
 
 	static GameState *instance;
-	Melody *melody;
 
 	Vector<Triangle> triangles;
 	Vector<Circle> circles;

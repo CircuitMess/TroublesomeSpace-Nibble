@@ -16,8 +16,8 @@ void setup(){
 
 	Nibble.begin();
 	Serial.begin(115200);
+	Piezo.setMute(false);
 
-	Serial.println("game = new Game");
 	game = new Game;
 
 	LoopManager::addListener(game);

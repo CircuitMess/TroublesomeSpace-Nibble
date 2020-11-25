@@ -8,7 +8,7 @@
 
 Menu *Menu::instance = nullptr;
 
-Menu::Menu(Melody *mel){
+Menu::Menu(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
@@ -17,8 +17,6 @@ Menu::Menu(Melody *mel){
 
 	drawMenu();
 	display->commit();
-
-	melody = mel;
 
 }
 
@@ -36,7 +34,7 @@ void Menu::enter(Game &_game){
 
 	game = &_game;
 
-	melodyTime = melody->playMelody(MENU, false);
+	melodyTime = Melody.playMelody(MENU, false);
 
 	upState = false;
 	downState = false;
@@ -72,9 +70,9 @@ void Menu::states(){
 		pointer = {25, 88, 80, 20};
 
 	if(aState && pointer.y == 68)
-		game->changeState(new GameState(melody));
+		game->changeState(new GameState());
 	if(aState && pointer.y == 88)
-		game->changeState(new Highscore(0, false, melody));
+		game->changeState(new Highscore(0,false));
 }
 
 void Menu::drawMenu(){

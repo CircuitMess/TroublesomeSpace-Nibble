@@ -5,17 +5,13 @@
 #include "Game.h"
 #include "GameState.h"
 #include "GameOverState.h"
-#include "Menu.h"
 
 Game::Game(){
 
-	melody = new Melody;
-	LoopManager::addListener(melody);
+	LoopManager::addListener(&Melody);
 
-	state = new Menu(melody);
-
+	state = new Menu();
 	state->enter(*this);
-
 }
 
 void Game::loop(uint t){

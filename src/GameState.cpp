@@ -12,21 +12,19 @@
 
 GameState *GameState::instance = nullptr;
 
-GameState::GameState(Melody *melody1){
+GameState::GameState(){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
 
-	melody = melody1;
-
 	triangles.push_back({0, (float) random(30, 118), Triangle::H});
 	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle = blue
 
 	startUpMessage();
 
-	melodyTime = melody->playMelody(START, false);
+	melodyTime = Melody.playMelody(START, false);
 
 }
 
@@ -34,8 +32,7 @@ void GameState::loop(uint time){
 
 	unsigned int melodyCurrentMillis = millis();
 	if(loopPlaying && melodyCurrentMillis - melodyPreviousMillis > melodyTime){
-		melodyTime = melody->playMelody(LOOP, true);
-		Serial.println("loop melody");
+		melodyTime = Melody.playMelody(LOOP, true);
 	}
 
 	states(time);
@@ -544,13 +541,13 @@ void GameState::states(uint t){
 
 void GameState::victory(){
 
-	game->changeState(new GameOverState(W, melody, score, false));
+	game->changeState(new GameOverState(W, score, false));
 
 }
 
 void GameState::gameOver(){
 
-	game->changeState(new GameOverState(L, melody, score, false));
+	game->changeState(new GameOverState(L, score, false));
 
 }
 

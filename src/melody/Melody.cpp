@@ -10,13 +10,9 @@
 #include "MenuMelody.h"
 
 
-Melody::Melody(){
+MelodyImpl Melody;
 
-	Piezo.setMute(false);
-
-}
-
-void Melody::loop(uint t){
+void MelodyImpl::loop(uint t){
 
 	if(!loopCheck){
 
@@ -30,7 +26,7 @@ void Melody::loop(uint t){
 
 }
 
-uint Melody::playMelody(mel melody, bool loop){
+uint MelodyImpl::playMelody(mel melody, bool loop){
 
 	loopCheck = loop;
 
@@ -78,7 +74,7 @@ uint Melody::playMelody(mel melody, bool loop){
 
 }
 
-void Melody::play(bool loop){
+void MelodyImpl::play(bool loop){
 	if(loop){
 
 		if(noteNum >= melodySize)
@@ -107,7 +103,7 @@ void Melody::play(bool loop){
 }
 
 
-void Melody::stop(){
+void MelodyImpl::stop(){
 
 	melodySize = 0;
 	melodyNote = nullptr;

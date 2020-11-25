@@ -13,11 +13,11 @@
 #include "Note.h"
 
 
-class Melody : public LoopListener {
+class MelodyImpl : public LoopListener {
 
 public:
 
-	Melody();
+//	Melody();
 
 	void loop(uint) override;
 	uint playMelody(mel melody , bool loop);
@@ -38,5 +38,6 @@ private:
 	unsigned int melodyTime = 0;
 };
 
+extern MelodyImpl Melody;
 
 #endif //NIBBLE_NEW_MELODY_H
