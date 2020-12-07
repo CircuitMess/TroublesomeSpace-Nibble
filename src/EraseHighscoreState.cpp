@@ -22,6 +22,8 @@ void EraseHighscoreState::enter(Game &_game){
 
 	game = &_game;
 
+	hs.begin();
+
 	aState = false;
 	bState = false;
 

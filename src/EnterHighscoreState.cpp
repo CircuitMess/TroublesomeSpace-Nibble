@@ -21,13 +21,12 @@ void EnterHighscoreState::enter(Game &_game){
 
 	game = &_game;
 
+	hs.begin();
+
 	charCursor = 0;
 	name = new char[5];
 
-	for(int i = 0; i < 5; ++i){
-		name[i] = 'A';
-	}
-	name[5] = '\0';
+	strcpy(name, "AAAAA\0");
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -117,7 +116,7 @@ void EnterHighscoreState::states(){
 
 		if(charCursor > 4){
 
-			Score newScore = {};
+			Score newScore;
 			newScore.score = score;
 			strcpy(newScore.name, name);
 

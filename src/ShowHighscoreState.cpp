@@ -24,6 +24,8 @@ void ShowHighscoreState::enter(Game &_game){
 
 	game = &_game;
 
+	hs.begin();
+
 	aState = false;
 	bState = false;
 
@@ -93,7 +95,6 @@ void ShowHighscoreState::draw(){
 	baseSprite->drawString(backMessage, 80, 120);
 	baseSprite->drawString(deleteMessage, 0, 120);
 
-	Serial.println(hs.dataCount());
 
 	for(int i = 1; i <= 3; i++){
 

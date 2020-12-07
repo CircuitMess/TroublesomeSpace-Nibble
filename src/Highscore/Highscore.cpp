@@ -8,7 +8,6 @@
 
 Highscore::Highscore(){
 
-	begin();
 }
 
 void Highscore::begin(){
