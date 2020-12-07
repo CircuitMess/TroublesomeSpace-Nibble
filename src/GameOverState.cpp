@@ -5,85 +5,34 @@
 
 #include "GameOverState.h"
 #include "GameState.h"
-#include "Highscore.h"
+#include "EnterHighscoreState.h"
 
 GameOverState *GameOverState::instance = nullptr;
 
-GameOverState::GameOverState(gameOverType type, uint _score, bool prevState){
+GameOverState::GameOverState(uint _score){
 
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
 	score = _score;
-	previousState = prevState;
 
 	instance = this;
 
-	switch(type){
-
-		case State::W:
-			victory = true;
-			if(previousState)
-				break;
-			else
-				melodyTime = Melody.playMelody(VICTORY, false);
-			break;
-
-		case State::L:
-			gameOver = true;
-			if(previousState)
-				break;
-			else
-				melodyTime = Melody.playMelody(LOSE, false);
-			break;
-
-		default:
-			return;
-
-	}
-
+	melodyTime = Melody.playMelody(LOSE, false);
 }
 
 void GameOverState::loop(uint){
 
 	states();
 
-	if(gameOver){
-
-		gameOverMessage();
+	gameOverMessage();
 
 
-		if(millis() - gameOverMillis > melodyTime){
+	if(millis() - gameOverMillis > melodyTime){
 
-			if(!previousState){
-				game->changeState(new Highscore(score, true));
-				previousState = true;
-			}else{
-				drawGameOver();
-				if(aState && pointer.y == 68)
-					game->changeState(new GameState());
-				if(aState && pointer.y == 88)
-					game->changeState(new Highscore(score,true));
-
-			}
-		}
-
-
-	}else if(victory){
-
-		victoryMessage();
-		drawGameOver();
-
-		if(millis() - victoryMillis > melodyTime){
-
-			if(aState && pointer.y == 68)
-				game->changeState(new GameState());
-			if(aState && pointer.y == 88)
-				game->changeState(new Highscore(score, true));
-		}
-
-
+		game->changeState(new EnterHighscoreState(score));
 	}
+
 	display->commit();
 }
 
@@ -105,8 +54,6 @@ void GameOverState::enter(Game &_game){
 
 void GameOverState::exit(){
 
-	victory = false;
-	gameOver = false;
 	score = 0;
 
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
@@ -127,29 +74,6 @@ void GameOverState::states(){
 
 }
 
-void GameOverState::drawGameOver(){
-
-
-	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(newGame, 35, 70);
-	baseSprite->drawString(highScore, 30, 90);
-
-	baseSprite->drawRect(pointer.x, pointer.y, pointer.width, pointer.height, TFT_GOLD);
-
-}
-
-void GameOverState::victoryMessage(){
-
-	baseSprite->clear(TFT_BLACK);
-	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(winMessage, 35, 55);
-
-
-}
 
 void GameOverState::gameOverMessage(){
 

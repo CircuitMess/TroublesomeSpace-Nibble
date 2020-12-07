@@ -8,7 +8,7 @@
 #include <gpio.h>
 #include "src/melody/Melody.h"
 #include "src/Game.h"
-#include "src/Highscore.h"
+#include "src/ShowHighscoreState.h"
 
 Game *game;
 
@@ -16,8 +16,9 @@ void setup(){
 
 	Nibble.begin();
 	Serial.begin(115200);
-	Piezo.setMute(false);
+	Piezo.setMute(true);
 
+	Serial.println("test");
 	game = new Game;
 
 	LoopManager::addListener(game);

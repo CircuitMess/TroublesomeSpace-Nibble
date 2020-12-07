@@ -34,11 +34,6 @@ protected:
 	Display *display;
 	Sprite *baseSprite;
 
-	enum gameOverType{
-		W,				//victory
-		L				// game over
-	};
-
 };
 
 #endif //NIBBLE_NEW_STATE_H

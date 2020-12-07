@@ -9,7 +9,7 @@
 Game::Game(){
 
 	LoopManager::addListener(&Melody);
-
+	Serial.println("test");
 	state = new Menu();
 	state->enter(*this);
 }

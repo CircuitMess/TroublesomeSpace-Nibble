@@ -7,7 +7,7 @@
 #include "Pins.hpp"
 #include "GameState.h"
 #include "GameOverState.h"
-#include "Highscore.h"
+#include "ShowHighscoreState.h"
 
 
 GameState *GameState::instance = nullptr;
@@ -157,7 +157,6 @@ void GameState::triangleMovement(Triangle &triangle, uint t) const{
 	if(triangle.orientation == Triangle::H){
 
 		triangle.x += speed * t / 13000;
-		Serial.println("Triangle speed update passed");
 		if(triangle.x > 128){
 
 			float pomY = triangle.y;
@@ -534,20 +533,11 @@ void GameState::states(uint t){
 		checkIfEaten(circles[i]);
 	}
 
-	if(score >= 80){
-		victory();
-	}
-}
-
-void GameState::victory(){
-
-	game->changeState(new GameOverState(W, score, false));
-
 }
 
 void GameState::gameOver(){
 
-	game->changeState(new GameOverState(L, score, false));
+	game->changeState(new GameOverState(score));
 
 }
 

@@ -4,7 +4,7 @@
 
 #include "Menu.h"
 #include "GameState.h"
-#include "Highscore.h"
+#include "ShowHighscoreState.h"
 
 Menu *Menu::instance = nullptr;
 
@@ -14,20 +14,9 @@ Menu::Menu(){
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
-
 	drawMenu();
 	display->commit();
 
-}
-
-void Menu::loop(uint t){
-
-	baseSprite->clear(TFT_BLACK);
-
-	drawMenu();
-	states();
-
-	display->commit();
 }
 
 void Menu::enter(Game &_game){
@@ -62,6 +51,18 @@ void Menu::exit(){
 	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 }
 
+
+void Menu::loop(uint t){
+
+	baseSprite->clear(TFT_BLACK);
+
+	drawMenu();
+
+	display->commit();
+
+	states();
+}
+
 void Menu::states(){
 
 	if(upState)
@@ -72,7 +73,7 @@ void Menu::states(){
 	if(aState && pointer.y == 68)
 		game->changeState(new GameState());
 	if(aState && pointer.y == 88)
-		game->changeState(new Highscore(0,false));
+		game->changeState(new ShowHighscoreState());
 }
 
 void Menu::drawMenu(){

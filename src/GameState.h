@@ -107,8 +107,6 @@ private:
 
 	void invisibility();
 
-	void victory();
-
 	void gameOver();
 
 	void drawWarningMessage();

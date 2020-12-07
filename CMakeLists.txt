@@ -35,7 +35,7 @@ include_directories(${Arduino15}/packages/cm/hardware/esp8266/1.0.0/libraries/Li
 
 
 AUX_SOURCE_DIRECTORY(src SOURCES)
-AUX_SOURCE_DIRECTORY(src/melody SOURCES)
+AUX_SOURCE_DIRECTORY(src/Melody SOURCES)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
@@ -57,4 +57,4 @@ add_custom_target(CMUpload ALL
         DEPENDS CMBuild
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-add_executable(${CMAKE_PROJECT_NAME}.bin ${CMAKE_PROJECT_NAME}.ino ${SOURCES} src/melody/Melody.cpp src/melody/Melody.h src/melody/StartUpMelody.h src/melody/LoopMelody.h src/melody/GameOverMelody.h src/melody/VictoryMelody.h src/melody/Melodies.h src/State.cpp src/State.h src/Game.cpp src/Game.h src/GameOverState.cpp src/GameOverState.h src/Menu.cpp src/Menu.h src/melody/MenuMelody.h src/Highscore.cpp src/Highscore.h)
+add_executable(${CMAKE_PROJECT_NAME}.bin ${CMAKE_PROJECT_NAME}.ino ${SOURCES} src/Melody/Melody.cpp src/Melody/Melody.h src/Melody/StartUpMelody.h src/Melody/LoopMelody.h src/Melody/GameOverMelody.h src/Melody/Melodies.h src/State.cpp src/State.h src/Game.cpp src/Game.h src/GameOverState.cpp src/GameOverState.h src/Menu.cpp src/Menu.h src/Melody/MenuMelody.h src/ShowHighscoreState.cpp src/ShowHighscoreState.h src/EnterHighscoreState.cpp src/EnterHighscoreState.h src/EraseHighscoreState.cpp src/EraseHighscoreState.h src/Highscore/Highscore.cpp src/Highscore/Highscore.h)

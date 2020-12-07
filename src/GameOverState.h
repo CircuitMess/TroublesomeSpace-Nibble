@@ -16,7 +16,7 @@ class GameOverState : public State {
 
 public:
 
-	GameOverState(gameOverType type, uint score, bool prevState);
+	GameOverState(uint score);
 
 	void loop(uint) override;
 
@@ -56,17 +56,12 @@ private:
 	bool upState = false;
 	bool downState = false;
 
-	bool victory = false;
-	bool gameOver = false;
-
 	unsigned long gameOverMillis = 0;
-	unsigned long victoryMillis = 0;
 
 	uint melodyTime;
 
 	uint score = 0;
-	bool previousState; // 0-previous state was gameState
-						// 1-previous state was highscoreState
+
 };
 
 
