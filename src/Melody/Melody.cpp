@@ -4,7 +4,6 @@
 
 #include "Melody.h"
 #include "StartUpMelody.h"
-#include "VictoryMelody.h"
 #include "GameOverMelody.h"
 #include "LoopMelody.h"
 #include "MenuMelody.h"
@@ -44,13 +43,6 @@ uint MelodyImpl::playMelody(mel melody, bool loop){
 			melodyNote = startUpMelody;
 			for(int i = 0; i < melodySize; ++i)
 				melodyTime += startUpMelody[i].duration;
-			break;
-
-		case VICTORY:
-			melodySize = sizeof(victoryMelody) / sizeof(victoryMelody[0]);
-			melodyNote = victoryMelody;
-			for(int i = 0; i < melodySize; ++i)
-				melodyTime += victoryMelody[i].duration;
 			break;
 
 		case LOSE:
