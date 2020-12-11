@@ -4,6 +4,7 @@
 
 #include "EnterHighscoreState.h"
 #include "ShowHighscoreState.h"
+#include "Highscore/Highscore.h"
 
 EnterHighscoreState *EnterHighscoreState::instance = nullptr;
 
@@ -20,8 +21,6 @@ EnterHighscoreState::EnterHighscoreState(uint _score){
 void EnterHighscoreState::enter(Game &_game){
 
 	game = &_game;
-
-	hs.begin();
 
 	charCursor = 0;
 	name = new char[5];
@@ -69,7 +68,7 @@ void EnterHighscoreState::loop(uint){
 
 	baseSprite->clear(TFT_BLACK);
 
-	if(score > hs.get(0).score){
+	if(score > Highscore.get(0).score){
 		baseSprite->setCursor(25, 55);
 		baseSprite->printf("New Highscore !");
 		baseSprite->setCursor(60, 70);
@@ -120,7 +119,7 @@ void EnterHighscoreState::states(){
 			newScore.score = score;
 			strcpy(newScore.name, name);
 
-			hs.addData(newScore);
+			Highscore.addData(newScore);
 			game->changeState(new ShowHighscoreState());
 		}
 

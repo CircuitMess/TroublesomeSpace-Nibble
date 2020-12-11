@@ -5,6 +5,7 @@
 #include "Menu.h"
 #include "GameState.h"
 #include "ShowHighscoreState.h"
+#include "bitmaps/homescreen.hpp"
 
 Menu *Menu::instance = nullptr;
 
@@ -14,22 +15,23 @@ Menu::Menu(){
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
+
+	melodyTime = Melody.playMelody(MENU, false);
+
+	baseSprite->clear(TFT_BLACK);
 	drawMenu();
 	display->commit();
-
 }
 
 void Menu::enter(Game &_game){
 
 	game = &_game;
 
-	melodyTime = Melody.playMelody(MENU, false);
-
 	upState = false;
 	downState = false;
 	aState = false;
 
-	pointer  = {30, 68, 70, 20};
+	pointer = {30, 92, 55, 14};
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -55,9 +57,7 @@ void Menu::exit(){
 void Menu::loop(uint t){
 
 	baseSprite->clear(TFT_BLACK);
-
 	drawMenu();
-
 	display->commit();
 
 	states();
@@ -66,28 +66,25 @@ void Menu::loop(uint t){
 void Menu::states(){
 
 	if(upState)
-		pointer = {30, 68, 70, 20};
+		pointer = {30, 92, 55, 14};
 	else if(downState)
-		pointer = {25, 88, 80, 20};
+		pointer = {25, 107, 70, 14};
 
-	if(aState && pointer.y == 68)
+	if(aState && pointer.y == 92)
 		game->changeState(new GameState());
-	if(aState && pointer.y == 88)
+	if(aState && pointer.y == 107)
 		game->changeState(new ShowHighscoreState());
 }
 
 void Menu::drawMenu(){
 
-	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_GOLD);
-	baseSprite->drawString(title, 10, 20);
+	baseSprite->drawIcon(homescreen,0,0,128,128);
 
 	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
+	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(newGame, 35, 70);
-	baseSprite->drawString(highScore, 30, 90);
+	baseSprite->drawString(newGame, 35, 95);
+	baseSprite->drawString(highScore, 30, 110);
 
 	baseSprite->drawRect(pointer.x, pointer.y, pointer.width, pointer.height, TFT_GOLD);
 

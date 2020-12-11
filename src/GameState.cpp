@@ -8,6 +8,8 @@
 #include "GameState.h"
 #include "GameOverState.h"
 #include "ShowHighscoreState.h"
+#include "bitmaps/player.hpp"
+#include "bitmaps/fuel.hpp"
 
 
 GameState *GameState::instance = nullptr;
@@ -19,7 +21,8 @@ GameState::GameState(){
 
 	instance = this;
 
-	triangles.push_back({0, (float) random(30, 118), Triangle::H});
+	triangles.push_back({(float) random(10, 150), 0, Triangle::V}); // vertical triangle
+
 	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle = blue
 
 	startUpMessage();
@@ -40,7 +43,6 @@ void GameState::loop(uint time){
 	baseSprite->clear(TFT_BLACK);
 
 	drawCounterString();
-	drawSpawnPoint();
 	drawLivesString();
 	drawWarningMessage();
 	drawInvisibilityCounter();
@@ -57,8 +59,8 @@ void GameState::enter(Game &_game){
 
 	game = &_game;
 
-	player.x = 117;
-	player.y = 10;
+	player.x = 58;
+	player.y = 90;
 
 	score = 0;
 	lives = 3;
@@ -111,13 +113,15 @@ void GameState::exit(){
 
 void GameState::drawPlayer(){
 	
-	playerColor = playerInvisible ? TFT_PURPLE : TFT_GOLD;
-	baseSprite->fillCircle(player.x, player.y, radius, playerColor);
+	//playerColor = playerInvisible ? TFT_PURPLE : TFT_GOLD;
+	//baseSprite->fillCircle(player.x, player.y, radius, playerColor);
+	baseSprite->drawIcon(playerShip, player.x, player.y, 12,18,1,TFT_BLACK);
+
 }
 
 void GameState::drawCircle(Circle &circle){
 
-	baseSprite->fillCircle(circle.x, circle.y, radius - 1, TFT_BLUE);
+	baseSprite->drawIcon(fuel, circle.x,circle.y,8,8,1,TFT_BLACK);
 
 }
 
@@ -199,8 +203,8 @@ void GameState::checkIfDead(Triangle &triangle){
 			gameOver();
 		}
 
-		player.x = 117;
-		player.y = 10;
+		player.x = 58;
+		player.y = 90;
 
 	}else if((sqrt(pow(triangle.x - player.x, 2) +
 				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
@@ -216,8 +220,8 @@ void GameState::checkIfDead(Triangle &triangle){
 
 		}
 
-		player.x = 117;
-		player.y = 10;
+		player.x = 58;
+		player.y = 90;
 
 	}
 
@@ -443,7 +447,7 @@ void GameState::checkIfEaten(Circle &blue){
 		} while(sqrt(pow(pomX - blue.x, 2) + pow(pomY - blue.y, 2)) < 30);
 
 		score++;
-
+/*
 		if(score > 0 && score % 20 == 0){
 			triangles.push_back({0, (float) random(10, 50), Triangle::H}); // horizontal triangle
 			lives++;
@@ -451,7 +455,11 @@ void GameState::checkIfEaten(Circle &blue){
 			triangles.push_back({(float) random(10, 50), 0, Triangle::V}); // vertical triangle
 			lives++;
 		}
-
+*/
+		if(score > 0 && score % 10 == 0){
+			triangles.push_back({(float) random(10, 150), 0, Triangle::V}); // vertical triangle
+			lives++;
+		}
 		//Piezo.tone(500, 200);
 
 	}
@@ -582,15 +590,6 @@ void GameState::drawCounterString(){
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	baseSprite->drawNumber(score, 110, 120);
-
-}
-
-void GameState::drawSpawnPoint(){
-
-	baseSprite->drawLine(127, 0, 107, 0, TFT_WHITE);
-	baseSprite->drawLine(127, 0, 127, 20, TFT_WHITE);
-	baseSprite->drawLine(107, 0, 107, 20, TFT_WHITE);
-	baseSprite->drawLine(107, 20, 127, 20, TFT_WHITE);
 
 }
 

@@ -3,6 +3,7 @@
 #include <Nibble.h>
 #include <Loop/LoopManager.h>
 #include "src/Game.h"
+#include "src/Highscore/Highscore.h"
 
 Game *game;
 
@@ -10,8 +11,9 @@ void setup(){
 
 	Nibble.begin();
 	Serial.begin(115200);
-	Piezo.setMute(true);
+	Piezo.setMute(false);
 
+	Highscore.begin();
 	game = new Game;
 
 	LoopManager::addListener(game);

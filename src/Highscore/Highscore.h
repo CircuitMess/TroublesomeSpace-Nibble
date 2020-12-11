@@ -9,7 +9,7 @@
 
 #define MAX_SCORE_PLAYERS 5
 #define MAX_PLAYER_LETTERS 5
-#define FILENAME "/TheGame"
+#define FILENAME "/Troublesome Space"
 
 struct Score {
 
@@ -17,11 +17,11 @@ struct Score {
 	uint score;
 };
 
-class Highscore {
+class HighscoreImpl {
 
 public:
 
-	Highscore();
+	HighscoreImpl();
 
 	void begin();
 
@@ -46,6 +46,6 @@ private:
 
 };
 
-
+extern HighscoreImpl Highscore;
 
 #endif //NIBBLE_NEW_HIGHSCORE_H

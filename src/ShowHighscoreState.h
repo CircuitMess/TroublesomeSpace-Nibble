@@ -8,11 +8,6 @@
 #include "Game.h"
 #include "State.h"
 #include "Menu.h"
-#include "Highscore/Highscore.h"
-
-#define MAX_SCORE_PLAYERS 5
-#define MAX_PLAYER_LETTERS 5
-#define FILENAME "/THG"
 
 
 class ShowHighscoreState : public State {
@@ -39,8 +34,6 @@ private:
 	static ShowHighscoreState *instance;
 
 	Menu *menu;
-
-	Highscore hs;
 
 	bool aState;
 	bool bState;

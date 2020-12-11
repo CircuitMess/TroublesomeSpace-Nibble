@@ -8,7 +8,6 @@
 #include <Arduino.h>
 #include "Game.h"
 #include "State.h"
-#include "Highscore/Highscore.h"
 
 class EnterHighscoreState : public State {
 
@@ -58,8 +57,6 @@ private:
 	Sprite *baseSprite;
 
 	Game *game;
-
-	Highscore hs;
 
 	uint score = 0;
 	char *name;

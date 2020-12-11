@@ -6,6 +6,7 @@
 #include "GameOverState.h"
 #include "GameState.h"
 #include "EnterHighscoreState.h"
+#include "Highscore/Highscore.h"
 
 GameOverState *GameOverState::instance = nullptr;
 
@@ -30,7 +31,8 @@ void GameOverState::loop(uint){
 
 	if(millis() - gameOverMillis > melodyTime){
 
-		game->changeState(new EnterHighscoreState(score));
+		if(Highscore.dataCount() > 3 || score > Highscore.get(2).score)
+			game->changeState(new EnterHighscoreState(score));
 	}
 
 	display->commit();

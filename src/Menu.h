@@ -41,7 +41,7 @@ private:
 
 	void states();
 
-	rectPointer pointer = {30, 68, 70, 20};
+	rectPointer pointer = {30, 92, 55, 14};
 
 	bool upState;
 	bool downState;
@@ -49,7 +49,6 @@ private:
 
 	uint melodyTime = 0;
 
-	const char *title = "The Hardest Game";
 	const char *newGame = "New Game";
 	const char *highScore = "High Score";
 };

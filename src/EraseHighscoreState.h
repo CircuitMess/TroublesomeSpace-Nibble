@@ -7,7 +7,6 @@
 
 #include <Arduino.h>
 #include "Game.h"
-#include "Highscore/Highscore.h"
 
 class EraseHighscoreState : public State {
 
@@ -36,8 +35,6 @@ private:
 	Game *game;
 
 	static EraseHighscoreState *instance;
-
-	Highscore hs;
 
 	bool aState;
 	bool bState;

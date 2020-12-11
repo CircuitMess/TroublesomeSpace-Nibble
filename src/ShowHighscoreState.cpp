@@ -5,8 +5,8 @@
 
 #include "ShowHighscoreState.h"
 #include "EraseHighscoreState.h"
-#include "Menu.h"
 #include "GameState.h"
+#include "Highscore/Highscore.h"
 
 
 ShowHighscoreState *ShowHighscoreState::instance = nullptr;
@@ -23,8 +23,6 @@ ShowHighscoreState::ShowHighscoreState(){
 void ShowHighscoreState::enter(Game &_game){
 
 	game = &_game;
-
-	hs.begin();
 
 	aState = false;
 	bState = false;
@@ -100,10 +98,10 @@ void ShowHighscoreState::draw(){
 
 		baseSprite->setCursor(30, 30+(i-1)*15);
 
-		if(i <= hs.dataCount()){
-			baseSprite->printf("%.5s    %d", hs.get(i - 1).name, hs.get(i - 1).score);
+		if(i <= Highscore.dataCount()){
+			baseSprite->printf("  %s   %d", Highscore.get(i - 1).name, Highscore.get(i - 1).score);
 		}else{
-			baseSprite->printf("    /     /  ");
+			baseSprite->printf("    -     -  ");
 		}
 	}
 

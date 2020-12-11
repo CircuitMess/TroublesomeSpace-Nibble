@@ -16,7 +16,6 @@
 #include <Input/InputI2C.h>
 #include "Pins.hpp"
 #include <Audio/Piezo.h>
-#include "melody/Melody.h"
 #include "State.h"
 #include "Game.h"
 
@@ -115,8 +114,6 @@ private:
 
 	void drawCounterString();
 
-	void drawSpawnPoint();
-
 	void drawLivesString();
 
 	void drawInvisibilityCounter();
@@ -124,7 +121,7 @@ private:
 
 	const float speed = 1;
 
-	Circle player{117, 10};
+	Circle player{58, 90};
 	uint playerColor = TFT_GOLD;
 
 	bool upState = false;

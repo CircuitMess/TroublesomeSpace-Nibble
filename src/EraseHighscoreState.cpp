@@ -6,6 +6,7 @@
 #include "State.h"
 #include "EraseHighscoreState.h"
 #include "ShowHighscoreState.h"
+#include "Highscore/Highscore.h"
 
 EraseHighscoreState *EraseHighscoreState::instance = nullptr;
 
@@ -21,8 +22,6 @@ EraseHighscoreState::EraseHighscoreState(){
 void EraseHighscoreState::enter(Game &_game){
 
 	game = &_game;
-
-	hs.begin();
 
 	aState = false;
 	bState = false;
@@ -48,7 +47,7 @@ void EraseHighscoreState::exit(){
 void EraseHighscoreState::loop(uint){
 
 	if(aState){
-		hs.clearData();
+		Highscore.clearData();
 		game->changeState(new ShowHighscoreState());
 	}
 	if(bState)
