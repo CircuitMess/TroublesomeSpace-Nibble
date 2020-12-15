@@ -24,39 +24,11 @@ public:
 
 	void exit() override;
 
-	static void buttonUpPressed();
-	static void buttonDownPressed();
-	static void buttonAPressed();
-
-	static void buttonUpReleased();
-	static void buttonDownReleased();
-	static void buttonAReleased();
+	void draw();
 
 private:
 
-	static GameOverState *instance;
-
-	rectPointer pointer;
-
-	void states();
-
-	void drawGameOver();
-
-	void victoryMessage();
-
-	void gameOverMessage();
-
-	const char *winMessage = "Victory!";
-	const char *finalScore = "Score: ";
-	const char *endMessage = "Game Over";
-	const char *newGame = "New Game";
-	const char *highScore = "High Score";
-
-	bool aState = false;
-	bool upState = false;
-	bool downState = false;
-
-	unsigned long gameOverMillis = 0;
+	unsigned long gameOverMillis = millis();
 
 	uint melodyTime;
 

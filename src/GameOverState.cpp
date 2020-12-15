@@ -7,8 +7,8 @@
 #include "GameState.h"
 #include "EnterHighscoreState.h"
 #include "Highscore/Highscore.h"
+#include "bitmaps/gameover.hpp"
 
-GameOverState *GameOverState::instance = nullptr;
 
 GameOverState::GameOverState(uint _score){
 
@@ -17,17 +17,30 @@ GameOverState::GameOverState(uint _score){
 
 	score = _score;
 
-	instance = this;
-
 	melodyTime = Melody.playMelody(LOSE, false);
+
+	baseSprite->clear(TFT_BLACK);
+
+	draw();
+}
+
+void GameOverState::enter(Game &_game){
+
+	game = &_game;
+
+}
+
+void GameOverState::exit(){
+
 }
 
 void GameOverState::loop(uint){
 
-	states();
+	baseSprite->clear(TFT_BLACK);
 
-	gameOverMessage();
+	draw();
 
+	display->commit();
 
 	if(millis() - gameOverMillis > melodyTime){
 
@@ -35,87 +48,10 @@ void GameOverState::loop(uint){
 			game->changeState(new EnterHighscoreState(score));
 	}
 
-	display->commit();
 }
 
-void GameOverState::enter(Game &_game){
+void GameOverState::draw(){
 
-	game = &_game;
-
-	pointer = {30, 68, 70, 20};
-
-	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
-	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
-	Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
-
-	Input::getInstance()->setBtnReleaseCallback(BTN_UP, buttonUpReleased);
-	Input::getInstance()->setBtnReleaseCallback(BTN_DOWN, buttonDownReleased);
-	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
+	baseSprite->drawIcon(gameover, 0, 0, 128, 128);
 
 }
-
-void GameOverState::exit(){
-
-	score = 0;
-
-	Input::getInstance()->removeBtnPressCallback(BTN_UP);
-	Input::getInstance()->removeBtnReleaseCallback(BTN_UP);
-	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
-	Input::getInstance()->removeBtnReleaseCallback(BTN_DOWN);
-	Input::getInstance()->removeBtnPressCallback(BTN_A);
-	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
-
-}
-
-void GameOverState::states(){
-
-	if(upState)
-		pointer = {30, 68, 70, 20};
-	else if(downState)
-		pointer = {25, 88, 80, 20};
-
-}
-
-
-void GameOverState::gameOverMessage(){
-
-	baseSprite->clear(TFT_BLACK);
-	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(endMessage, 35, 10);
-	baseSprite->drawString(finalScore, 35, 30);
-	baseSprite->drawNumber(score, 85, 30);
-
-}
-
-void GameOverState::buttonUpPressed(){
-
-	instance->upState = true;
-}
-
-void GameOverState::buttonDownPressed(){
-
-	instance->downState = true;
-}
-
-void GameOverState::buttonAPressed(){
-
-	instance->aState = true;
-}
-
-void GameOverState::buttonUpReleased(){
-
-	instance->upState = false;
-}
-
-void GameOverState::buttonDownReleased(){
-
-	instance->downState = false;
-}
-
-void GameOverState::buttonAReleased(){
-
-	instance->aState = false;
-}
-

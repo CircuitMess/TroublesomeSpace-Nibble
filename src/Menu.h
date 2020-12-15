@@ -8,14 +8,6 @@
 #include "Game.h"
 #include "State.h"
 
-struct rectPointer{
-
-	int x;
-	int y;
-	int width;
-	int height;
-
-};
 
 class Menu : public State {
 
@@ -26,7 +18,7 @@ public:
 	void enter(Game &game) override;
 	void exit() override;
 	void loop(uint) override;
-	void drawMenu();
+	void draw();
 
 	static void buttonUpPressed();
 	static void buttonDownPressed();
@@ -41,14 +33,14 @@ private:
 
 	void states();
 
-	rectPointer pointer = {30, 92, 55, 14};
-
 	bool upState;
 	bool downState;
 	bool aState;
 
 	uint melodyTime = 0;
 
+	bool newGameOption = true;
+	bool highscoreOption = false;
 	const char *newGame = "New Game";
 	const char *highScore = "High Score";
 };

@@ -7,10 +7,12 @@
 #include "Pins.hpp"
 #include "GameState.h"
 #include "GameOverState.h"
-#include "ShowHighscoreState.h"
 #include "bitmaps/player.hpp"
 #include "bitmaps/fuel.hpp"
-
+#include "bitmaps/ore.hpp"
+#include "bitmaps/alien1.hpp"
+#include "bitmaps/alien2.hpp"
+#include "bitmaps/alien3.hpp"
 
 GameState *GameState::instance = nullptr;
 
@@ -21,11 +23,9 @@ GameState::GameState(){
 
 	instance = this;
 
-	triangles.push_back({(float) random(10, 150), 0, Triangle::V}); // vertical triangle
-
-	circles.push_back({(float) random(10, 98), (float) random(30, 117)});    // circle = blue
-
-	startUpMessage();
+	aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN1});
+	objects.push_back({(float) random(10, 150), 0, Object::FUEL});
+	objects.push_back({(float) random(10, 150), 0, Object::ORE});
 
 	melodyTime = Melody.playMelody(START, false);
 
@@ -38,20 +38,13 @@ void GameState::loop(uint time){
 		melodyTime = Melody.playMelody(LOOP, true);
 	}
 
-	states(time);
-
 	baseSprite->clear(TFT_BLACK);
 
-	drawCounterString();
-	drawLivesString();
-	drawWarningMessage();
-	drawInvisibilityCounter();
-
-	drawPlayer();
-	drawCircles();
-	drawTriangles();
+	draw();
 
 	display->commit();
+
+	states(time);
 
 }
 
@@ -59,8 +52,8 @@ void GameState::enter(Game &_game){
 
 	game = &_game;
 
-	player.x = 58;
-	player.y = 90;
+	playerX = 58;
+	playerY = 90;
 
 	score = 0;
 	lives = 3;
@@ -69,6 +62,8 @@ void GameState::enter(Game &_game){
 	loopPlaying = true;
 	melodyPreviousMillis = 0;
 	dead = false;
+
+	fuelBar = {65,122,62,5};
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -90,8 +85,15 @@ void GameState::enter(Game &_game){
 
 void GameState::exit(){
 
-	for(int i = 0; i < score / 10; i++)
-		triangles.pop_back();
+	for(int i = 0; i < aliens.size(); i++)
+		aliens.pop_back();
+	for(int i = 0; i < objects.size(); i++)
+		objects.pop_back();
+
+	oreCheck = false;
+	fuelCheck = false;
+	previousOreTime = 0;
+	previousFuelTime = 0;
 
 	loopPlaying = false;
 
@@ -111,88 +113,126 @@ void GameState::exit(){
 
 }
 
+void GameState::draw(){
+
+	drawPlayer();
+	drawObjects();
+	drawAliens();
+
+	drawCounterString();
+	drawLivesString();
+	drawInvisibilityCounter();
+	drawFuelBar();
+
+}
+
+
 void GameState::drawPlayer(){
-	
-	//playerColor = playerInvisible ? TFT_PURPLE : TFT_GOLD;
-	//baseSprite->fillCircle(player.x, player.y, radius, playerColor);
-	baseSprite->drawIcon(playerShip, player.x, player.y, 12,18,1,TFT_BLACK);
+
+	baseSprite->drawIcon(playerShip, playerX, playerY, 12, 18, 1, TFT_BLACK);
 
 }
 
-void GameState::drawCircle(Circle &circle){
+void GameState::drawObject(Object &object){
 
-	baseSprite->drawIcon(fuel, circle.x,circle.y,8,8,1,TFT_BLACK);
+	if(object.type == Object::FUEL && fuelCheck)
+		baseSprite->drawIcon(fuelIcon, object.x, object.y, 8, 8, 1, TFT_BLACK);
+	if(object.type == Object::ORE && oreCheck)
+		baseSprite->drawIcon(oreIcon, object.x, object.y, 3, 3, 1, TFT_BLACK);
 
 }
 
-void GameState::drawCircles(){
-	for(int i = 0; i < circles.size(); i++){
+void GameState::drawObjects(){
+	for(int i = 0; i < objects.size(); i++){
 
-		drawCircle(circles[i]);
+		drawObject(objects[i]);
 
 	}
 }
 
-void GameState::drawTriangle(Triangle &triangle){
+void GameState::drawAlien(Alien &alien){
 
-	if(triangle.orientation == Triangle::H){
-
-		baseSprite->fillTriangle(triangle.x, triangle.y - 5, 5 * sqrt(2) + triangle.x,
-								 triangle.y, triangle.x, triangle.y + 5, TFT_RED);
-	}
-	if(triangle.orientation == Triangle::V){
-
-		baseSprite->fillTriangle(triangle.x + 5, triangle.y, triangle.x,
-								 triangle.y + 5 * sqrt(2), triangle.x - 5, triangle.y, TFT_RED);
-	}
+	if(alien.type == Alien::ALIEN1)
+		baseSprite->drawIcon(alien1, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN2)
+		baseSprite->drawIcon(alien2, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN2)
+		baseSprite->drawIcon(alien3, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
 
 }
 
-void GameState::drawTriangles(){
-	for(int i = 0; i < triangles.size(); i++){
+void GameState::drawAliens(){
+	for(int i = 0; i < aliens.size(); i++){
 
-		drawTriangle(triangles[i]);
+		drawAlien(aliens[i]);
 
 	}
 }
 
-void GameState::triangleMovement(Triangle &triangle, uint t) const{
+void GameState::alienMovement(Alien &alien, uint t) const{
 
-	if(triangle.orientation == Triangle::H){
+	if(alien.type == alien.ALIEN1){
 
-		triangle.x += speed * t / 13000;
-		if(triangle.x > 128){
+		alien.y += speed * t / 13000;
 
-			float pomY = triangle.y;
+		if(alien.y > 128){
+
+			float pomX = alien.x;
 
 			do {
-				triangle.x = 0;
-				triangle.y = (float) random(30, 118);
-			} while(abs(pomY - triangle.y) < 30);
-		}
-	}
-
-	if(triangle.orientation == Triangle::V){
-
-		triangle.y += speed * t / 13000;
-
-		if(triangle.y > 128){
-
-			float pomX = triangle.x;
-
-			do {
-				triangle.x = (float) random(10, 98);
-				triangle.y = 0;
-			} while(abs(pomX - triangle.x) < 30);
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
 		}
 	}
 }
 
-void GameState::checkIfDead(Triangle &triangle){
+void GameState::objectMovement(Object &object, uint t){
 
-	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - player.x, 2) +
-			 pow(triangle.y - player.y, 2)) <
-		(triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::H)){
+	if(object.type == Object::FUEL && fuelCheck){
+
+		object.y += speed * t / 26000;
+
+		if(object.y > 128){
+
+			fuelCheck = false;
+
+			float pomX = object.x;
+
+			do {
+				object.x = (float) random(10, 98);
+				object.y = 0;
+			} while(abs(pomX - object.x) < 30);
+
+		}
+	}
+
+	if(object.type == Object::ORE && oreCheck){
+
+		object.y += speed * t / 26000;
+
+		if(object.y > 128){
+
+			oreCheck = false;
+
+			float pomX = object.x;
+
+			do {
+				object.x = (float) random(10, 98);
+				object.y = 0;
+			} while(abs(pomX - object.x) < 30);
+		}
+	}
+
+}
+
+void GameState::checkIfDead(Alien &alien){
+
+	uint dx = abs((alien.x + 5) - (playerX + 6));
+	uint dy = abs((alien.y + 5) - (playerY + 9));
+
+	if(sqrt(pow(dx, 2) + pow(dy, 2)) <
+	   sqrt(pow(playerX + 6, 2) + pow(playerY + 9, 2)) + sqrt(pow(alien.x + 5, 2) + pow(alien.y + 5, 2))){
 
 		Piezo.tone(1000, 300);
 
@@ -201,312 +241,87 @@ void GameState::checkIfDead(Triangle &triangle){
 		if(lives == 0){
 			dead = true;
 			gameOver();
-		}
-
-		player.x = 58;
-		player.y = 90;
-
-	}else if((sqrt(pow(triangle.x - player.x, 2) +
-				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
-			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::V)){
-
-		Piezo.tone(1000, 300);
-
-		lives--;
-
-		if(lives == 0){
-			dead = true;
-			gameOver();
 
 		}
 
-		player.x = 58;
-		player.y = 90;
-
-	}
-
-/*
-	float firstEdgePX = player.x - triangle.x;
-	float firstEdgePY = player.y - (triangle.y - 5);
-	float firstEdgeKX = 0;
-	float firstEdgeKY = 10;
-
-	float firstK = firstEdgePX * firstEdgeKX + firstEdgePY * firstEdgeKY;
-
-	if(firstK > 0){
-		float firstLen = sqrt(firstEdgeKX * firstEdgeKX + firstEdgeKY * firstEdgeKY);
-		firstK = firstK / firstLen;
-
-		if(firstK < firstLen){
-			if(sqrt(firstEdgePX * firstEdgePX + firstEdgePY * firstEdgePY - firstK * firstK) < radius){
-
-				Piezo.tone(1000, 300);
-				delay(500);
-
-				player.x = 117;
-				player.y = 10;
-
-				lives--;
-
-				if(lives == 0){
-
-					for(int i = 0; i < score / 10; i++)
-						triangles.pop_back();
-
-					baseSprite->clear(TFT_BLACK);
-					baseSprite->setTextSize(1);
-					baseSprite->setTextFont(2);
-					baseSprite->setTextColor(TFT_WHITE);
-					baseSprite->drawString(endMessage, 35, 50);
-					baseSprite->drawString(finalScore, 40, 80);
-					baseSprite->drawNumber(score, 90, 80);
-					display->commit();
-
-					score = 0;
-					lives = 3;
-					noteNum = 0;
-
-					gameOverTones();
-					delay(500);
-
-				}
-			}
-		}
-	}
-
-	float secondEdgePX = player.x - triangle.x;
-	float secondEdgePY = player.y - (triangle.y + 5);
-	float secondEdgeKX = 10 * sqrt(3) / 2;
-	float secondEdgeKY = 5;
-
-	float secondK = secondEdgePX * secondEdgeKX + secondEdgePY * secondEdgeKY;
-
-	if(secondK > 0){
-		float secondLen = sqrt(secondEdgeKX * secondEdgeKX + secondEdgeKY * secondEdgeKY);
-		secondK = secondK / secondLen;
-
-		if(secondK < secondLen){
-			if(sqrt(secondEdgePX * secondEdgePX + secondEdgePY * secondEdgePY - secondK * secondK) < radius){
-
-				Piezo.tone(1000, 300);
-				delay(500);
-
-				player.x = 117;
-				player.y = 10;
-
-				lives--;
-
-				if(lives == 0){
-
-					for(int i = 0; i < score / 10; i++)
-						triangles.pop_back();
-
-					baseSprite->clear(TFT_BLACK);
-					baseSprite->setTextSize(1);
-					baseSprite->setTextFont(2);
-					baseSprite->setTextColor(TFT_WHITE);
-					baseSprite->drawString(endMessage, 35, 50);
-					baseSprite->drawString(finalScore, 40, 80);
-					baseSprite->drawNumber(score, 90, 80);
-					display->commit();
-
-					score = 0;
-					lives = 3;
-					noteNum = 0;
-
-					gameOverTones();
-					delay(500);
-
-				}
-			}
-		}
-	}
-
-	float thirdEdgePX = player.x - (triangle.x + 10 * sqrt(3) / 2);
-	float thirdEdgePY = player.y - triangle.y;
-	float thirdEdgeKX = -10 * sqrt(3) / 2;
-	float thirdEdgeKY = -5;
-
-	float thirdK = thirdEdgePX * thirdEdgeKX + thirdEdgePY * thirdEdgeKY;
-
-	if(thirdK > 0){
-		float thirdLen = sqrt(thirdEdgeKX * thirdEdgeKX + thirdEdgeKY * thirdEdgeKY);
-		thirdK = thirdK / thirdLen;
-
-		if(thirdK < thirdLen){
-			if(sqrt(thirdEdgePX * thirdEdgePX + thirdEdgePY * thirdEdgePY - thirdK * thirdK) < radius){
-
-				Piezo.tone(1000, 300);
-				delay(500);
-
-				player.x = 117;
-				player.y = 10;
-
-				lives--;
-
-				if(lives == 0){
-
-					for(int i = 0; i < score / 10; i++)
-						triangles.pop_back();
-
-					baseSprite->clear(TFT_BLACK);
-					baseSprite->setTextSize(1);
-					baseSprite->setTextFont(2);
-					baseSprite->setTextColor(TFT_WHITE);
-					baseSprite->drawString(endMessage, 35, 50);
-					baseSprite->drawString(finalScore, 40, 80);
-					baseSprite->drawNumber(score, 90, 80);
-					display->commit();
-
-					score = 0;
-					lives = 3;
-					noteNum = 0;
-
-					gameOverTones();
-					delay(500);
-
-				}
-			}
-		}
-	}
-*/
-
-/*
-	if((sqrt(pow(triangle.x + triangleSide * sqrt(3) / 6 - player.x, 2) +
-			 pow(triangle.y - player.y, 2)) <
-		(triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::H)){
-
-		Piezo.tone(1000, 300);
-		delay(500);
-
-		player.x = 117;
-		player.y = 10;
-
-		lives--;
-
-		if(lives == 0){
-
-			for(int i = 0; i < score / 10; i++)
-				triangles.pop_back();
-			score = 0;
-			lives = 3;
-			noteNum = 0;
-			baseSprite->clear(TFT_BLACK);
-			baseSprite->setTextSize(1);
-			baseSprite->setTextFont(2);
-			baseSprite->setTextColor(TFT_WHITE);
-			baseSprite->drawString(endMessage, 35, 55);
-			display->commit();
-			delay(2000);
-
-		}
-
-	}else if((sqrt(pow(triangle.x - player.x, 2) +
-				   pow(triangle.y + triangleSide * sqrt(3) / 6 - player.y, 2)) <
-			  (triangleSide * sqrt(3) / 6 + radius)) && (triangle.orientation == Triangle::V)){
-
-		Piezo.tone(1000, 300);
-		delay(500);
-
-		player.x = 117;
-		player.y = 10;
-
-		lives--;
-
-		if(lives == 0){
-
-			for(int i = 0; i < score / 10; i++)
-				triangles.pop_back();
-			score = 0;
-			lives = 3;
-			noteNum = 0;
-			baseSprite->clear(TFT_BLACK);
-			baseSprite->setTextSize(1);
-			baseSprite->setTextFont(2);
-			baseSprite->setTextColor(TFT_WHITE);
-			baseSprite->drawString(endMessage, 35, 55);
-			display->commit();
-			delay(2000);
-
-		}
-
-	}
-*/
-}
-
-void GameState::checkIfEaten(Circle &blue){
-
-	if(sqrt(pow(blue.x - player.x, 2) + pow(blue.y - player.y, 2)) < (radius * 2)){
-
-		float pomX = blue.x;
-		float pomY = blue.y;
-
-		do {
-			blue.x = (float) random(10, 117);
-			blue.y = (float) random(10, 117);
-		} while(sqrt(pow(pomX - blue.x, 2) + pow(pomY - blue.y, 2)) < 30);
-
-		score++;
-/*
-		if(score > 0 && score % 20 == 0){
-			triangles.push_back({0, (float) random(10, 50), Triangle::H}); // horizontal triangle
-			lives++;
-		}else if(score > 0 && score % 10 == 0){
-			triangles.push_back({(float) random(10, 50), 0, Triangle::V}); // vertical triangle
-			lives++;
-		}
-*/
-		if(score > 0 && score % 10 == 0){
-			triangles.push_back({(float) random(10, 150), 0, Triangle::V}); // vertical triangle
-			lives++;
-		}
-		//Piezo.tone(500, 200);
+		playerX = 58;
+		playerY = 90;
 
 	}
 
 }
+
+void GameState::checkIfCollected(Object &object){
+
+	if(object.type == Object::ORE){
+
+		uint dx = abs((object.x + 1.5) - (playerX + 6));
+		uint dy = abs((object.y + 1.5) - (playerY + 9));
+
+		if(sqrt(pow(dx, 2) + pow(dy, 2)) <
+		   sqrt(pow(playerX + 6, 2) + pow(playerY + 9, 2)) + sqrt(pow(object.x + 1.5, 2) + pow(object.y + 1.5, 2))){
+
+			ore++;
+
+		}
+	}else if(object.type == Object::FUEL){
+
+		uint dx = abs((object.x + 4) - (playerX + 6));
+		uint dy = abs((object.y + 4) - (playerY + 9));
+
+		if(sqrt(pow(dx, 2) + pow(dy, 2)) <
+		   sqrt(pow(playerX + 6, 2) + pow(playerY + 9, 2)) + sqrt(pow(object.x + 4, 2) + pow(object.y + 4, 2))){
+
+			fuel++;
+
+		}
+
+	}
+
+}
+
 
 void GameState::states(uint t){
 
 	if(instance->upState){
-		player.y -= speed * t / 13000;
-		if(player.y <= 5)
-			player.y = 5;
+		playerY -= speed * t / 13000;
+		if(playerY <= 9)
+			playerY = 9;
 
 	}
 	if(instance->leftState){
-		player.x -= speed * t / 13000;
-		if(player.x <= 5)
-			player.x = 5;
+		playerX -= speed * t / 13000;
+		if(playerX <= 6)
+			playerX = 6;
 
 
 	}
 	if(instance->downState){
-		player.y += speed * t / 13000;
-		if(player.y >= 122)
-			player.y = 122;
+		playerY += speed * t / 13000;
+		if(playerY >= 119)
+			playerY = 119;
 
 	}
 	if(instance->rightState){
-		player.x += speed * t / 13000;
-		if(player.x >= 122)
-			player.x = 122;
+		playerX += speed * t / 13000;
+		if(playerX >= 122)
+			playerX = 122;
 
 	}
 	if(instance->aState){
 		if(!playerInvisible){
 
-			if(instance->upState && player.y > 5){
-				player.y -= speed * t / 13000;
+			if(instance->upState && playerY > 5){
+				playerY -= speed * t / 13000;
 			}
-			if(instance->downState && player.y < 122){
-				player.y += speed * t / 13000;
+			if(instance->downState && playerY < 122){
+				playerY += speed * t / 13000;
 			}
-			if(instance->rightState && player.x < 122){
-				player.x += speed * t / 13000;
+			if(instance->rightState && playerX < 122){
+				playerX += speed * t / 13000;
 			}
-			if(instance->leftState && player.y > 5){
-				player.x -= speed * t / 13000;
+			if(instance->leftState && playerY > 5){
+				playerX -= speed * t / 13000;
 			}
 		}
 
@@ -526,28 +341,44 @@ void GameState::states(uint t){
 
 	invisibility();
 
+	for(int i = 0; i < aliens.size(); ++i){
 
-	for(int i = 0; i < triangles.size(); ++i){
-
-		triangleMovement(triangles[i], t);
+		alienMovement(aliens[i], t);
 		if(!playerInvisible)
-			checkIfDead(triangles[i]);
-		if(dead)
-			break;
+			//checkIfDead(aliens[i]);
+			if(dead)
+				break;
 	}
 
-	for(int i = 0; i < circles.size(); ++i){
 
-		checkIfEaten(circles[i]);
+	for(int i = 0; i < objects.size(); ++i){
+
+		objectMovement(objects[i], t);
+		checkIfCollected(objects[i]);
 	}
+
+
+	if(millis()-previousOreTime > oreTime){
+
+		oreCheck = true;
+		previousOreTime = millis();
+	}
+	if(millis()-previousFuelTime > fuelTime){
+
+		fuelCheck = true;
+		previousFuelTime = millis();
+	}
+
 
 }
+
 
 void GameState::gameOver(){
 
 	game->changeState(new GameOverState(score));
 
 }
+
 
 void GameState::invisibility(){
 
@@ -564,32 +395,13 @@ void GameState::invisibility(){
 	}
 }
 
-void GameState::drawWarningMessage(){
-
-	if((score + 1) % 10 == 0){
-		baseSprite->setTextColor(TFT_RED);
-		baseSprite->drawString(warning, 45, 60);
-
-	}
-}
-
-void GameState::startUpMessage(){
-
-	baseSprite->clear(TFT_BLACK);
-	baseSprite->setTextSize(1);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(startGame, 25, 55);
-	display->commit();
-
-}
 
 void GameState::drawCounterString(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawNumber(score, 110, 120);
+	baseSprite->drawNumber(score, 110, 3);
 
 }
 
@@ -608,8 +420,15 @@ void GameState::drawInvisibilityCounter(){
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	baseSprite->drawString(invisibleTimes, 1, 120);
-	baseSprite->drawNumber(invisibilityCounter, 85, 120);
+	baseSprite->drawNumber(invisibilityCounter, 30, 120);
 }
+
+void GameState::drawFuelBar(){
+
+	baseSprite->drawRect(64,121,64,7,TFT_WHITE);
+	baseSprite->fillRect(fuelBar.x,fuelBar.y,fuelBar.width,fuelBar.height,TFT_GREEN);
+}
+
 
 void GameState::buttonUpPressed(){
 

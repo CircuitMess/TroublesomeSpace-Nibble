@@ -19,20 +19,32 @@
 #include "State.h"
 #include "Game.h"
 
-struct Triangle {
+
+struct Alien {
 
 	float x;
 	float y;
-	enum {
-		H, V
-	} orientation; // H-horizontal, V-vertical
-
+	enum alienType{
+		ALIEN1,ALIEN2,ALIEN3
+	}type;
 };
 
-struct Circle {
+struct Object {
 
 	float x;
 	float y;
+	enum objectType{
+		FUEL,ORE
+	}type;
+};
+
+struct FuelBar{
+
+	float x;
+	float y;
+	float width;
+	float height;
+
 };
 
 
@@ -47,6 +59,8 @@ public:
 	void enter(Game& game) override;
 
 	void exit() override;
+
+	void draw();
 
 	static void buttonUpPressed();
 
@@ -73,7 +87,10 @@ public:
 	static void buttonBReleased();
 
 	uint score{};
-	int lives{};
+	uint lives{};
+	uint level{};
+	uint fuel{};
+	uint ore{};
 	int invisibilityCounter{};
 
 	uint melodyTime = 0;
@@ -83,34 +100,34 @@ private:
 
 	static GameState *instance;
 
-	Vector<Triangle> triangles;
-	Vector<Circle> circles;
+	Vector<Alien> aliens;
+	Vector<Object> objects;
+
+	FuelBar fuelBar;
 
 	void states(uint time);
 
 	void drawPlayer();
 
-	void drawCircle(Circle &circle);
+	void drawObject(Object &object);
 
-	void drawCircles();
+	void drawObjects();
 
-	void drawTriangle(Triangle &triangle);
+	void drawAlien(Alien &alien);
 
-	void drawTriangles();
+	void drawAliens();
 
-	void triangleMovement(Triangle &triangle, uint t) const;
+	void alienMovement(Alien &alien, uint t) const;
 
-	void checkIfEaten(Circle &circle);
+	void objectMovement(Object &object, uint t);
 
-	void checkIfDead(Triangle &triangle);
+	void checkIfCollected(Object &object);
+
+	void checkIfDead(Alien &alien);
 
 	void invisibility();
 
 	void gameOver();
-
-	void drawWarningMessage();
-
-	void startUpMessage();
 
 	void drawCounterString();
 
@@ -118,11 +135,13 @@ private:
 
 	void drawInvisibilityCounter();
 
+	void drawFuelBar();
+
+
+	float playerX = 58;
+	float playerY = 90;
 
 	const float speed = 1;
-
-	Circle player{58, 90};
-	uint playerColor = TFT_GOLD;
 
 	bool upState = false;
 	bool downState = false;
@@ -130,9 +149,6 @@ private:
 	bool leftState = false;
 	bool aState = false;
 	bool bState = false;
-
-	const float radius = 4;
-	const float triangleSide = 10;
 
 	bool dead = false;
 
@@ -143,11 +159,17 @@ private:
 	unsigned long previousInvisibilityTime = 0;
 
 	const char *livesRest = "Lives: ";
-	const char *warning = "Warning!";
-	const char *startGame = "Starting game";
-	const char *invisibleTimes = "Invisibility: ";
+	const char *invisibleTimes = "Inv: ";
 
 	unsigned long melodyPreviousMillis = 0;
+
+	bool oreCheck = false;
+	uint oreTime = 15000; // 15 sec
+	unsigned long previousOreTime = 0;
+
+	bool fuelCheck = false;
+	uint fuelTime = 25000; // 25 sec
+	unsigned long previousFuelTime = 0;
 
 
 };

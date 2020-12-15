@@ -19,7 +19,7 @@ Menu::Menu(){
 	melodyTime = Melody.playMelody(MENU, false);
 
 	baseSprite->clear(TFT_BLACK);
-	drawMenu();
+	draw();
 	display->commit();
 }
 
@@ -30,8 +30,6 @@ void Menu::enter(Game &_game){
 	upState = false;
 	downState = false;
 	aState = false;
-
-	pointer = {30, 92, 55, 14};
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -44,7 +42,9 @@ void Menu::enter(Game &_game){
 
 void Menu::exit(){
 
-	melodyTime = 0;
+	newGameOption = true;
+	highscoreOption = false;
+
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
 	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
 	Input::getInstance()->removeBtnPressCallback(BTN_A);
@@ -57,7 +57,7 @@ void Menu::exit(){
 void Menu::loop(uint t){
 
 	baseSprite->clear(TFT_BLACK);
-	drawMenu();
+	draw();
 	display->commit();
 
 	states();
@@ -65,29 +65,38 @@ void Menu::loop(uint t){
 
 void Menu::states(){
 
-	if(upState)
-		pointer = {30, 92, 55, 14};
-	else if(downState)
-		pointer = {25, 107, 70, 14};
+	if(upState){
+		newGameOption = true;
+		highscoreOption = false;
+	}
+	if(downState){
+		newGameOption = false;
+		highscoreOption = true;
+	}
 
-	if(aState && pointer.y == 92)
+
+	if(aState && newGameOption)
 		game->changeState(new GameState());
-	if(aState && pointer.y == 107)
+	if(aState && highscoreOption)
 		game->changeState(new ShowHighscoreState());
 }
 
-void Menu::drawMenu(){
+void Menu::draw(){
 
-	baseSprite->drawIcon(homescreen,0,0,128,128);
+	baseSprite->drawIcon(homescreen, 0, 0, 128, 128);
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_WHITE);
-	baseSprite->drawString(newGame, 35, 95);
-	baseSprite->drawString(highScore, 30, 110);
 
-	baseSprite->drawRect(pointer.x, pointer.y, pointer.width, pointer.height, TFT_GOLD);
-
+	if(newGameOption){
+		baseSprite->drawString(newGame, 40, 105);
+		baseSprite->drawTriangle(64, 120, 59, 115, 69, 115, TFT_LIGHTGREY);
+	}
+	if(highscoreOption){
+		baseSprite->drawString(highScore, 35, 105);
+		baseSprite->drawTriangle(64, 95, 59, 100, 69, 100, TFT_LIGHTGREY);
+	}
 }
 
 void Menu::buttonUpPressed(){
