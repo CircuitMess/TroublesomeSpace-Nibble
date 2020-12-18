@@ -5,7 +5,7 @@
 #include "Menu.h"
 #include "GameState.h"
 #include "ShowHighscoreState.h"
-#include "bitmaps/homescreen.hpp"
+#include "bitmaps/states/homescreen.hpp"
 
 Menu *Menu::instance = nullptr;
 

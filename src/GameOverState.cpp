@@ -7,7 +7,7 @@
 #include "GameState.h"
 #include "EnterHighscoreState.h"
 #include "Highscore/Highscore.h"
-#include "bitmaps/gameover.hpp"
+#include "bitmaps/states/gameover.hpp"
 
 
 GameOverState::GameOverState(uint _score){

@@ -137,9 +137,18 @@ private:
 
 	void drawFuelBar();
 
+	void drawPausedState();
+
 
 	float playerX = 58;
 	float playerY = 90;
+
+	uint lowIgnitionPlayerFrame = 1;
+	uint previousLowIgnitionPlayerTime = 0;
+	uint lowIgnitionTimePerFrame = 300;
+	uint highIgnitionPlayerFrame = 1;
+	uint previousHighIgnitionPlayerTime = 0;
+	uint highIgnitionTimePerFrame = 300;
 
 	const float speed = 1;
 
@@ -160,6 +169,9 @@ private:
 
 	const char *livesRest = "Lives: ";
 	const char *invisibleTimes = "Inv: ";
+	const char *pause = "Pause";
+	const char *resume = "Resume: A";
+	const char *quit = "Quit: B";
 
 	unsigned long melodyPreviousMillis = 0;
 
@@ -171,6 +183,7 @@ private:
 	uint fuelTime = 25000; // 25 sec
 	unsigned long previousFuelTime = 0;
 
+	bool pausedState = false;
 
 };
 

@@ -7,12 +7,24 @@
 #include "Pins.hpp"
 #include "GameState.h"
 #include "GameOverState.h"
-#include "bitmaps/player.hpp"
-#include "bitmaps/fuel.hpp"
-#include "bitmaps/ore.hpp"
-#include "bitmaps/alien1.hpp"
-#include "bitmaps/alien2.hpp"
-#include "bitmaps/alien3.hpp"
+#include "bitmaps/player/player.hpp"
+#include "bitmaps/objects/fuel.hpp"
+#include "bitmaps/objects/ore.hpp"
+#include "bitmaps/aliens/alien1.hpp"
+#include "bitmaps/aliens/alien2.hpp"
+#include "bitmaps/aliens/alien3.hpp"
+#include "bitmaps/player/invisiblePlayer.hpp"
+#include "bitmaps/igniteLowFrames/igniteLowPlayer1.hpp"
+#include "bitmaps/igniteLowFrames/igniteLowPlayer2.hpp"
+#include "bitmaps/igniteLowFrames/igniteLowPlayer3.hpp"
+#include "bitmaps/igniteLowFrames/igniteLowPlayer4.hpp"
+#include "bitmaps/igniteHighFrames/igniteHighPlayer1.hpp"
+#include "bitmaps/igniteHighFrames/igniteHighPlayer2.hpp"
+#include "bitmaps/igniteHighFrames/igniteHighPlayer3.hpp"
+#include "bitmaps/igniteHighFrames/igniteHighPlayer4.hpp"
+#include "bitmaps/igniteHighFrames/igniteHighPlayer5.hpp"
+#include "bitmaps/redFlag.hpp"
+
 
 GameState *GameState::instance = nullptr;
 
@@ -33,19 +45,31 @@ GameState::GameState(){
 
 void GameState::loop(uint time){
 
-	unsigned int melodyCurrentMillis = millis();
-	if(loopPlaying && melodyCurrentMillis - melodyPreviousMillis > melodyTime){
-		melodyTime = Melody.playMelody(LOOP, true);
+	if(pausedState){
+
+		baseSprite->clear(TFT_BLACK);
+
+		draw();
+
+		display->commit();
+
+		states(time);
+	}else{
+
+		unsigned int melodyCurrentMillis = millis();
+		if(loopPlaying && melodyCurrentMillis - melodyPreviousMillis > melodyTime){
+			melodyTime = Melody.playMelody(LOOP, true);
+		}
+
+		baseSprite->clear(TFT_BLACK);
+
+		draw();
+
+		display->commit();
+
+		states(time);
+
 	}
-
-	baseSprite->clear(TFT_BLACK);
-
-	draw();
-
-	display->commit();
-
-	states(time);
-
 }
 
 void GameState::enter(Game &_game){
@@ -63,7 +87,7 @@ void GameState::enter(Game &_game){
 	melodyPreviousMillis = 0;
 	dead = false;
 
-	fuelBar = {65,122,62,5};
+	fuelBar = {65, 122, 62, 5};
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -95,6 +119,8 @@ void GameState::exit(){
 	previousOreTime = 0;
 	previousFuelTime = 0;
 
+	pausedState = false;
+
 	loopPlaying = false;
 
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
@@ -115,21 +141,67 @@ void GameState::exit(){
 
 void GameState::draw(){
 
-	drawPlayer();
-	drawObjects();
-	drawAliens();
+	if(pausedState)
+		drawPausedState();
 
-	drawCounterString();
-	drawLivesString();
-	drawInvisibilityCounter();
-	drawFuelBar();
+	else{
 
+		drawPlayer();
+		drawObjects();
+		drawAliens();
+
+		drawCounterString();
+		drawLivesString();
+		drawInvisibilityCounter();
+		drawFuelBar();
+	}
 }
-
 
 void GameState::drawPlayer(){
 
-	baseSprite->drawIcon(playerShip, playerX, playerY, 12, 18, 1, TFT_BLACK);
+	if(playerInvisible)
+		baseSprite->drawIcon(invPlayer, playerX, playerY, 12, 18, 1, TFT_BLACK);
+
+	else if(upState && !downState){
+		switch(highIgnitionPlayerFrame){
+
+			case 1:
+				baseSprite->drawIcon(igniteHighPlayer2, playerX, playerY, 12, 17, 1, TFT_BLACK);
+				break;
+			case 2:
+				baseSprite->drawIcon(igniteHighPlayer3, playerX, playerY, 12, 17, 1, TFT_BLACK);
+				break;
+			case 3:
+				baseSprite->drawIcon(igniteHighPlayer4, playerX, playerY, 12, 16, 1, TFT_BLACK);
+				break;
+			case 4:
+				baseSprite->drawIcon(igniteHighPlayer5, playerX, playerY, 12, 15, 1, TFT_BLACK);
+				break;
+
+			default:
+				break;
+		}
+	}else if(!upState && downState){
+
+		baseSprite->drawIcon(playerShip, playerX, playerY, 12, 18, 1, TFT_BLACK);
+
+	}else{
+		switch(lowIgnitionPlayerFrame){
+
+			case 1:
+				baseSprite->drawIcon(igniteLowPlayer2, playerX, playerY, 12, 16, 1, TFT_BLACK);
+				break;
+			case 2:
+				baseSprite->drawIcon(igniteLowPlayer3, playerX, playerY, 12, 16, 1, TFT_BLACK);
+				break;
+			case 3:
+				baseSprite->drawIcon(igniteLowPlayer4, playerX, playerY, 12, 15, 1, TFT_BLACK);
+				break;
+
+			default:
+				break;
+		}
+	}
 
 }
 
@@ -283,95 +355,106 @@ void GameState::checkIfCollected(Object &object){
 
 void GameState::states(uint t){
 
-	if(instance->upState){
-		playerY -= speed * t / 13000;
-		if(playerY <= 9)
-			playerY = 9;
+	if(pausedState){
 
-	}
-	if(instance->leftState){
-		playerX -= speed * t / 13000;
-		if(playerX <= 6)
-			playerX = 6;
+		if(instance->aState){
+
+			pausedState = false;
+			aState = false;
+
+		}else if(instance->bState){
+
+			game->changeState(new Menu());
+		}
+	}else{
+
+		if(instance->upState){
+			playerY -= speed * t / 13000;
+			if(playerY <= 9)
+				playerY = 9;
+
+		}
+		if(instance->leftState){
+			playerX -= speed * t / 13000;
+			if(playerX <= 6)
+				playerX = 6;
 
 
-	}
-	if(instance->downState){
-		playerY += speed * t / 13000;
-		if(playerY >= 119)
-			playerY = 119;
+		}
+		if(instance->downState){
+			playerY += speed * t / 13000;
+			if(playerY >= 119)
+				playerY = 119;
 
-	}
-	if(instance->rightState){
-		playerX += speed * t / 13000;
-		if(playerX >= 122)
-			playerX = 122;
+		}
+		if(instance->rightState){
+			playerX += speed * t / 13000;
+			if(playerX >= 122)
+				playerX = 122;
 
-	}
-	if(instance->aState){
-		if(!playerInvisible){
+		}
+		if(instance->aState){
 
-			if(instance->upState && playerY > 5){
-				playerY -= speed * t / 13000;
+			if(invisibilityCounter > 0){
+
+				playerInvisible = true;
+				previousInvisibilityTime = currentInvisibilityTime = millis();
+
+				//instance->aState = false; // disable faster movement while invisible
 			}
-			if(instance->downState && playerY < 122){
-				playerY += speed * t / 13000;
-			}
-			if(instance->rightState && playerX < 122){
-				playerX += speed * t / 13000;
-			}
-			if(instance->leftState && playerY > 5){
-				playerX -= speed * t / 13000;
-			}
+
+			Input::getInstance()->removeBtnPressCallback(BTN_A);
+		}
+		if(instance->bState){
+
+			pausedState = true;
+			bState = false;
 		}
 
-	}
-	if(instance->bState){
+		invisibility();
 
-		if(invisibilityCounter > 0){
+		for(int i = 0; i < aliens.size(); ++i){
 
-			playerInvisible = true;
-			previousInvisibilityTime = currentInvisibilityTime = millis();
-
-			instance->aState = false; // disable faster movement while invisible
+			alienMovement(aliens[i], t);
+			if(!playerInvisible)
+				//checkIfDead(aliens[i]);
+				if(dead)
+					break;
 		}
 
-		Input::getInstance()->removeBtnPressCallback(BTN_B);
+
+		for(int i = 0; i < objects.size(); ++i){
+
+			objectMovement(objects[i], t);
+			checkIfCollected(objects[i]);
+		}
+
+
+		if(millis() - previousOreTime > oreTime){
+
+			oreCheck = true;
+			previousOreTime = millis();
+		}
+		if(millis() - previousFuelTime > fuelTime){
+
+			fuelCheck = true;
+			previousFuelTime = millis();
+		}
+
+		if(millis() - previousLowIgnitionPlayerTime > lowIgnitionTimePerFrame){
+			lowIgnitionPlayerFrame++;
+			if(lowIgnitionPlayerFrame > 3)
+				lowIgnitionPlayerFrame = 1;
+			previousLowIgnitionPlayerTime = millis();
+		}
+		if(millis() - previousHighIgnitionPlayerTime > highIgnitionTimePerFrame){
+			highIgnitionPlayerFrame++;
+			if(highIgnitionPlayerFrame > 4)
+				highIgnitionPlayerFrame = 1;
+			previousHighIgnitionPlayerTime = millis();
+		}
 	}
-
-	invisibility();
-
-	for(int i = 0; i < aliens.size(); ++i){
-
-		alienMovement(aliens[i], t);
-		if(!playerInvisible)
-			//checkIfDead(aliens[i]);
-			if(dead)
-				break;
-	}
-
-
-	for(int i = 0; i < objects.size(); ++i){
-
-		objectMovement(objects[i], t);
-		checkIfCollected(objects[i]);
-	}
-
-
-	if(millis()-previousOreTime > oreTime){
-
-		oreCheck = true;
-		previousOreTime = millis();
-	}
-	if(millis()-previousFuelTime > fuelTime){
-
-		fuelCheck = true;
-		previousFuelTime = millis();
-	}
-
-
 }
-
 
 void GameState::gameOver(){
 
@@ -425,8 +508,24 @@ void GameState::drawInvisibilityCounter(){
 
 void GameState::drawFuelBar(){
 
-	baseSprite->drawRect(64,121,64,7,TFT_WHITE);
-	baseSprite->fillRect(fuelBar.x,fuelBar.y,fuelBar.width,fuelBar.height,TFT_GREEN);
+	baseSprite->drawRect(64, 121, 64, 7, TFT_WHITE);
+	baseSprite->fillRect(fuelBar.x, fuelBar.y, fuelBar.width, fuelBar.height, TFT_GREEN);
+}
+
+void GameState::drawPausedState(){
+
+	baseSprite->drawIcon(redFlag, 59, 20, 10, 10, 1, TFT_BLACK);
+
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(2);
+	baseSprite->setTextColor(TFT_LIGHTGREY);
+	baseSprite->drawString(pause, 40, 64);
+
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(1);
+	baseSprite->setTextColor(TFT_LIGHTGREY);
+	baseSprite->drawString(resume, 1, 120);
+	baseSprite->drawString(quit, 80, 120);
 }
 
 
