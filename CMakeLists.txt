@@ -36,6 +36,7 @@ include_directories(${Arduino15}/packages/cm/hardware/esp8266/1.0.0/libraries/Li
 
 AUX_SOURCE_DIRECTORY(src SOURCES)
 AUX_SOURCE_DIRECTORY(src/Melody SOURCES)
+AUX_SOURCE_DIRECTORY(src/Highscore SOURCES)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
