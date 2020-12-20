@@ -79,8 +79,8 @@ void ShowHighscoreState::draw(){
 
 		baseSprite->setCursor(30, 37+i*16);
 
-		if(i <= Highscore.dataCount()){
-			baseSprite->printf("%s   %d", Highscore.get(i - 1).name, Highscore.get(i - 1).score);
+		if((i+1) <= Highscore.dataCount()){
+			baseSprite->printf(" %s   %d", Highscore.get(i).name, Highscore.get(i).score);
 		}else{
 			baseSprite->printf("   -     -  ");
 		}
@@ -97,7 +97,6 @@ void ShowHighscoreState::buttonBPressed(){
 
 	instance->bState = true;
 }
-
 
 void ShowHighscoreState::buttonAReleased(){
 
