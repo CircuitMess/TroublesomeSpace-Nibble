@@ -86,10 +86,8 @@ public:
 
 	static void buttonBReleased();
 
-	uint score{};
 	uint lives{};
 	uint level{};
-	uint fuel{};
 	uint ore{};
 	int invisibilityCounter{};
 
@@ -106,6 +104,8 @@ private:
 	FuelBar fuelBar;
 
 	void states(uint time);
+
+	void levelHandler();
 
 	void drawPlayer();
 
@@ -128,6 +128,8 @@ private:
 	void invisibility();
 
 	void gameOver();
+
+	void drawBackground();
 
 	void drawCounterString();
 
@@ -184,6 +186,8 @@ private:
 	unsigned long previousFuelTime = 0;
 
 	bool pausedState = false;
+
+	bool newLevel = false;
 
 };
 
