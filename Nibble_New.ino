@@ -11,7 +11,7 @@ void setup(){
 
 	Nibble.begin();
 	Serial.begin(115200);
-	Piezo.setMute(true);
+	Piezo.setMute(false);
 
 	Highscore.begin();
 	game = new Game;
