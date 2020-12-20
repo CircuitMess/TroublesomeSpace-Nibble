@@ -32,12 +32,16 @@ private:
 	static Menu *instance;
 
 	void states();
+	void drawTriangleArrows();
 
 	bool upState;
 	bool downState;
 	bool aState;
 
 	uint melodyTime = 0;
+
+	uint prevousArrowTime = 0;
+	int step = 0;
 
 	bool newGameOption = true;
 	bool highscoreOption = false;

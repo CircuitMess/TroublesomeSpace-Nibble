@@ -16,7 +16,7 @@ Menu::Menu(){
 
 	instance = this;
 
-	melodyTime = Melody.playMelody(MENU, false);
+	melodyTime = Melody.playMelody(MENU, true);
 
 	baseSprite->clear(TFT_BLACK);
 	draw();
@@ -68,17 +68,30 @@ void Menu::states(){
 	if(upState){
 		newGameOption = true;
 		highscoreOption = false;
+		step = 0;
+		prevousArrowTime = millis();
 	}
 	if(downState){
 		newGameOption = false;
 		highscoreOption = true;
+		step = 0;
+		prevousArrowTime = millis();
 	}
 
+	if(millis() - prevousArrowTime > 200){
+		step++;
+		if(step > 2)
+			step = 0;
+		prevousArrowTime = millis();
+	}
 
-	if(aState && newGameOption)
+	if(aState && newGameOption){
 		game->changeState(new GameState());
-	if(aState && highscoreOption)
+	}
+	if(aState && highscoreOption){
+		Melody.playMelody(STOP,false);
 		game->changeState(new ShowHighscoreState());
+	}
 }
 
 void Menu::draw(){
@@ -91,11 +104,21 @@ void Menu::draw(){
 
 	if(newGameOption){
 		baseSprite->drawString(newGame, 40, 105);
-		baseSprite->drawTriangle(64, 120, 59, 115, 69, 115, TFT_LIGHTGREY);
 	}
 	if(highscoreOption){
 		baseSprite->drawString(highScore, 35, 105);
-		baseSprite->drawTriangle(64, 95, 59, 100, 69, 100, TFT_LIGHTGREY);
+	}
+
+	drawTriangleArrows();
+}
+
+void Menu::drawTriangleArrows(){
+
+	if(newGameOption){
+		baseSprite->drawTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
+	}
+	if(highscoreOption){
+		baseSprite->drawTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
 	}
 }
 
@@ -122,3 +145,4 @@ void Menu::buttonDownReleased(){
 void Menu::buttonAReleased(){
 	instance->aState = false;
 }
+
