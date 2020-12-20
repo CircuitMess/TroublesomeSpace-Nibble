@@ -10,7 +10,8 @@ enum mel{
 	MENU,
 	START,
 	LOSE,
-	LOOP
+	LOOP,
+	STOP
 
 };
 

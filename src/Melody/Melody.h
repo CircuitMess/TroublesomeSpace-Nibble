@@ -17,8 +17,6 @@ class MelodyImpl : public LoopListener {
 
 public:
 
-//	Melody();
-
 	void loop(uint) override;
 	uint playMelody(mel melody , bool loop);
 
@@ -30,10 +28,12 @@ private:
 	int melodySize = 0;
 	Note *melodyNote{};
 
-	int noteNum = 0;
+	int shortNoteNum = 0;
+	int loopNoteNum = 0;
 	unsigned long previousMillis = 0;
 
 	bool loopCheck = false;
+	bool melodyPlaying = false;
 
 	unsigned int melodyTime = 0;
 };

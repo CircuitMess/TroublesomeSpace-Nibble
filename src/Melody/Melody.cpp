@@ -11,23 +11,26 @@
 
 MelodyImpl Melody;
 
+
 void MelodyImpl::loop(uint t){
 
-	if(!loopCheck){
+	if(melodyPlaying){
+		if(!loopCheck){
 
-		play(false);
-		stop();
+			play(false);
 
-	}else{
+		}else{
 
-		play(true);
+			play(true);
+		}
 	}
-
 }
 
 uint MelodyImpl::playMelody(mel melody, bool loop){
 
+
 	loopCheck = loop;
+	melodyPlaying = true;
 
 	switch(melody){
 
@@ -50,12 +53,15 @@ uint MelodyImpl::playMelody(mel melody, bool loop){
 			melodyNote = gameOverMelody;
 			for(int i = 0; i < melodySize; ++i)
 				melodyTime += gameOverMelody[i].duration;
-
 			break;
 
 		case LOOP:
 			melodySize = sizeof(loopMelody) / sizeof(loopMelody[0]);
 			melodyNote = loopMelody;
+			break;
+
+		case STOP:
+			stop();
 			break;
 
 		default:
@@ -66,30 +72,35 @@ uint MelodyImpl::playMelody(mel melody, bool loop){
 
 }
 
+
 void MelodyImpl::play(bool loop){
 	if(loop){
 
-		if(noteNum >= melodySize)
-			noteNum = 0;
+		if(loopNoteNum >= melodySize)
+			loopNoteNum = 0;
 
-		Piezo.tone((melodyNote + noteNum)->note, (melodyNote + noteNum)->duration);
+		Piezo.tone((melodyNote + loopNoteNum)->note, (melodyNote + loopNoteNum)->duration);
 
 		unsigned long currentMillis = millis();
 
-		if(currentMillis - previousMillis > (melodyNote + noteNum)->duration){
+		if(currentMillis - previousMillis > (melodyNote + loopNoteNum)->duration){
 
 			previousMillis = currentMillis;
-			noteNum++;
+			loopNoteNum++;
 		}
 	}else{
 
-		for(int i = 0; i < melodySize; i++){
+		if(shortNoteNum >= melodySize)
+			stop();
 
-			Piezo.tone((melodyNote + i)->note, (melodyNote + i)->duration);
+		Piezo.tone((melodyNote + shortNoteNum)->note, (melodyNote + shortNoteNum)->duration);
 
-			delay((melodyNote + i)->duration);
+		unsigned long currentMillis = millis();
 
-			Piezo.noTone();
+		if(currentMillis - previousMillis > (melodyNote + shortNoteNum)->duration){
+
+			previousMillis = currentMillis;
+			shortNoteNum++;
 		}
 	}
 }
@@ -99,7 +110,7 @@ void MelodyImpl::stop(){
 
 	melodySize = 0;
 	melodyNote = nullptr;
-	noteNum = 0;
-
+	shortNoteNum = 0;
+	loopNoteNum = 0;
+	melodyPlaying = false;
 }
-
