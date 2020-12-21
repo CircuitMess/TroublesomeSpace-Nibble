@@ -141,6 +141,8 @@ private:
 
 	void drawPausedState();
 
+	void drawBetweenLevelState();
+
 
 	float playerX = 58;
 	float playerY = 90;
@@ -174,18 +176,21 @@ private:
 	const char *pause = "Pause";
 	const char *resume = "Resume: A";
 	const char *quit = "Quit: B";
+	const char *continueString = "Continue: A";
+	const char *levelNumber = "Level:";
 
 	unsigned long melodyPreviousMillis = 0;
 
 	bool oreCheck = false;
-	uint oreTime = 15000; // 15 sec
+	uint oreTime = 10000; // 10 sec
 	unsigned long previousOreTime = 0;
 
 	bool fuelCheck = false;
-	uint fuelTime = 25000; // 25 sec
+	uint fuelTime = 15000; // 15 sec
 	unsigned long previousFuelTime = 0;
 
 	bool pausedState = false;
+	bool betweenLevelState = false;
 
 	bool newLevel = false;
 

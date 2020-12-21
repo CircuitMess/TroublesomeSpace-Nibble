@@ -25,6 +25,9 @@
 #include "bitmaps/igniteHighFrames/igniteHighPlayer5.hpp"
 #include "bitmaps/redFlag.hpp"
 #include "bitmaps/states/gameStateBackground.hpp"
+#include "bitmaps/planets/planet1.hpp"
+#include "bitmaps/planets/planet2.hpp"
+#include "bitmaps/planets/planet3.hpp"
 
 
 GameState *GameState::instance = nullptr;
@@ -39,8 +42,6 @@ GameState::GameState(){
 	objects.push_back({(float) random(10, 150), 0, Object::FUEL});
 	objects.push_back({(float) random(10, 150), 0, Object::ORE});
 
-	melodyTime = Melody.playMelody(START, false);
-
 	playerX = 58;
 	playerY = 90;
 
@@ -52,16 +53,16 @@ GameState::GameState(){
 
 	fuelBar = {65, 122, 64, 5};
 
+	betweenLevelState = true;
 	newLevel = true;
 	level = 1;
-
 }
 
 void GameState::loop(uint time){
 
 	if(pausedState){
 
-		Melody.playMelody(STOP,false);
+		Melody.playMelody(STOP, false);
 
 		baseSprite->clear(TFT_BLACK);
 
@@ -70,6 +71,18 @@ void GameState::loop(uint time){
 		display->commit();
 
 		states(time);
+	}else if(betweenLevelState){
+
+		//melodyTime = Melody.playMelody(START, false);
+
+		baseSprite->clear(TFT_BLACK);
+
+		draw();
+
+		display->commit();
+
+		states(time);
+
 	}else{
 
 		unsigned int melodyCurrentMillis = millis();
@@ -105,6 +118,7 @@ void GameState::enter(Game &_game){
 
 	fuelBar = {65, 122, 64, 5};
 
+	betweenLevelState = true;
 	newLevel = true;
 	level = 1;
 
@@ -163,8 +177,11 @@ void GameState::draw(){
 	if(pausedState)
 		drawPausedState();
 
-	else{
+	else if(betweenLevelState){
+		drawBetweenLevelState();
+	}else{
 
+		drawBackground();
 		drawPlayer();
 		drawObjects();
 		drawAliens();
@@ -331,8 +348,13 @@ void GameState::checkIfDead(Alien &alien){
 
 		lives--;
 
+		playerX = 58;
+		playerY = 128;
+		playerInvisible = true;
+		previousInvisibilityTime = currentInvisibilityTime = millis();
+
 		if(lives == 0){
-			//gameOver();
+			gameOver();
 		}
 	}
 }
@@ -349,6 +371,10 @@ void GameState::checkIfCollected(Object &object){
 
 			ore++;
 
+			object.x = 0;
+			object.y = 0;
+
+			oreCheck = false;
 		}
 	}else if(object.type == Object::FUEL){
 
@@ -361,6 +387,11 @@ void GameState::checkIfCollected(Object &object){
 			fuelBar.x -= 10;
 			fuelBar.width += 10;
 
+			object.x = 0;
+			object.y = 0;
+
+			fuelCheck = false;
+
 		}
 	}
 
@@ -369,8 +400,9 @@ void GameState::checkIfCollected(Object &object){
 
 void GameState::states(uint t){
 
-	if (newLevel)
+	if(newLevel)
 		levelHandler();
+
 
 	if(pausedState){
 
@@ -382,6 +414,11 @@ void GameState::states(uint t){
 		}else if(instance->bState){
 
 			game->changeState(new Menu());
+		}
+	}else if(betweenLevelState){
+		if(instance->aState){
+			betweenLevelState = false;
+			instance->aState = false;
 		}
 	}else{
 
@@ -418,13 +455,13 @@ void GameState::states(uint t){
 				previousInvisibilityTime = currentInvisibilityTime = millis();
 
 			}
-
+			instance->aState = false;
 			Input::getInstance()->removeBtnPressCallback(BTN_A);
 		}
 		if(instance->bState){
 
 			pausedState = true;
-			bState = false;
+			instance->bState = false;
 		}
 
 		fuelBar.x += speed * t / 800000;
@@ -439,8 +476,8 @@ void GameState::states(uint t){
 			alienMovement(aliens[i], t);
 			if(!playerInvisible)
 				checkIfDead(aliens[i]);
-				if(dead)
-					break;
+			if(dead)
+				break;
 		}
 
 		for(int i = 0; i < objects.size(); ++i){
@@ -473,6 +510,13 @@ void GameState::states(uint t){
 				highIgnitionPlayerFrame = 1;
 			previousHighIgnitionPlayerTime = millis();
 		}
+
+		if (dead){
+			playerY -= speed * t / 13000;
+			if (playerY <= 90)
+				dead = false;
+		}
+
 	}
 
 }
@@ -525,7 +569,8 @@ void GameState::invisibility(){
 	if(currentInvisibilityTime - previousInvisibilityTime > invisibilityTime){
 
 		playerInvisible = false;
-		invisibilityCounter--;
+		if (!dead)
+			invisibilityCounter--;
 		currentInvisibilityTime = previousInvisibilityTime = millis();
 
 		Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
@@ -583,6 +628,50 @@ void GameState::drawPausedState(){
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 	baseSprite->drawString(resume, 1, 120);
 	baseSprite->drawString(quit, 80, 120);
+}
+
+void GameState::drawBetweenLevelState(){
+
+	baseSprite->setTextSize(1);
+	baseSprite->setTextFont(1);
+	baseSprite->setTextColor(TFT_LIGHTGREY);
+	baseSprite->drawString(continueString, 1, 120);
+
+	switch(level){
+
+		case 1:
+			baseSprite->drawIcon(planet1, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
+
+			break;
+		case 2:
+			baseSprite->drawIcon(planet2, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
+			break;
+		case 3:
+			baseSprite->drawIcon(planet3, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		case 8:
+			break;
+		case 9:
+			break;
+		default:
+			break;
+
+	}
+
 }
 
 
