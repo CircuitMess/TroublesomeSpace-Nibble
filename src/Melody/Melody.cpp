@@ -24,6 +24,7 @@ void MelodyImpl::loop(uint t){
 			play(true);
 		}
 	}
+
 }
 
 uint MelodyImpl::playMelody(mel melody, bool loop){
@@ -74,6 +75,7 @@ uint MelodyImpl::playMelody(mel melody, bool loop){
 
 
 void MelodyImpl::play(bool loop){
+
 	if(loop){
 
 		if(loopNoteNum >= melodySize)
@@ -91,7 +93,7 @@ void MelodyImpl::play(bool loop){
 	}else{
 
 		if(shortNoteNum >= melodySize)
-			stop();
+			melodyPlaying = false;
 
 		Piezo.tone((melodyNote + shortNoteNum)->note, (melodyNote + shortNoteNum)->duration);
 
