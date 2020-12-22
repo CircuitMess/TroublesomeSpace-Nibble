@@ -18,6 +18,8 @@
 #include <Audio/Piezo.h>
 #include "State.h"
 #include "Game.h"
+#include "Particles/ParticleEngine.h"
+#include "Particles/Particle.h"
 
 
 struct Alien {
@@ -101,6 +103,8 @@ private:
 	Vector<Alien> aliens;
 	Vector<Object> objects;
 
+	ParticleEngine engine;
+
 	FuelBar fuelBar;
 
 	void states(uint time);
@@ -127,8 +131,6 @@ private:
 
 	void invisibility();
 
-	void gameOver();
-
 	void drawBackground();
 
 	void drawCounterString();
@@ -143,6 +145,8 @@ private:
 
 	void drawBetweenLevelState();
 
+	void drawLevelEnd();
+
 
 	float playerX = 58;
 	float playerY = 90;
@@ -153,6 +157,20 @@ private:
 	uint highIgnitionPlayerFrame = 1;
 	uint previousHighIgnitionPlayerTime = 0;
 	uint highIgnitionTimePerFrame = 300;
+
+	uint leanLeftPlayerFrame = 1;
+	uint previousLeanLeftPlayerTime = 0;
+	uint leanLeftTimePerFrame = 300;
+	uint leanRightPlayerFrame = 1;
+	uint previousLeanRightPlayerTime = 0;
+	uint leanRightTimePerFrame = 300;
+
+	uint leanLeftIgnitionPlayerFrame = 1;
+	uint previousLeanLeftIgnitionPlayerTime = 0;
+	uint leanLeftIgnitionTimePerFrame = 300;
+	uint leanRightIgnitionPlayerFrame = 1;
+	uint previousLeanRightIgnitionPlayerTime = 0;
+	uint leanRightIgnitionTimePerFrame = 300;
 
 	const float speed = 1;
 
@@ -173,7 +191,7 @@ private:
 
 	const char *livesRest = "Lives: ";
 	const char *invisibleTimes = "Inv: ";
-	const char *pause = "Pause";
+	const char *pause = "Paused";
 	const char *resume = "Resume: A";
 	const char *quit = "Quit: B";
 	const char *continueString = "Continue: A";
@@ -182,17 +200,30 @@ private:
 	unsigned long melodyPreviousMillis = 0;
 
 	bool oreCheck = false;
-	uint oreTime = 10000; // 10 sec
+	uint oreTime = 10000; // 11 sec
 	unsigned long previousOreTime = 0;
 
 	bool fuelCheck = false;
-	uint fuelTime = 15000; // 15 sec
+	uint fuelTime = 15000; // 17 sec
 	unsigned long previousFuelTime = 0;
 
 	bool pausedState = false;
 	bool betweenLevelState = false;
 
 	bool newLevel = false;
+
+
+	uint levelTime = 60000;
+	unsigned long previousLevelTime = 0;
+
+	bool levelEnd = false;
+	float lvlEndPlanetX = 42;
+	float lvlEndPlanetY = 0;
+
+	float backgroundX1 = 0;
+	float backgroundY1 = 0;
+	float backgroundX2 = 0;
+	float backgroundY2 = -127;
 
 };
 

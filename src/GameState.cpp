@@ -28,7 +28,26 @@
 #include "bitmaps/planets/planet1.hpp"
 #include "bitmaps/planets/planet2.hpp"
 #include "bitmaps/planets/planet3.hpp"
-
+#include "bitmaps/planets/planet4.hpp"
+#include "bitmaps/planets/planet5.hpp"
+#include "bitmaps/planets/planet6.hpp"
+#include "bitmaps/planets/planet7.hpp"
+#include "bitmaps/planets/planet8.hpp"
+#include "bitmaps/planets/planet9.hpp"
+#include "bitmaps/tiltedPlayer/invisiblePlayer/invTiltLeft.hpp"
+#include "bitmaps/tiltedPlayer/invisiblePlayer/invTiltRight.hpp"
+#include "bitmaps/tiltedPlayer/player/playerTiltLeft1.hpp"
+#include "bitmaps/tiltedPlayer/player/playerTiltLeft2.hpp"
+#include "bitmaps/tiltedPlayer/player/playerTiltLeft3.hpp"
+#include "bitmaps/tiltedPlayer/player/playerTiltRight1.hpp"
+#include "bitmaps/tiltedPlayer/player/playerTiltRight2.hpp"
+#include "bitmaps/tiltedPlayer/player/playerTiltRight3.hpp"
+#include "bitmaps/tiltedPlayer/ignition/ignitionTiltLeft1.hpp"
+#include "bitmaps/tiltedPlayer/ignition/ignitionTiltLeft2.hpp"
+#include "bitmaps/tiltedPlayer/ignition/ignitionTiltLeft3.hpp"
+#include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight1.hpp"
+#include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight2.hpp"
+#include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight3.hpp"
 
 GameState *GameState::instance = nullptr;
 
@@ -37,25 +56,37 @@ GameState::GameState(){
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
+	//LoopManager::addListener(new ParticleEngine);
+
 	instance = this;
 
-	objects.push_back({(float) random(10, 150), 0, Object::FUEL});
-	objects.push_back({(float) random(10, 150), 0, Object::ORE});
+	objects.push_back({(float) random(20, 100), 0, Object::FUEL});
+	objects.push_back({(float) random(20, 100), 0, Object::ORE});
 
 	playerX = 58;
 	playerY = 90;
 
 	ore = 0;
-	lives = 3;
+	fuelBar = {65, 122, 64, 5};
 	invisibilityCounter = 3;
-	melodyPreviousMillis = 0;
+
+	lives = 30;
 	dead = false;
 
-	fuelBar = {65, 122, 64, 5};
+	melodyTime = 0;
+	loopPlaying = true;
+	melodyPreviousMillis = 0;
 
 	betweenLevelState = true;
 	newLevel = true;
 	level = 1;
+
+	fuelCheck = false;
+	previousFuelTime = 0;
+	oreCheck = false;
+	previousOreTime = 0;
+	previousLevelTime = 0;
+
 }
 
 void GameState::loop(uint time){
@@ -104,12 +135,12 @@ void GameState::loop(uint time){
 void GameState::enter(Game &_game){
 
 	game = &_game;
-
+/*
 	playerX = 58;
 	playerY = 90;
 
 	ore = 0;
-	lives = 3;
+	lives = 30;
 	invisibilityCounter = 3;
 	melodyTime = 0;
 	loopPlaying = true;
@@ -122,6 +153,10 @@ void GameState::enter(Game &_game){
 	newLevel = true;
 	level = 1;
 
+	previousFuelTime = 0;
+	previousOreTime = 0;
+	previousLevelTime = 0;
+*/
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_LEFT, buttonLeftPressed);
@@ -136,8 +171,6 @@ void GameState::enter(Game &_game){
 	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
 	Input::getInstance()->setBtnReleaseCallback(BTN_B, buttonBReleased);
 
-	Serial.println("game state enter passed");
-
 }
 
 void GameState::exit(){
@@ -146,6 +179,8 @@ void GameState::exit(){
 		aliens.pop_back();
 	for(int i = 0; i < objects.size(); i++)
 		objects.pop_back();
+
+	//engine.removeAll();
 
 	oreCheck = false;
 	fuelCheck = false;
@@ -178,10 +213,17 @@ void GameState::draw(){
 		drawPausedState();
 
 	else if(betweenLevelState){
-		drawBetweenLevelState();
-	}else{
-
 		drawBackground();
+		drawBetweenLevelState();
+
+	}
+
+	else{
+
+		if(levelEnd)
+			drawLevelEnd();
+
+		//drawBackground();
 		drawPlayer();
 		drawObjects();
 		drawAliens();
@@ -190,15 +232,123 @@ void GameState::draw(){
 		drawLivesString();
 		drawInvisibilityCounter();
 		drawFuelBar();
+
 	}
 }
 
 void GameState::drawPlayer(){
 
-	if(playerInvisible)
-		baseSprite->drawIcon(invPlayer, playerX, playerY, 12, 18, 1, TFT_BLACK);
+	if(playerInvisible){
+		if(leftState || (leftState && upState) || (leftState && downState)){
+			baseSprite->drawIcon(invTiltLeft, playerX, playerY, 12, 18, 1, TFT_BLACK);
+		}
+		else if(rightState || (rightState && upState) || (rightState && upState)){
+			baseSprite->drawIcon(invTiltRight, playerX, playerY, 12, 18, 1, TFT_BLACK);
+		}
+		else
+			baseSprite->drawIcon(invPlayer, playerX, playerY, 12, 18, 1, TFT_BLACK);
+	}
 
-	else if(upState && !downState){
+
+	else if((leftState && upState)){
+		switch(leanLeftIgnitionPlayerFrame){
+
+			case 1:
+				baseSprite->drawIcon(ignitionTiltLeft1, playerX, playerY, 12, 18, 1, TFT_BLACK);
+				break;
+			case 2:
+				baseSprite->drawIcon(ignitionTiltLeft2, playerX, playerY, 11, 17, 1, TFT_BLACK);
+				break;
+			case 3:
+				baseSprite->drawIcon(ignitionTiltLeft3, playerX, playerY, 10, 17, 1, TFT_BLACK);
+				break;
+			default:
+				break;
+		}
+	}
+	else if((leftState && downState)){
+		switch(leanLeftPlayerFrame){
+
+			case 1:
+				baseSprite->drawIcon(playerTiltLeft1, playerX, playerY, 12, 18, 1, TFT_BLACK);
+				break;
+			case 2:
+				baseSprite->drawIcon(playerTiltLeft2, playerX, playerY, 11, 14, 1, TFT_BLACK);
+				break;
+			case 3:
+				baseSprite->drawIcon(playerTiltLeft3, playerX, playerY, 10, 14, 1, TFT_BLACK);
+				break;
+			default:
+				break;
+		}
+	}
+	else if (leftState){
+		switch(leanLeftIgnitionPlayerFrame){
+
+			case 1:
+				baseSprite->drawIcon(ignitionTiltLeft1, playerX, playerY, 12, 18, 1, TFT_BLACK);
+				break;
+			case 2:
+				baseSprite->drawIcon(ignitionTiltLeft2, playerX, playerY, 11, 17, 1, TFT_BLACK);
+				break;
+			case 3:
+				baseSprite->drawIcon(ignitionTiltLeft3, playerX, playerY, 10, 17, 1, TFT_BLACK);
+				break;
+			default:
+				break;
+		}
+	}
+
+	else if((rightState && upState)){
+		switch(leanRightIgnitionPlayerFrame){
+
+			case 1:
+				baseSprite->drawIcon(ignitionTiltRight1, playerX, playerY, 12, 18, 1, TFT_BLACK);
+				break;
+			case 2:
+				baseSprite->drawIcon(ignitionTiltRight2, playerX, playerY, 11, 17, 1, TFT_BLACK);
+				break;
+			case 3:
+				baseSprite->drawIcon(ignitionTiltRight3, playerX, playerY, 10, 17, 1, TFT_BLACK);
+				break;
+			default:
+				break;
+		}
+	}
+	else if((rightState && downState)){
+		switch(leanRightPlayerFrame){
+
+			case 1:
+				baseSprite->drawIcon(playerTiltRight1, playerX, playerY, 12, 18, 1, TFT_BLACK);
+				break;
+			case 2:
+				baseSprite->drawIcon(playerTiltRight2, playerX, playerY, 11, 14, 1, TFT_BLACK);
+				break;
+			case 3:
+				baseSprite->drawIcon(playerTiltRight3, playerX, playerY, 10, 14, 1, TFT_BLACK);
+				break;
+			default:
+				break;
+		}
+	}
+	else if (rightState){
+		switch(leanRightIgnitionPlayerFrame){
+
+			case 1:
+				baseSprite->drawIcon(ignitionTiltRight1, playerX, playerY, 12, 18, 1, TFT_BLACK);
+				break;
+			case 2:
+				baseSprite->drawIcon(ignitionTiltRight2, playerX, playerY, 11, 17, 1, TFT_BLACK);
+				break;
+			case 3:
+				baseSprite->drawIcon(ignitionTiltRight3, playerX, playerY, 10, 17, 1, TFT_BLACK);
+				break;
+			default:
+				break;
+		}
+	}
+
+	else if(upState){
 		switch(highIgnitionPlayerFrame){
 
 			case 1:
@@ -217,11 +367,13 @@ void GameState::drawPlayer(){
 			default:
 				break;
 		}
-	}else if(!upState && downState){
+	}
+	else if(downState){
 
 		baseSprite->drawIcon(playerShip, playerX, playerY, 12, 18, 1, TFT_BLACK);
 
-	}else{
+	}
+	else{
 		switch(lowIgnitionPlayerFrame){
 
 			case 1:
@@ -281,6 +433,36 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN1){
 
+		alien.y += speed * t / 15000;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN2){
+
+		alien.y += speed * t / 14000;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN3){
+
 		alien.y += speed * t / 13000;
 
 		if(alien.y > 128){
@@ -305,12 +487,8 @@ void GameState::objectMovement(Object &object, uint t){
 
 			fuelCheck = false;
 
-			float pomX = object.x;
-
-			do {
-				object.x = (float) random(10, 98);
-				object.y = 0;
-			} while(abs(pomX - object.x) < 30);
+			object.x = (float) random(20, 100);
+			object.y = 0;
 
 		}
 	}
@@ -323,12 +501,9 @@ void GameState::objectMovement(Object &object, uint t){
 
 			oreCheck = false;
 
-			float pomX = object.x;
+			object.x = (float) random(20, 100);
+			object.y = 0;
 
-			do {
-				object.x = (float) random(10, 98);
-				object.y = 0;
-			} while(abs(pomX - object.x) < 30);
 		}
 	}
 
@@ -354,7 +529,7 @@ void GameState::checkIfDead(Alien &alien){
 		previousInvisibilityTime = currentInvisibilityTime = millis();
 
 		if(lives == 0){
-			gameOver();
+			game->changeState(new GameOverState(ore));
 		}
 	}
 }
@@ -372,9 +547,10 @@ void GameState::checkIfCollected(Object &object){
 			ore++;
 
 			object.x = 0;
-			object.y = 0;
+			object.y = (float)random(20,100);
 
 			oreCheck = false;
+			previousOreTime = millis();
 		}
 	}else if(object.type == Object::FUEL){
 
@@ -384,24 +560,27 @@ void GameState::checkIfCollected(Object &object){
 		if(sqrt(pow(dx, 2) + pow(dy, 2)) <
 		   sqrt(pow(6, 2) + pow(9, 2)) + sqrt(pow(4, 2) + pow(4, 2))){
 
+
 			fuelBar.x -= 10;
 			fuelBar.width += 10;
 
 			object.x = 0;
-			object.y = 0;
+			object.y = (float)random(20,100);
 
 			fuelCheck = false;
+			previousFuelTime = millis();
 
 		}
 	}
-
 }
-
 
 void GameState::states(uint t){
 
-	if(newLevel)
-		levelHandler();
+	if(newLevel){
+		levelHandler();										// level control function
+
+		fuelBar = {65, 122, 64, 5};		// restoring fuel bar on every level
+	}																	// new level states
 
 
 	if(pausedState){
@@ -411,43 +590,60 @@ void GameState::states(uint t){
 			pausedState = false;
 			aState = false;
 
-		}else if(instance->bState){
+		}				// resume game
+		else if(instance->bState){
 
 			game->changeState(new Menu());
-		}
-	}else if(betweenLevelState){
+		}			// quit game
+	}																// pause states
+
+	else if(betweenLevelState){
+
 		if(instance->aState){
 			betweenLevelState = false;
+			previousLevelTime = millis();
+
 			instance->aState = false;
-		}
-	}else{
+		}						// start new level
+
+		backgroundY1+=(float)speed * t / 80000;			// controlling background
+		if(backgroundY1>127)
+			backgroundY1 = 0;
+		backgroundY2+=(float)speed * t / 80000;
+		if(backgroundY2 > 0)
+			backgroundY2 = -127;
+
+
+	}														// between level states
+
+	else{
 
 		if(instance->upState){
 			playerY -= speed * t / 13000;
 			if(playerY <= 0)
 				playerY = 0;
 
-		}
+		}							// controlling movement
 		if(instance->leftState){
 			playerX -= speed * t / 13000;
 			if(playerX <= 0)
 				playerX = 0;
 
 
-		}
+		}						// controlling movement
 		if(instance->downState){
 			playerY += speed * t / 13000;
 			if(playerY >= 110)
 				playerY = 110;
 
-		}
+		}						// controlling movement
 		if(instance->rightState){
 			playerX += speed * t / 13000;
 			if(playerX >= 116)
 				playerX = 116;
 
-		}
-		if(instance->aState){
+		}						// controlling movement
+		if(instance->aState && !playerInvisible){
 
 			if(invisibilityCounter > 0){
 
@@ -456,18 +652,21 @@ void GameState::states(uint t){
 
 			}
 			instance->aState = false;
-			Input::getInstance()->removeBtnPressCallback(BTN_A);
-		}
+		}							// invisibility
 		if(instance->bState){
 
 			pausedState = true;
 			instance->bState = false;
-		}
+		}							// paused state
 
-		fuelBar.x += speed * t / 800000;
-		fuelBar.width -= speed * t / 800000;
+		fuelBar.x += speed * t / 1000000;						// fuel bar states
+		fuelBar.width -= speed * t / 1000000;
 		if(fuelBar.width <= 0)
-			gameOver();
+			game->changeState(new GameOverState(ore));
+		else if(fuelBar.width >= 64){
+			fuelBar.x = 65;
+			fuelBar.width = 64;
+		}
 
 		invisibility();
 
@@ -478,46 +677,99 @@ void GameState::states(uint t){
 				checkIfDead(aliens[i]);
 			if(dead)
 				break;
-		}
+		}				// alien movement
 
 		for(int i = 0; i < objects.size(); ++i){
 
 			objectMovement(objects[i], t);
 			checkIfCollected(objects[i]);
-		}
+		}			// object movement & interaction
 
 
 		if(millis() - previousOreTime > oreTime){
 
 			oreCheck = true;
 			previousOreTime = millis();
-		}
+		}																		// new ore every oreTime
 		if(millis() - previousFuelTime > fuelTime){
 
 			fuelCheck = true;
 			previousFuelTime = millis();
-		}
+		}																		// new fuel every fuelTime
 
 		if(millis() - previousLowIgnitionPlayerTime > lowIgnitionTimePerFrame){
 			lowIgnitionPlayerFrame++;
 			if(lowIgnitionPlayerFrame > 3)
 				lowIgnitionPlayerFrame = 1;
 			previousLowIgnitionPlayerTime = millis();
-		}
+		}											//low ignition .gif
 		if(millis() - previousHighIgnitionPlayerTime > highIgnitionTimePerFrame){
 			highIgnitionPlayerFrame++;
 			if(highIgnitionPlayerFrame > 4)
 				highIgnitionPlayerFrame = 1;
 			previousHighIgnitionPlayerTime = millis();
-		}
+		}										//high ignition .gif
 
-		if (dead){
+		if(millis() - previousLeanLeftPlayerTime > leanLeftTimePerFrame){
+			leanLeftPlayerFrame++;
+			if(leanLeftPlayerFrame > 2)
+				leanLeftPlayerFrame = 2;
+			previousLeanLeftPlayerTime = millis();
+		}												//lean left no gas .gif
+		if(millis() - previousLeanRightPlayerTime > leanRightTimePerFrame){
+			leanRightPlayerFrame++;
+			if(leanRightPlayerFrame > 2)
+				leanRightPlayerFrame = 2;
+			previousLeanRightPlayerTime = millis();
+		}												//lean right no gas .gif
+
+		if(millis() - previousLeanLeftIgnitionPlayerTime > leanLeftIgnitionTimePerFrame){
+			leanLeftIgnitionPlayerFrame++;
+			if(leanLeftIgnitionPlayerFrame > 2)
+				leanLeftIgnitionPlayerFrame = 2;
+			previousLeanLeftIgnitionPlayerTime = millis();
+		}								//lean left ignition .gif
+		if(millis() - previousLeanRightIgnitionPlayerTime > leanRightIgnitionTimePerFrame){
+			leanRightIgnitionPlayerFrame++;
+			if(leanRightIgnitionPlayerFrame > 2)
+				leanRightIgnitionPlayerFrame = 2;
+			previousLeanRightIgnitionPlayerTime = millis();
+		}								//lean right ignition .gif
+
+		if(dead){
 			playerY -= speed * t / 13000;
-			if (playerY <= 90)
+			if(playerY <= 90)
 				dead = false;
-		}
+		}											// spawning when dead
 
-	}
+		if(millis() - previousLevelTime > levelTime){
+
+			levelEnd = true;
+			if(lvlEndPlanetY >= 20)
+				lvlEndPlanetY = 20;
+			lvlEndPlanetY += speed * t / 26000;
+
+
+			if(millis() - (previousLevelTime + 5000) > levelTime){
+				newLevel = true;
+				level++;
+				betweenLevelState = true;
+				levelEnd = false;
+
+				previousLevelTime = millis();
+			}
+		}		// new level every levelTime
+
+		backgroundY1+=(float)speed * t / 50000;					// controlling background
+		if(backgroundY1>127)
+			backgroundY1 = 0;
+		backgroundY2+=(float)speed * t / 50000;
+		if(backgroundY2 > 0)
+			backgroundY2 = -127;
+
+		//engine.update(playerX+6,playerY+18);
+
+	}																			// in game states
 
 }
 
@@ -527,12 +779,17 @@ void GameState::levelHandler(){
 
 		case 1:
 			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN1});
+
 			break;
 		case 2:
+			aliens.pop_back();
 			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN2});
+
 			break;
 		case 3:
+			aliens.pop_back();
 			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
+
 			break;
 		case 4:
 			break;
@@ -554,32 +811,28 @@ void GameState::levelHandler(){
 	newLevel = false;
 }
 
-void GameState::gameOver(){
-
-	game->changeState(new GameOverState(ore));
-
-}
-
-
 void GameState::invisibility(){
 
-	if(playerInvisible)
+	if(playerInvisible){
 		currentInvisibilityTime = millis();
 
-	if(currentInvisibilityTime - previousInvisibilityTime > invisibilityTime){
+		if(currentInvisibilityTime - previousInvisibilityTime > invisibilityTime){
 
-		playerInvisible = false;
-		if (!dead)
-			invisibilityCounter--;
-		currentInvisibilityTime = previousInvisibilityTime = millis();
+			playerInvisible = false;
+			if(!dead)
+				invisibilityCounter--;
+			currentInvisibilityTime = previousInvisibilityTime = millis();
 
-		Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
+			Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
+		}
 	}
 }
 
 
 void GameState::drawBackground(){
 
+	baseSprite->drawIcon(gameStateBackground,backgroundX1,backgroundY1,128,128);
+	baseSprite->drawIcon(gameStateBackground,backgroundX2,backgroundY2,128,128);
 }
 
 void GameState::drawCounterString(){
@@ -616,18 +869,18 @@ void GameState::drawFuelBar(){
 
 void GameState::drawPausedState(){
 
-	baseSprite->drawIcon(redFlag, 59, 70, 10, 10, 2, TFT_BLACK);
+	baseSprite->drawIcon(redFlag, 45, 65, 10, 10, 3, TFT_BLACK);
 
 	baseSprite->setTextSize(2);
 	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawString(pause, 30, 30);
+	baseSprite->drawString(pause, 20, 20);
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawString(resume, 1, 120);
-	baseSprite->drawString(quit, 80, 120);
+	baseSprite->drawString(resume, 1, 118);
+	baseSprite->drawString(quit, 80, 118);
 }
 
 void GameState::drawBetweenLevelState(){
@@ -656,17 +909,75 @@ void GameState::drawBetweenLevelState(){
 			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 4:
+			baseSprite->drawIcon(planet4, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 5:
+			baseSprite->drawIcon(planet5, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 6:
+			baseSprite->drawIcon(planet6, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 7:
+			baseSprite->drawIcon(planet7, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 8:
+			baseSprite->drawIcon(planet8, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
+			break;
+		case 9:
+			baseSprite->drawIcon(planet9, 42, 20, 45, 45, 1, TFT_BLACK);
+			baseSprite->drawString(levelNumber, 42, 80);
+			baseSprite->drawNumber(level, 80, 80);
+			break;
+		case 10:
+			break;
+		default:
+			break;
+
+	}
+
+}
+
+void GameState::drawLevelEnd(){
+
+	switch(level){
+
+		case 1:
+			baseSprite->drawIcon(planet2, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
+			break;
+		case 2:
+			baseSprite->drawIcon(planet3, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
+			break;
+		case 3:
+			baseSprite->drawIcon(planet4, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
+			break;
+		case 4:
+			baseSprite->drawIcon(planet5, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
+			break;
+		case 5:
+			baseSprite->drawIcon(planet6, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
+			break;
+		case 6:
+			baseSprite->drawIcon(planet7, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
+			break;
+		case 7:
+			baseSprite->drawIcon(planet8, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
+			break;
+		case 8:
+			baseSprite->drawIcon(planet9, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
 			break;
 		case 9:
 			break;
+
 		default:
 			break;
 
