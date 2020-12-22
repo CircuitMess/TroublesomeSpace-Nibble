@@ -5,6 +5,7 @@
 #include "Menu.h"
 #include "GameState.h"
 #include "ShowHighscoreState.h"
+#include "EraseHighscoreState.h"
 #include "bitmaps/states/homescreen.hpp"
 
 Menu *Menu::instance = nullptr;
@@ -31,6 +32,8 @@ void Menu::enter(Game &_game){
 	downState = false;
 	aState = false;
 
+	menuOrder = 1;
+
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
@@ -41,9 +44,6 @@ void Menu::enter(Game &_game){
 }
 
 void Menu::exit(){
-
-	newGameOption = true;
-	highscoreOption = false;
 
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
 	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
@@ -65,32 +65,50 @@ void Menu::loop(uint t){
 
 void Menu::states(){
 
-	if(upState){
-		newGameOption = true;
-		highscoreOption = false;
+	if(instance->upState){
+		if(menuOrder == 2)
+			menuOrder = 1;
+		else if (menuOrder == 3)
+			menuOrder = 2;
+		else if (menuOrder == 4)
+			menuOrder = 3;
+
 		step = 0;
-		prevousArrowTime = millis();
+		previousArrowTime = millis();
+		instance->upState = false;
 	}
-	if(downState){
-		newGameOption = false;
-		highscoreOption = true;
+	if(instance->downState){
+		if(menuOrder == 1)
+			menuOrder = 2;
+		else if (menuOrder == 2)
+			menuOrder = 3;
+		else if (menuOrder == 3)
+			menuOrder = 4;
+
 		step = 0;
-		prevousArrowTime = millis();
+		previousArrowTime = millis();
+		instance->downState =false;
 	}
 
-	if(millis() - prevousArrowTime > 200){
+	if(millis() - previousArrowTime > 200){
 		step++;
 		if(step > 2)
 			step = 0;
-		prevousArrowTime = millis();
+		previousArrowTime = millis();
 	}
 
-	if(aState && newGameOption){
+	if(aState && menuOrder == 1){
 		game->changeState(new GameState());
 	}
-	if(aState && highscoreOption){
+	if(aState && menuOrder == 2){
 		Melody.playMelody(STOP,false);
 		game->changeState(new ShowHighscoreState());
+	}
+	if(aState && menuOrder == 3){
+		game->changeState(new EraseHighscoreState());
+	}
+	if(aState && menuOrder == 4){
+
 	}
 }
 
@@ -102,11 +120,17 @@ void Menu::draw(){
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_WHITE);
 
-	if(newGameOption){
+	if(menuOrder == 1){
 		baseSprite->drawString(newGame, 40, 105);
 	}
-	if(highscoreOption){
+	if(menuOrder == 2){
 		baseSprite->drawString(highScore, 35, 105);
+	}
+	if(menuOrder == 3){
+		baseSprite->drawString(eraseHighscore, 20, 105);
+	}
+	if(menuOrder == 4){
+		baseSprite->drawString(info, 52, 105);
 	}
 
 	drawTriangleArrows();
@@ -114,11 +138,19 @@ void Menu::draw(){
 
 void Menu::drawTriangleArrows(){
 
-	if(newGameOption){
-		baseSprite->drawTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
+	if(menuOrder == 1){
+		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
 	}
-	if(highscoreOption){
-		baseSprite->drawTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
+	if(menuOrder == 2){
+		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
+		baseSprite->fillTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
+	}
+	if(menuOrder == 3){
+		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
+		baseSprite->fillTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
+	}
+	if(menuOrder == 4){
+		baseSprite->fillTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
 	}
 }
 

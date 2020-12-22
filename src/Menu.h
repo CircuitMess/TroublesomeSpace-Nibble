@@ -40,13 +40,15 @@ private:
 
 	uint melodyTime = 0;
 
-	uint prevousArrowTime = 0;
+	uint previousArrowTime = 0;
 	int step = 0;
 
-	bool newGameOption = true;
-	bool highscoreOption = false;
+	int menuOrder = 0;
+
 	const char *newGame = "New Game";
 	const char *highScore = "High Score";
+	const char *eraseHighscore = "Erase High Score";
+	const char *info = "Info";
 };
 
 

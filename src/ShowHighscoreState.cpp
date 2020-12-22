@@ -4,7 +4,6 @@
 //
 
 #include "ShowHighscoreState.h"
-#include "EraseHighscoreState.h"
 #include "GameState.h"
 #include "Highscore/Highscore.h"
 #include "bitmaps/states/highscore.hpp"
@@ -25,28 +24,18 @@ void ShowHighscoreState::enter(Game &_game){
 
 	game = &_game;
 
-	aState = false;
 	bState = false;
 
 	baseSprite->clear(TFT_BLACK);
 
-	Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_B, buttonBPressed);
-
-	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
 	Input::getInstance()->setBtnReleaseCallback(BTN_B, buttonBReleased);
-
 }
 
 void ShowHighscoreState::exit(){
 
-
-	Input::getInstance()->removeBtnPressCallback(BTN_A);
 	Input::getInstance()->removeBtnPressCallback(BTN_B);
-
-	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_B);
-
 }
 
 void ShowHighscoreState::loop(uint){
@@ -57,10 +46,15 @@ void ShowHighscoreState::loop(uint){
 
 	baseSprite->clear(TFT_BLACK);
 
-	if(aState)
-		game->changeState(new EraseHighscoreState());
 	if(bState)
 		game->changeState(new Menu());
+
+	if(millis() - previousArrowTime > 200){
+		step++;
+		if(step > 2)
+			step = 0;
+		previousArrowTime = millis();
+	}
 
 }
 
@@ -71,9 +65,9 @@ void ShowHighscoreState::draw(){
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawString(backMessage, 80, 120);
-	baseSprite->drawString(deleteMessage, 0, 120);
+	baseSprite->drawString(back, 10, 2);
 
+	baseSprite->fillTriangle(3-step, 5, 8-step, 2, 8-step, 8, TFT_LIGHTGREY);
 
 	for(int i = 0; i < 5; i++){
 
@@ -85,12 +79,6 @@ void ShowHighscoreState::draw(){
 			baseSprite->printf("   -     -  ");
 		}
 	}
-
-}
-
-void ShowHighscoreState::buttonAPressed(){
-
-	instance->aState = true;
 }
 
 void ShowHighscoreState::buttonBPressed(){
@@ -98,13 +86,7 @@ void ShowHighscoreState::buttonBPressed(){
 	instance->bState = true;
 }
 
-void ShowHighscoreState::buttonAReleased(){
-
-	instance->aState = false;
-}
-
 void ShowHighscoreState::buttonBReleased(){
 
 	instance->bState = false;
 }
-

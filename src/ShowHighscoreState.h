@@ -24,9 +24,7 @@ public:
 
 	void draw();
 
-	static void buttonAPressed();
 	static void buttonBPressed();
-	static void buttonAReleased();
 	static void buttonBReleased();
 
 private:
@@ -35,12 +33,13 @@ private:
 
 	Menu *menu;
 
-	bool aState;
 	bool bState;
 
+	uint previousArrowTime = 0;
+	int step = 0;
+
 	const char *highscore = "Highscore:";
-	const char *backMessage = "B: Menu";
-	const char *deleteMessage = "A: Delete";
+	const char *back = "B";
 
 };
 
