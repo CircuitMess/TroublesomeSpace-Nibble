@@ -48,6 +48,7 @@
 #include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight1.hpp"
 #include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight2.hpp"
 #include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight3.hpp"
+#include "bitmaps/states/background.hpp"
 
 GameState *GameState::instance = nullptr;
 
@@ -56,9 +57,9 @@ GameState::GameState(){
 	display = Nibble.getDisplay();
 	baseSprite = display->getBaseSprite();
 
-	//LoopManager::addListener(new ParticleEngine);
-
 	instance = this;
+
+	engine = new ParticleEngine(baseSprite);
 
 	objects.push_back({(float) random(20, 100), 0, Object::FUEL});
 	objects.push_back({(float) random(20, 100), 0, Object::ORE});
@@ -87,6 +88,7 @@ GameState::GameState(){
 	previousOreTime = 0;
 	previousLevelTime = 0;
 
+	fuelDx = 1;
 }
 
 void GameState::loop(uint time){
@@ -102,6 +104,7 @@ void GameState::loop(uint time){
 		display->commit();
 
 		states(time);
+
 	}else if(betweenLevelState){
 
 		//melodyTime = Melody.playMelody(START, false);
@@ -122,12 +125,12 @@ void GameState::loop(uint time){
 		}
 
 		baseSprite->clear(TFT_BLACK);
-
+		baseSprite->drawIcon(background,0,0,128,128);
 		draw();
+		states(time);
 
 		display->commit();
 
-		states(time);
 
 	}
 }
@@ -135,28 +138,7 @@ void GameState::loop(uint time){
 void GameState::enter(Game &_game){
 
 	game = &_game;
-/*
-	playerX = 58;
-	playerY = 90;
 
-	ore = 0;
-	lives = 30;
-	invisibilityCounter = 3;
-	melodyTime = 0;
-	loopPlaying = true;
-	melodyPreviousMillis = 0;
-	dead = false;
-
-	fuelBar = {65, 122, 64, 5};
-
-	betweenLevelState = true;
-	newLevel = true;
-	level = 1;
-
-	previousFuelTime = 0;
-	previousOreTime = 0;
-	previousLevelTime = 0;
-*/
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_LEFT, buttonLeftPressed);
@@ -180,7 +162,7 @@ void GameState::exit(){
 	for(int i = 0; i < objects.size(); i++)
 		objects.pop_back();
 
-	//engine.removeAll();
+	engine->removeAll();
 
 	oreCheck = false;
 	fuelCheck = false;
@@ -488,7 +470,7 @@ void GameState::objectMovement(Object &object, uint t){
 			fuelCheck = false;
 
 			object.x = (float) random(20, 100);
-			object.y = 0;
+			object.y = -10;
 
 		}
 	}
@@ -502,7 +484,7 @@ void GameState::objectMovement(Object &object, uint t){
 			oreCheck = false;
 
 			object.x = (float) random(20, 100);
-			object.y = 0;
+			object.y = -10;
 
 		}
 	}
@@ -515,7 +497,7 @@ void GameState::checkIfDead(Alien &alien){
 	uint dy = abs((alien.y + 5) - (playerY + 9));
 
 	if(sqrt(pow(dx, 2) + pow(dy, 2)) <
-	   sqrt(pow(6, 2) + pow(9, 2)) + sqrt(pow(5, 2) + pow(5, 2))){
+	   PLAYER_RADIUS + ALIEN_RADIUS){
 
 		//Piezo.tone(1000, 300);
 
@@ -536,36 +518,42 @@ void GameState::checkIfDead(Alien &alien){
 
 void GameState::checkIfCollected(Object &object){
 
-	if(object.type == Object::ORE){
+	if(object.type == Object::ORE){											// check if ore is collected
 
 		uint dx = abs((object.x + 1.5) - (playerX + 6));
 		uint dy = abs((object.y + 1.5) - (playerY + 9));
 
 		if(sqrt(pow(dx, 2) + pow(dy, 2)) <
-		   sqrt(pow(6, 2) + pow(9, 2)) + sqrt(pow(1.5, 2) + pow(1.5, 2))){
+		   PLAYER_RADIUS + ORE_RADIUS){
 
 			ore++;
 
-			object.x = 0;
-			object.y = (float)random(20,100);
+			object.x = (float)random(20,100);
+			object.y = 0;
 
 			oreCheck = false;
 			previousOreTime = millis();
 		}
-	}else if(object.type == Object::FUEL){
+	}else if(object.type == Object::FUEL){									// check if fuel is collected
 
 		uint dx = abs((object.x + 4) - (playerX + 6));
 		uint dy = abs((object.y + 4) - (playerY + 9));
 
 		if(sqrt(pow(dx, 2) + pow(dy, 2)) <
-		   sqrt(pow(6, 2) + pow(9, 2)) + sqrt(pow(4, 2) + pow(4, 2))){
+		   PLAYER_RADIUS + FUEL_RADIUS){
 
 
-			fuelBar.x -= 10;
-			fuelBar.width += 10;
+			if(fuelBar.width >= 64){
+				fuelBar.x = 65;
+				fuelBar.width = 64;
+			}
+			else{
+				fuelBar.x -= 10;
+				fuelBar.width += 10;
+			}
 
-			object.x = 0;
-			object.y = (float)random(20,100);
+			object.x = (float)random(20,100);
+			object.y = 0;
 
 			fuelCheck = false;
 			previousFuelTime = millis();
@@ -577,10 +565,10 @@ void GameState::checkIfCollected(Object &object){
 void GameState::states(uint t){
 
 	if(newLevel){
-		levelHandler();										// level control function
-
-		fuelBar = {65, 122, 64, 5};		// restoring fuel bar on every level
-	}																	// new level states
+		levelHandler();                                        // level control function
+		lvlEndPlanetY = -45;
+		fuelBar = {65, 122, 64, 5};        // restoring fuel bar on every level
+	}                                                                    // new level states
 
 
 	if(pausedState){
@@ -590,59 +578,62 @@ void GameState::states(uint t){
 			pausedState = false;
 			aState = false;
 
-		}				// resume game
+		}                // resume game
 		else if(instance->bState){
 
 			game->changeState(new Menu());
-		}			// quit game
-	}																// pause states
+		}            // quit game
+	}                                                                // pause states
 
 	else if(betweenLevelState){
 
-		if(instance->aState){
+		if(instance->aState){															// start new lvl
 			betweenLevelState = false;
 			previousLevelTime = millis();
 
-			instance->aState = false;
-		}						// start new level
+			previousFuelTime = millis();												// update previous fuel time
+			previousOreTime = millis();													// update previous ore time
 
-		backgroundY1+=(float)speed * t / 80000;			// controlling background
-		if(backgroundY1>127)
+			instance->aState = false;
+		}
+
+		backgroundY1 += (float) speed * t / 100000;            							// controlling background
+		if(backgroundY1 > 127)
 			backgroundY1 = 0;
-		backgroundY2+=(float)speed * t / 80000;
+		backgroundY2 += (float) speed * t / 100000;
 		if(backgroundY2 > 0)
 			backgroundY2 = -127;
 
 
-	}														// between level states
+	}                                                        							// between level states
 
-	else{
+	else{                                                           					// in game states
 
 		if(instance->upState){
 			playerY -= speed * t / 13000;
 			if(playerY <= 0)
 				playerY = 0;
 
-		}							// controlling movement
+		}                           							// controlling movement
 		if(instance->leftState){
 			playerX -= speed * t / 13000;
 			if(playerX <= 0)
 				playerX = 0;
 
 
-		}						// controlling movement
+		}                        							// controlling movement
 		if(instance->downState){
 			playerY += speed * t / 13000;
 			if(playerY >= 110)
 				playerY = 110;
 
-		}						// controlling movement
+		}                        							// controlling movement
 		if(instance->rightState){
 			playerX += speed * t / 13000;
 			if(playerX >= 116)
 				playerX = 116;
 
-		}						// controlling movement
+		}                        							// controlling movement
 		if(instance->aState && !playerInvisible){
 
 			if(invisibilityCounter > 0){
@@ -652,105 +643,111 @@ void GameState::states(uint t){
 
 			}
 			instance->aState = false;
-		}							// invisibility
+		}                            		// invisibility
 		if(instance->bState){
 
 			pausedState = true;
 			instance->bState = false;
-		}							// paused state
+		}                            							// paused state
 
-		fuelBar.x += speed * t / 1000000;						// fuel bar states
-		fuelBar.width -= speed * t / 1000000;
-		if(fuelBar.width <= 0)
+
+		if(fuelBar.width <= 0)															// fuel bar states
 			game->changeState(new GameOverState(ore));
-		else if(fuelBar.width >= 64){
-			fuelBar.x = 65;
-			fuelBar.width = 64;
+		else{
+			fuelBar.x += speed * t * fuelDx/ 1000000;
+			fuelBar.width -= speed * t * fuelDx/ 1000000;
 		}
 
 		invisibility();
 
-		for(int i = 0; i < aliens.size(); ++i){
+		for(int i = 0; i < aliens.size(); ++i){											// alien movement
 
 			alienMovement(aliens[i], t);
 			if(!playerInvisible)
 				checkIfDead(aliens[i]);
 			if(dead)
 				break;
-		}				// alien movement
+		}
 
-		for(int i = 0; i < objects.size(); ++i){
+		for(int i = 0; i < objects.size(); ++i){										// object movement & interaction
 
 			objectMovement(objects[i], t);
 			checkIfCollected(objects[i]);
-		}			// object movement & interaction
+		}
 
 
 		if(millis() - previousOreTime > oreTime){
 
 			oreCheck = true;
 			previousOreTime = millis();
-		}																		// new ore every oreTime
+		}                                                                        // new ore every oreTime
 		if(millis() - previousFuelTime > fuelTime){
 
 			fuelCheck = true;
 			previousFuelTime = millis();
-		}																		// new fuel every fuelTime
+		}                                                                        // new fuel every fuelTime
 
 		if(millis() - previousLowIgnitionPlayerTime > lowIgnitionTimePerFrame){
 			lowIgnitionPlayerFrame++;
 			if(lowIgnitionPlayerFrame > 3)
 				lowIgnitionPlayerFrame = 1;
 			previousLowIgnitionPlayerTime = millis();
-		}											//low ignition .gif
+		}                                            //low ignition .gif
 		if(millis() - previousHighIgnitionPlayerTime > highIgnitionTimePerFrame){
 			highIgnitionPlayerFrame++;
 			if(highIgnitionPlayerFrame > 4)
 				highIgnitionPlayerFrame = 1;
 			previousHighIgnitionPlayerTime = millis();
-		}										//high ignition .gif
+		}                                        //high ignition .gif
 
 		if(millis() - previousLeanLeftPlayerTime > leanLeftTimePerFrame){
 			leanLeftPlayerFrame++;
 			if(leanLeftPlayerFrame > 2)
 				leanLeftPlayerFrame = 2;
 			previousLeanLeftPlayerTime = millis();
-		}												//lean left no gas .gif
+		}                                                //lean left no gas .gif
 		if(millis() - previousLeanRightPlayerTime > leanRightTimePerFrame){
 			leanRightPlayerFrame++;
 			if(leanRightPlayerFrame > 2)
 				leanRightPlayerFrame = 2;
 			previousLeanRightPlayerTime = millis();
-		}												//lean right no gas .gif
+		}                                                //lean right no gas .gif
 
 		if(millis() - previousLeanLeftIgnitionPlayerTime > leanLeftIgnitionTimePerFrame){
 			leanLeftIgnitionPlayerFrame++;
 			if(leanLeftIgnitionPlayerFrame > 2)
 				leanLeftIgnitionPlayerFrame = 2;
 			previousLeanLeftIgnitionPlayerTime = millis();
-		}								//lean left ignition .gif
+		}                                //lean left ignition .gif
 		if(millis() - previousLeanRightIgnitionPlayerTime > leanRightIgnitionTimePerFrame){
 			leanRightIgnitionPlayerFrame++;
 			if(leanRightIgnitionPlayerFrame > 2)
 				leanRightIgnitionPlayerFrame = 2;
 			previousLeanRightIgnitionPlayerTime = millis();
-		}								//lean right ignition .gif
+		}                                //lean right ignition .gif
 
 		if(dead){
-			playerY -= speed * t / 13000;
 			if(playerY <= 90)
-				dead = false;
-		}											// spawning when dead
+				playerY = 90;
+			else
+				playerY -= speed * t / 13000;
 
-		if(millis() - previousLevelTime > levelTime){
+		}                                            					// spawning when dead
+
+		if(millis() - previousLevelTime > levelTime){								// lvl ending
 
 			levelEnd = true;
 			if(lvlEndPlanetY >= 20)
 				lvlEndPlanetY = 20;
-			lvlEndPlanetY += speed * t / 26000;
+			else
+				lvlEndPlanetY += speed * t / 26000;
 
+			fuelCheck = false;														// stop fuel & ore when lvl end
+			previousFuelTime = 0;
+			oreCheck = false;
+			previousOreTime = 0;
 
-			if(millis() - (previousLevelTime + 5000) > levelTime){
+			if(millis() - (previousLevelTime + 5000) > levelTime){					// 5 sec after lvl end -> change lvl
 				newLevel = true;
 				level++;
 				betweenLevelState = true;
@@ -758,19 +755,18 @@ void GameState::states(uint t){
 
 				previousLevelTime = millis();
 			}
-		}		// new level every levelTime
+		}
 
-		backgroundY1+=(float)speed * t / 50000;					// controlling background
-		if(backgroundY1>127)
+		backgroundY1 += (float) speed * t / 50000;                    				// controlling background
+		if(backgroundY1 > 127)
 			backgroundY1 = 0;
-		backgroundY2+=(float)speed * t / 50000;
+		backgroundY2 += (float) speed * t / 50000;
 		if(backgroundY2 > 0)
 			backgroundY2 = -127;
 
-		//engine.update(playerX+6,playerY+18);
-
-	}																			// in game states
-
+		engine->update(playerX + 6, playerY + 18);					// particle engine
+		engine->loop(t);
+	}
 }
 
 void GameState::levelHandler(){
@@ -779,29 +775,38 @@ void GameState::levelHandler(){
 
 		case 1:
 			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN1});
-
+			fuelDx += 0.2;
 			break;
+
 		case 2:
 			aliens.pop_back();
 			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN2});
-
+			fuelDx += 0.2;
 			break;
+
 		case 3:
 			aliens.pop_back();
 			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
-
+			fuelDx += 0.2;
 			break;
+
 		case 4:
+			fuelDx += 0.2;
 			break;
 		case 5:
+			fuelDx += 0.2;
 			break;
 		case 6:
+			fuelDx += 0.2;
 			break;
 		case 7:
+			fuelDx += 0.2;
 			break;
 		case 8:
+			fuelDx += 0.2;
 			break;
 		case 9:
+			fuelDx += 0.2;
 			break;
 		default:
 			break;
@@ -821,6 +826,8 @@ void GameState::invisibility(){
 			playerInvisible = false;
 			if(!dead)
 				invisibilityCounter--;
+			else
+				dead = false;
 			currentInvisibilityTime = previousInvisibilityTime = millis();
 
 			Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
