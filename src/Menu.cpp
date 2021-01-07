@@ -53,7 +53,6 @@ void Menu::exit(){
 	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 }
 
-
 void Menu::loop(uint t){
 
 	baseSprite->clear(TFT_BLACK);
