@@ -49,6 +49,7 @@
 #include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight2.hpp"
 #include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight3.hpp"
 #include "bitmaps/states/background.hpp"
+#include "bitmaps/states/pauseScreen.hpp"
 
 GameState *GameState::instance = nullptr;
 
@@ -125,7 +126,7 @@ void GameState::loop(uint time){
 		}
 
 		baseSprite->clear(TFT_BLACK);
-		baseSprite->drawIcon(background,0,0,128,128);
+
 		draw();
 		states(time);
 
@@ -624,8 +625,8 @@ void GameState::states(uint t){
 		}                        							// controlling movement
 		if(instance->downState){
 			playerY += speed * t / 13000;
-			if(playerY >= 110)
-				playerY = 110;
+			if(playerY >= 103)
+				playerY = 103;
 
 		}                        							// controlling movement
 		if(instance->rightState){
@@ -876,12 +877,7 @@ void GameState::drawFuelBar(){
 
 void GameState::drawPausedState(){
 
-	baseSprite->drawIcon(redFlag, 45, 65, 10, 10, 3, TFT_BLACK);
-
-	baseSprite->setTextSize(2);
-	baseSprite->setTextFont(2);
-	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawString(pause, 20, 20);
+	baseSprite->drawIcon(pauseScreen, 0, 0, 128, 128);
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
