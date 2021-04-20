@@ -15,30 +15,31 @@ class ParticleEngine : public LoopListener {
 
 public:
 
-	ParticleEngine();
+	explicit ParticleEngine(Sprite *baseSprite);
+	~ParticleEngine();
 
-	void loop(uint);
+	void loop(uint)override;
 
-	void update(float engineX, float engineY);
+	void update(uint8_t engineX, uint8_t engineY);
 
 	void createParticle();
 
-	void removeParticle();
+	void removeParticle(Particle *particleToRemove);
 
 	void removeAll();
 
+
 private:
+
+	Sprite *baseSprite;
 
 	Vector<Particle*> particles;
 
-	uint creationFrequency = 1000;
-
+	uint16_t creationFrequency = 100;
 	uint previousCreationTime = 0;
 
-	float engineX = 0;
-	float engineY = 0;
-
-	float delta = 18;
+	uint8_t engineX = 0;
+	uint8_t engineY = 0;
 
 };
 

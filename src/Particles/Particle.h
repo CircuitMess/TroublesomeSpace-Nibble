@@ -8,19 +8,13 @@
 #include <Display/Display.h>
 #include <Display/Sprite.h>
 
-struct Particles{
-
-	float posX;
-	float posY;
-};
-
 class ParticleEngine;
 
 class Particle : public LoopListener {
 
 public:
 
-	Particle(ParticleEngine *particle);
+	Particle(ParticleEngine *particle, Sprite *baseSprite, uint8_t engineX, uint8_t engineY);
 
 	void draw();
 
@@ -28,20 +22,18 @@ public:
 
 private:
 
-	void drawParticles(Particles &particle);
-
 	Display *display;
 	Sprite *baseSprite;
 
-	Vector<Particles> particles;
-
 	ParticleEngine *engine;
 
-	uint destructionTime = 2000;
+	const uint8_t delta = 10;
 
-	uint previousDestructionTime = 0;
+	float particleX;
+	float particleY;
 
-
+	uint32_t particleMovementTime = millis();
+	uint8_t movementModifier = 0;
 };
 
 #endif //NIBBLE_NEW_PARTICLE_H

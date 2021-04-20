@@ -1,52 +1,57 @@
 #include "ParticleEngine.h"
-#include "Particle.h"
 
-ParticleEngine::ParticleEngine(){
+ParticleEngine::ParticleEngine(Sprite *_baseSprite){
 
+	baseSprite = _baseSprite;
+
+	engineX = 0;
+	engineY = 0;
+	previousCreationTime = 0;
 
 }
 
-void ParticleEngine::loop(uint){
+ParticleEngine::~ParticleEngine() noexcept{
+	removeAll();
+}
+
+void ParticleEngine::loop(uint t){
 
 	if(millis()- previousCreationTime > creationFrequency){
+		if(particles.size() < 5){
+			createParticle();
+			previousCreationTime = millis();
+		}else{
+			removeParticle(particles.at(0));
+		}
+	}
 
-		createParticle();
-
-		Serial.println("create");
-
-		previousCreationTime = millis();
+	for(int i = 0; i < particles.size(); ++i){
+		particles[i]->loop(0);
 	}
 }
 
-void ParticleEngine::update(float x, float y){
+void ParticleEngine::update(uint8_t x, uint8_t y){
 
 	engineX = x;
 	engineY = y;
-	Serial.println("update");
-
 }
 
 void ParticleEngine::createParticle(){
 
-	Particle* newParticle = new Particle(this);
-	LoopManager::addListener(newParticle);
+	auto* newParticle = new Particle(this, baseSprite, engineX, engineY);
 	particles.push_back(newParticle);
-
-	Particles* newPt = new Particles;
-	newPt->posX = (float)random(engineX-delta/2,engineX+delta/2);
-	newPt->posY = engineY;
-
 }
 
-void ParticleEngine::removeParticle(){
+void ParticleEngine::removeParticle(Particle *particleToRemove){
 
-	particles.remove(0);
+	int indexToRemove = particles.indexOf(particleToRemove);
+
+	particles.remove(indexToRemove);
+	delete particleToRemove;
 
 }
 
 void ParticleEngine::removeAll(){
 
-	for(int i = 0; i < particles.size(); ++i){
-		particles.pop_back();
-	}
+	particles.clear();
 }
