@@ -886,9 +886,13 @@ void GameState::drawInvisibilityCounter(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
-	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawString(invisibleTimes, 1, 120);
-	baseSprite->drawNumber(invisibilityCounter, 30, 120);
+	if(playerInvisible){
+		baseSprite->setTextColor(TFT_BLUE);
+	}
+	else{
+		baseSprite->setTextColor(TFT_LIGHTGREY);
+	}
+	baseSprite->drawNumber(invisibilityCounter, 5, 118);
 }
 
 void GameState::drawFuelBar(){
