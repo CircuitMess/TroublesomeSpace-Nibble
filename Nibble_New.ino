@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <LittleFS.h>
 #include <CircuitOS.h>
 #include <Nibble.h>
 #include <Loop/LoopManager.h>
