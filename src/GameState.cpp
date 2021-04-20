@@ -878,9 +878,8 @@ void GameState::drawLivesString(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
-	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawString(livesRest, 2, 3);
-	baseSprite->drawNumber(lives, 42, 3);
+	baseSprite->setTextColor(TFT_GREEN);
+	baseSprite->drawNumber(lives, 113, 3);
 }
 
 void GameState::drawInvisibilityCounter(){
