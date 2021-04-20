@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 21/12/2020.
-//
-
 #ifndef NIBBLE_NEW_PARTICLEENGINE_H
 #define NIBBLE_NEW_PARTICLEENGINE_H
 

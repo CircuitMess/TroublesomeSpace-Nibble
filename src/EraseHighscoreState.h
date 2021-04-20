@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 02/12/2020.
-//
-
 #ifndef NIBBLE_NEW_ERASEHIGHSCORESTATE_H
 #define NIBBLE_NEW_ERASEHIGHSCORESTATE_H
 

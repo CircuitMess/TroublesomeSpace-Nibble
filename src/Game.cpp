@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 06/11/2020.
-//
-
 #include "Game.h"
 #include "GameState.h"
 #include "GameOverState.h"

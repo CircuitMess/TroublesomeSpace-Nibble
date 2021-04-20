@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 21/12/2020.
-//
-
 #include "ParticleEngine.h"
 #include "Particle.h"
 

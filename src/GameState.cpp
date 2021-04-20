@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 12-Oct-20.
-//
-
 #include <Arduino.h>
 #include <Nibble.h>
 #include "Pins.hpp"

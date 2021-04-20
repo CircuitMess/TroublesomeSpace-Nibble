@@ -1,8 +1,3 @@
-//
-// Created by Domagoj on 02/12/2020.
-//
-
-
 #include "State.h"
 #include "EraseHighscoreState.h"
 #include "ShowHighscoreState.h"

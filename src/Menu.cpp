@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 11/11/2020.
-//
-
 #include "Menu.h"
 #include "GameState.h"
 #include "ShowHighscoreState.h"

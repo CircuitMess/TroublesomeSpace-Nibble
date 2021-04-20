@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 12-Oct-20.
-//
-
 #ifndef NIBBLE_NEW_GAMESTATE_H
 #define NIBBLE_NEW_GAMESTATE_H
 
