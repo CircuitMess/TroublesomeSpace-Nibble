@@ -9,6 +9,9 @@
 #include "bitmaps/aliens/alien1.hpp"
 #include "bitmaps/aliens/alien2.hpp"
 #include "bitmaps/aliens/alien3.hpp"
+#include "bitmaps/aliens/alien4.hpp"
+#include "bitmaps/aliens/alien5.hpp"
+#include "bitmaps/aliens/alien6.hpp"
 #include "bitmaps/player/invisiblePlayer.hpp"
 #include "bitmaps/igniteLowFrames/igniteLowPlayer1.hpp"
 #include "bitmaps/igniteLowFrames/igniteLowPlayer2.hpp"
@@ -395,8 +398,14 @@ void GameState::drawAlien(Alien &alien){
 		baseSprite->drawIcon(alien1, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
 	if(alien.type == Alien::ALIEN2)
 		baseSprite->drawIcon(alien2, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
-	if(alien.type == Alien::ALIEN2)
+	if(alien.type == Alien::ALIEN3)
 		baseSprite->drawIcon(alien3, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN4)
+		baseSprite->drawIcon(alien4, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN5)
+		baseSprite->drawIcon(alien5, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN6)
+		baseSprite->drawIcon(alien6, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
 
 }
 
@@ -788,21 +797,33 @@ void GameState::levelHandler(){
 			break;
 
 		case 4:
+			aliens.pop_back();
+			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN4});
 			fuelDx += 0.2;
 			break;
 		case 5:
+			aliens.pop_back();
+			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN5});
 			fuelDx += 0.2;
 			break;
 		case 6:
+			aliens.pop_back();
+			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN6});
 			fuelDx += 0.2;
 			break;
 		case 7:
+			aliens.pop_back();
+			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
 			fuelDx += 0.2;
 			break;
 		case 8:
+			aliens.pop_back();
+			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
 			fuelDx += 0.2;
 			break;
 		case 9:
+			aliens.pop_back();
+			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
 			fuelDx += 0.2;
 			break;
 		default:

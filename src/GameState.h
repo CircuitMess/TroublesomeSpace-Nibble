@@ -27,7 +27,7 @@ struct Alien {
 	float x;
 	float y;
 	enum alienType{
-		ALIEN1,ALIEN2,ALIEN3
+		ALIEN1,ALIEN2,ALIEN3,ALIEN4,ALIEN5,ALIEN6
 	}type;
 };
 
