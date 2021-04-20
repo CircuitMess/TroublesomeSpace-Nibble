@@ -162,7 +162,7 @@ void GameState::exit(){
 	for(int i = 0; i < objects.size(); i++)
 		objects.pop_back();
 
-	engine->removeAll();
+	delete engine;
 
 	oreCheck = false;
 	fuelCheck = false;
@@ -214,6 +214,7 @@ void GameState::draw(){
 		drawLivesString();
 		drawInvisibilityCounter();
 		drawFuelBar();
+		engine->loop(0);
 
 	}
 }
@@ -771,7 +772,6 @@ void GameState::states(uint t){
 			backgroundY2 = -127;
 
 		engine->update(playerX + 6, playerY + 18);					// particle engine
-		engine->loop(t);
 	}
 }
 
