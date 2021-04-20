@@ -202,6 +202,8 @@ void GameState::draw(){
 
 	else{
 
+		drawBackground();
+
 		if(levelEnd)
 			drawLevelEnd();
 
@@ -856,8 +858,12 @@ void GameState::invisibility(){
 
 void GameState::drawBackground(){
 
-	baseSprite->drawIcon(gameStateBackground,backgroundX1,backgroundY1,128,128);
-	baseSprite->drawIcon(gameStateBackground,backgroundX2,backgroundY2,128,128);
+	//baseSprite->drawIcon(gameStateBackground,backgroundX1,backgroundY1,128,128);
+	//baseSprite->drawIcon(gameStateBackground,backgroundX2,backgroundY2,128,128);
+	//baseSprite->drawMovingBackground(gameStateBackground,0,0,128,128,128,128,1);
+	//baseSprite->drawIcon(background,0,0,128,128);
+	baseSprite->clear(TFT_BLACK);
+
 }
 
 void GameState::drawCounterString(){
