@@ -870,8 +870,8 @@ void GameState::drawCounterString(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
-	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawNumber(ore, 110, 3);
+	baseSprite->setTextColor(TFT_GOLD);
+	baseSprite->drawNumber(ore, 5, 3);
 }
 
 void GameState::drawLivesString(){
