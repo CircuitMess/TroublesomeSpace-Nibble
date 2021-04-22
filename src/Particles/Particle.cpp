@@ -38,5 +38,6 @@ void Particle::loop(uint){
 }
 
 void Particle::draw(){
-	baseSprite->drawPixel((uint8_t)particleX, (uint8_t)particleY, TFT_ORANGE);
+	baseSprite->fillCircle((uint8_t)particleX, (uint8_t)particleY,particleRadius, TFT_ORANGE);
+	baseSprite->drawPixel((uint8_t)particleX, (uint8_t)particleY, TFT_RED);
 }

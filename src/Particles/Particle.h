@@ -31,6 +31,7 @@ private:
 
 	float particleX;
 	float particleY;
+	const uint8_t particleRadius = 1;
 
 	uint32_t particleMovementTime = millis();
 	uint8_t movementModifier = 0;
