@@ -17,10 +17,10 @@
 #include "Particles/ParticleEngine.h"
 #include "Particles/Particle.h"
 
-#define		PLAYER_RADIUS	sqrt(pow(6, 2) + pow(9, 2))
+#define		PLAYER_RADIUS	6 //sqrt(pow(6, 2) + pow(9, 2))
 #define		ORE_RADIUS		sqrt(pow(1.5, 2) + pow(1.5, 2))
 #define		FUEL_RADIUS		sqrt(pow(4, 2) + pow(4, 2))
-#define		ALIEN_RADIUS	sqrt(pow(5, 2) + pow(5, 2))
+#define		ALIEN_RADIUS	5 //sqrt(pow(5, 2) + pow(5, 2))
 
 struct Alien {
 
