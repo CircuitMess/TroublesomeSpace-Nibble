@@ -557,10 +557,9 @@ void GameState::checkIfCollected(Object &object){
 			if(fuelBar.width >= 64){
 				fuelBar.x = 65;
 				fuelBar.width = 64;
-			}
-			else{
-				fuelBar.x -= 10;
-				fuelBar.width += 10;
+			}else{
+				fuelBar.x -= 20;
+				fuelBar.width += 20;
 			}
 
 			object.x = (float)random(20,100);
@@ -664,8 +663,8 @@ void GameState::states(uint t){
 		if(fuelBar.width <= 0)
 			game->changeState(new GameOverState(ore));
 		else{
-			fuelBar.x += speed * t * fuelDx/ 1000000;
-			fuelBar.width -= speed * t * fuelDx/ 1000000;
+			fuelBar.x += speed * (float) t * fuelDx / 1000000.0f;
+			fuelBar.width -= speed * (float) t * fuelDx / 1000000.0f;
 		}
 
 		invisibility();
