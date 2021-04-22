@@ -12,6 +12,11 @@
 #include "bitmaps/aliens/alien4.hpp"
 #include "bitmaps/aliens/alien5.hpp"
 #include "bitmaps/aliens/alien6.hpp"
+#include "bitmaps/aliens/alienShip1.hpp"
+#include "bitmaps/aliens/alienShip2.hpp"
+#include "bitmaps/aliens/alienShip3.hpp"
+#include "bitmaps/aliens/alienShip4.hpp"
+#include "bitmaps/aliens/alienShip5.hpp"
 #include "bitmaps/player/invisiblePlayer.hpp"
 #include "bitmaps/igniteLowFrames/igniteLowPlayer1.hpp"
 #include "bitmaps/igniteLowFrames/igniteLowPlayer2.hpp"
@@ -411,6 +416,16 @@ void GameState::drawAlien(Alien &alien){
 		baseSprite->drawIcon(alien5, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
 	if(alien.type == Alien::ALIEN6)
 		baseSprite->drawIcon(alien6, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN_SHIP1)
+		baseSprite->drawIcon(alienShip1, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN_SHIP2)
+		baseSprite->drawIcon(alienShip2, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN_SHIP3)
+		baseSprite->drawIcon(alienShip3, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN_SHIP4)
+		baseSprite->drawIcon(alienShip4, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+	if(alien.type == Alien::ALIEN_SHIP5)
+		baseSprite->drawIcon(alienShip5, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
 
 }
 
@@ -426,7 +441,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN1){
 
-		alien.y += speed * t / 15000;
+		alien.y += speed * (float)t / 15000.0f;
 
 		if(alien.y > 128){
 
@@ -441,7 +456,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN2){
 
-		alien.y += speed * t / 14000;
+		alien.y += speed * (float)t / 15000.0f;
 
 		if(alien.y > 128){
 
@@ -456,7 +471,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN3){
 
-		alien.y += speed * t / 13000;
+		alien.y += speed * (float)t / 15000.0f;
 
 		if(alien.y > 128){
 
@@ -468,6 +483,127 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			} while(abs(pomX - alien.x) < 30);
 		}
 	}
+
+	if(alien.type == alien.ALIEN4){
+
+		alien.y += speed * (float)t / 15000.0f;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN5){
+
+		alien.y += speed * (float)t / 15000.0f;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN6){
+
+		alien.y += speed * (float)t / 15000.0f;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN_SHIP1){
+
+		alien.y += speed * (float)t / 15000.0f;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN_SHIP2){
+
+		alien.y += speed * (float)t / 15000.0f;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN_SHIP3){
+
+		alien.y += speed * (float)t / 15000.0f;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN_SHIP4){
+
+		alien.y += speed * (float)t / 15000.0f;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
+	if(alien.type == alien.ALIEN_SHIP5){
+
+		alien.y += speed * (float)t / 15000.0f;
+
+		if(alien.y > 128){
+
+			float pomX = alien.x;
+
+			do {
+				alien.x = (float) random(10, 98);
+				alien.y = 0;
+			} while(abs(pomX - alien.x) < 30);
+		}
+	}
+
 }
 
 void GameState::objectMovement(Object &object, uint t){
@@ -787,52 +923,86 @@ void GameState::levelHandler(){
 	switch(level){
 
 		case 1:
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN1});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN1});
+
 			fuelDx += 0.2;
 			break;
 
 		case 2:
 			aliens.pop_back();
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN2});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP1});
+
 			fuelDx += 0.2;
 			break;
 
 		case 3:
 			aliens.pop_back();
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN2});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP2});
+
 			fuelDx += 0.2;
 			break;
 
 		case 4:
-			aliens.pop_back();
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN4});
+			aliens.pop_back();aliens.pop_back();
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN3});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP3});
+
 			fuelDx += 0.2;
 			break;
 		case 5:
-			aliens.pop_back();
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN5});
+			aliens.pop_back();aliens.pop_back();
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN4});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN1});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP4});
+
 			fuelDx += 0.2;
 			break;
 		case 6:
-			aliens.pop_back();
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN6});
+			aliens.pop_back();aliens.pop_back();aliens.pop_back();
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN5});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN2});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP5});
+
 			fuelDx += 0.2;
 			break;
 		case 7:
-			aliens.pop_back();
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
+			aliens.pop_back();aliens.pop_back();aliens.pop_back();
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN6});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN3});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN1});
+
 			fuelDx += 0.2;
 			break;
 		case 8:
-			aliens.pop_back();
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
+			aliens.pop_back();aliens.pop_back();aliens.pop_back();
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN1});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN3});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP1});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP3});
+
 			fuelDx += 0.2;
 			break;
 		case 9:
-			aliens.pop_back();
-			aliens.push_back({(float) random(10, 150), 0, Alien::ALIEN3});
+			aliens.pop_back();aliens.pop_back();aliens.pop_back();aliens.pop_back();
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN2});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN4});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP2});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP4});
+
 			fuelDx += 0.2;
 			break;
+		case 10:
+			aliens.pop_back();aliens.pop_back();aliens.pop_back();aliens.pop_back();
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN5});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN6});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP3});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP4});
+			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP5});
+
+			fuelDx = 1;
+			break;
+
 		default:
 			break;
 
