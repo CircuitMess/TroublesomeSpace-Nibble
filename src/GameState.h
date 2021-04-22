@@ -225,10 +225,6 @@ private:
 	float lvlEndPlanetX = 42;
 	float lvlEndPlanetY = -45;
 
-	float backgroundX1 = 0;
-	float backgroundY1 = 0;
-	float backgroundX2 = 0;
-	float backgroundY2 = -127;
 
 };
 
