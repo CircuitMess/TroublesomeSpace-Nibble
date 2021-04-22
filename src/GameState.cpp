@@ -64,6 +64,9 @@ GameState::GameState(){
 	objects.push_back({(float) random(20, 100), 0, Object::FUEL});
 	objects.push_back({(float) random(20, 100), 0, Object::ORE});
 
+	for(int i = 0; i < 100; ++i){
+		stars.push_back({static_cast<float>(random(0, 127)), static_cast<float>(random(0, 127))});
+	}
 	playerX = 58;
 	playerY = 90;
 
@@ -161,6 +164,8 @@ void GameState::exit(){
 		aliens.pop_back();
 	for(int i = 0; i < objects.size(); i++)
 		objects.pop_back();
+	for(int i = 0; i < stars.size(); i++)
+		stars.pop_back();
 
 	delete engine;
 
@@ -606,13 +611,13 @@ void GameState::states(uint t){
 			instance->aState = false;
 		}
 
-		backgroundY1 += (float) speed * t / 100000;            							// controlling background
-		if(backgroundY1 > 127)
-			backgroundY1 = 0;
-		backgroundY2 += (float) speed * t / 100000;
-		if(backgroundY2 > 0)
-			backgroundY2 = -127;
+		for(int i = 0; i < stars.size(); ++i){
+			stars[i].y++;
 
+			if(stars[i].y > 127){
+				stars.remove(i);
+				stars.push_back({static_cast<float>(random(0, 127)), 0});
+			}
 
 	}                                                        							// between level states
 
@@ -684,6 +689,15 @@ void GameState::states(uint t){
 			checkIfCollected(objects[i]);
 		}
 
+		for(int i = 0; i < stars.size(); ++i){
+			stars[i].y += speed * (float) t / 30000.0f;
+
+			if(stars[i].y > 127){
+				stars.remove(i);
+				stars.push_back({static_cast<float>(random(0, 127)), 0});
+			}
+
+		}
 
 		if(millis() - previousOreTime > oreTime){
 
@@ -864,6 +878,9 @@ void GameState::drawBackground(){
 	//baseSprite->drawIcon(background,0,0,128,128);
 	baseSprite->clear(TFT_BLACK);
 
+	for(int i = 0; i < stars.size(); ++i){
+		baseSprite->drawPixel(stars[i].x, stars[i].y, TFT_LIGHTGREY);
+	}
 }
 
 void GameState::drawCounterString(){

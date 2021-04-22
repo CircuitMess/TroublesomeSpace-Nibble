@@ -49,6 +49,10 @@ struct FuelBar{
 
 };
 
+struct Star{
+	float x;
+	float y;
+};
 
 class GameState : public State {
 
@@ -102,6 +106,7 @@ private:
 
 	Vector<Alien> aliens;
 	Vector<Object> objects;
+	Vector<Star> stars;
 
 	ParticleEngine *engine;
 
