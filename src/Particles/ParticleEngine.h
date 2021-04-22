@@ -35,7 +35,7 @@ private:
 
 	Vector<Particle*> particles;
 
-	uint16_t creationFrequency = 100;
+	uint16_t creationFrequency = 50;
 	uint previousCreationTime = 0;
 
 	uint8_t engineX = 0;
