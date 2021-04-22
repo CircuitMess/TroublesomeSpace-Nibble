@@ -199,8 +199,8 @@ private:
 	const char *pause = "Paused";
 	const char *resume = "Resume: A";
 	const char *quit = "Quit: B";
-	const char *continueString = "Continue: A";
-	const char *levelNumber = "Level:";
+	const char *continueString = "Press A to continue";
+	const char *levelNumber = "Level";
 
 	unsigned long melodyPreviousMillis = 0;
 
