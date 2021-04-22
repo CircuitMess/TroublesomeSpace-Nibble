@@ -943,56 +943,46 @@ void GameState::drawBetweenLevelState(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
+	baseSprite->setTextColor(TFT_DARKGREY);
+	baseSprite->setCursor(1, 120);
+	baseSprite->printCenter(continueString);
+
+	baseSprite->setTextFont(2);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
-	baseSprite->drawString(continueString, 1, 120);
+
+	baseSprite->setCursor(40, 75);
+	baseSprite->printCenter(levelNumber);
+	baseSprite->setCursor(40, 95);
+	baseSprite->printCenter(level);
 
 	switch(level){
 
 		case 1:
 			baseSprite->drawIcon(planet1, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
-
 			break;
 		case 2:
 			baseSprite->drawIcon(planet2, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 3:
 			baseSprite->drawIcon(planet3, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 4:
 			baseSprite->drawIcon(planet4, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 5:
 			baseSprite->drawIcon(planet5, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 6:
 			baseSprite->drawIcon(planet6, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 7:
 			baseSprite->drawIcon(planet7, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 8:
 			baseSprite->drawIcon(planet8, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 9:
 			baseSprite->drawIcon(planet9, 42, 20, 45, 45, 1, TFT_BLACK);
-			baseSprite->drawString(levelNumber, 42, 80);
-			baseSprite->drawNumber(level, 80, 80);
 			break;
 		case 10:
 			break;
