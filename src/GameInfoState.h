@@ -17,9 +17,11 @@ public:
 
 	static void buttonUpPressed();
 	static void buttonDownPressed();
+	static void buttonAPressed();
 	static void buttonBPressed();
 	static void buttonUpReleased();
 	static void buttonDownReleased();
+	static void buttonAReleased();
 	static void buttonBReleased();
 
 private:
@@ -30,6 +32,7 @@ private:
 
 	bool upState;
 	bool downState;
+	bool aState;
 	bool bState;
 
 	uint scrollFactor = 0;
@@ -38,6 +41,8 @@ private:
 
 	int step = 0;
 	uint previousArrowTime = 0;
+
+	bool invisible = false;
 };
 
 

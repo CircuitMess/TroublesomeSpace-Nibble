@@ -32,9 +32,11 @@ void GameInfoState::enter(Game &_game){
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
+	Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_B, buttonBPressed);
 	Input::getInstance()->setBtnReleaseCallback(BTN_UP, buttonUpReleased);
 	Input::getInstance()->setBtnReleaseCallback(BTN_DOWN, buttonDownReleased);
+	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
 	Input::getInstance()->setBtnReleaseCallback(BTN_B, buttonBReleased);
 }
 
@@ -42,9 +44,11 @@ void GameInfoState::exit(){
 
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
 	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
+	Input::getInstance()->removeBtnPressCallback(BTN_A);
 	Input::getInstance()->removeBtnPressCallback(BTN_B);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_UP);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_DOWN);
+	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_B);
 }
 
@@ -77,7 +81,12 @@ void GameInfoState::draw(){
 	baseSprite->drawRect(64, 121, 64, 7, TFT_PURPLE);
 	baseSprite->fillRect(65, 122, 62, 5, TFT_BLUE);
 
-	baseSprite->drawIcon(invPlayer, 68, 75, 12, 18, 1, TFT_BLACK);
+	if(invisible){
+		baseSprite->drawIcon(invPlayer, 68, 75, 12, 18, 1, TFT_BLACK);
+	}
+	else{
+		baseSprite->drawIcon(playerShip, 68, 75, 12, 18, 1, TFT_BLACK);
+	}
 	baseSprite->drawIcon(playerShip, 58, 35, 12, 18, 1, TFT_BLACK);
 	baseSprite->fillTriangle(50-step, 44, 55-step, 41, 55-step, 47, TFT_LIGHTGREY);
 	baseSprite->fillTriangle(78+step, 44, 73+step, 41, 73+step, 47, TFT_LIGHTGREY);
@@ -97,11 +106,18 @@ void GameInfoState::draw(){
 	baseSprite->drawString("Fuel", 95, 106);
 	baseSprite->drawString("Player:", 3, 40);
 	baseSprite->drawString("Invisible:", 3, 79);
-	baseSprite->drawString("Btn (A)", 92, 79);
+
+	baseSprite->setTextColor(TFT_GOLD);
+	baseSprite->drawString("(A)", 92, 79);
 
 }
 
 void GameInfoState::states(){
+
+	if(aState){
+		invisible = !invisible;
+		aState = false;
+	}
 
 	if(bState){
 		game->changeState(new Menu());
@@ -139,11 +155,17 @@ void GameInfoState::buttonDownPressed(){
 void GameInfoState::buttonBPressed(){
 	instance->bState = true;
 }
+void GameInfoState::buttonAPressed(){
+	instance->aState = true;
+}
 void GameInfoState::buttonUpReleased(){
 	instance->upState = false;
 }
 void GameInfoState::buttonDownReleased(){
 	instance->downState = false;
+}
+void GameInfoState::buttonAReleased(){
+	instance->aState =false;
 }
 void GameInfoState::buttonBReleased(){
 	instance->bState =false;
