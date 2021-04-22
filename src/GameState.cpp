@@ -913,12 +913,7 @@ void GameState::drawInvisibilityCounter(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
-	if(playerInvisible){
-		baseSprite->setTextColor(TFT_BLUE);
-	}
-	else{
-		baseSprite->setTextColor(TFT_LIGHTGREY);
-	}
+	baseSprite->setTextColor(TFT_LIGHTGREY);
 	baseSprite->drawNumber(invisibilityCounter, 5, 118);
 }
 
