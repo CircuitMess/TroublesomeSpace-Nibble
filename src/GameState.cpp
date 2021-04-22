@@ -86,10 +86,7 @@ GameState::GameState(){
 	level = 1;
 
 	fuelCheck = false;
-	previousFuelTime = 0;
 	oreCheck = false;
-	previousOreTime = 0;
-	previousLevelTime = 0;
 
 	fuelDx = 1;
 }
@@ -599,6 +596,10 @@ void GameState::states(uint t){
 
 		if(instance->aState){
 			previousLevelTime = millis();
+			previousFuelTime = millis();
+			previousOreTime = millis();
+			fuelCheck = false;
+			oreCheck = false;
 
 			currentInvisibilityTime = millis();
 			previousInvisibilityTime = millis();
@@ -775,14 +776,32 @@ void GameState::states(uint t){
 			}
 		}
 
-		backgroundY1 += (float) speed * t / 50000;                    				// controlling background
-		if(backgroundY1 > 127)
-			backgroundY1 = 0;
-		backgroundY2 += (float) speed * t / 50000;
-		if(backgroundY2 > 0)
-			backgroundY2 = -127;
+		if(millis() - previousLevelTime > levelTime){
 
-		engine->update(playerX + 6, playerY + 18);					// particle engine
+			levelEnd = true;
+			if(lvlEndPlanetY >= 20)
+				lvlEndPlanetY = 20;
+			else
+				lvlEndPlanetY += speed * t / 26000;
+
+			/*fuelCheck = false;
+			previousFuelTime = 0;
+			oreCheck = false;
+			previousOreTime = 0;*/
+
+			if(millis() - (previousLevelTime + 3000) >
+			   levelTime){
+				newLevel = true;
+				level++;
+				betweenLevelState = true;
+				levelEnd = false;
+
+				previousLevelTime = millis();
+			}
+
+		}
+
+		engine->update(playerX + 6, playerY + 18);
 	}
 }
 
