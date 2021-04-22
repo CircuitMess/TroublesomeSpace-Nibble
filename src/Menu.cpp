@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include "ShowHighscoreState.h"
 #include "EraseHighscoreState.h"
+#include "GameInfoState.h"
 #include "bitmaps/states/homescreen.hpp"
 
 Menu *Menu::instance = nullptr;
@@ -103,7 +104,7 @@ void Menu::states(){
 		game->changeState(new EraseHighscoreState());
 	}
 	if(aState && menuOrder == 4){
-
+		game->changeState(new GameInfoState());
 	}
 }
 
