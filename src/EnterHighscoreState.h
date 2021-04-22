@@ -56,6 +56,7 @@ private:
 
 	uint score = 0;
 	char *name;
+	const char* dispName = "Name:";
 
 	uint8_t charCursor;
 

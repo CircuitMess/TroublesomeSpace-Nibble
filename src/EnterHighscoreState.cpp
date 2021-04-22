@@ -63,15 +63,18 @@ void EnterHighscoreState::loop(uint){
 	states();
 
 	baseSprite->clear(TFT_BLACK);
+	baseSprite->setTextFont(2);
 
-	if(score > Highscore.get(0).score){
-		baseSprite->setCursor(25, 55);
-		baseSprite->printf("New Highscore !");
-		baseSprite->setCursor(60, 70);
-		baseSprite->printf("%d", score);
-	}else{
+	if(score > Highscore.get(0).score || Highscore.dataCount() <= 0){
+		baseSprite->setCursor(25, 30);
+		baseSprite->printCenter("NEW HIGHSCORE!");
 		baseSprite->setCursor(25, 50);
-		baseSprite->printf("SCORE: %d", score);
+		baseSprite->printCenter(score);
+	}else{
+		baseSprite->setCursor(25, 30);
+		baseSprite->printCenter("SCORE");
+		baseSprite->setCursor(25, 50);
+		baseSprite->printCenter(score);
 	}
 
 	draw();
@@ -125,26 +128,35 @@ void EnterHighscoreState::states(){
 
 void EnterHighscoreState::draw(){
 
-	baseSprite->drawLine(40, 100, 70, 100, TFT_GOLD);
-	baseSprite->drawLine(80, 100, 100, 100, TFT_GOLD);
+	baseSprite->drawLine(50, 100, 82, 100, TFT_GOLD);
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 
-	if(charCursor >= 0)
-		baseSprite->drawChar(name[0], 45, 90);
-	if(charCursor >= 1)
-		baseSprite->drawChar(name[1], 50, 90);
-	if(charCursor >= 2)
-		baseSprite->drawChar(name[2], 55, 90);
-	if(charCursor >= 3)
-		baseSprite->drawChar(name[3], 60, 90);
-	if(charCursor >= 4)
-		baseSprite->drawChar(name[4], 65, 90);
+	baseSprite->setCursor(10,90);
+	baseSprite->drawString(dispName,10,90);
 
-	baseSprite->drawNumber(score, 85, 90);
-
+	if(charCursor >= 0){
+		baseSprite->drawChar(name[0], 50, 90);
+		baseSprite->drawLine(50, 98, 54, 98, TFT_LIGHTGREY);
+	}
+	if(charCursor >= 1){
+		baseSprite->drawChar(name[1], 57, 90);
+		baseSprite->drawLine(57, 98, 61, 98, TFT_LIGHTGREY);
+	}
+	if(charCursor >= 2){
+		baseSprite->drawChar(name[2], 64, 90);
+		baseSprite->drawLine(64, 98, 68, 98, TFT_LIGHTGREY);
+	}
+	if(charCursor >= 3){
+		baseSprite->drawChar(name[3], 71, 90);
+		baseSprite->drawLine(71, 98, 75, 98, TFT_LIGHTGREY);
+	}
+	if(charCursor >= 4){
+		baseSprite->drawChar(name[4], 78, 90);
+		baseSprite->drawLine(78, 98, 82, 98, TFT_LIGHTGREY);
+	}
 
 }
 
