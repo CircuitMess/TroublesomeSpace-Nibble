@@ -74,7 +74,7 @@ GameState::GameState(){
 	fuelBar = {65, 122, 64, 5};
 	invisibilityCounter = 3;
 
-	lives = 30;
+	lives = 3;
 	dead = false;
 
 	melodyTime = 0;
