@@ -751,29 +751,6 @@ void GameState::states(uint t){
 			else
 				playerY -= speed * t / 13000;
 
-		}                                            					// spawning when dead
-
-		if(millis() - previousLevelTime > levelTime){								// lvl ending
-
-			levelEnd = true;
-			if(lvlEndPlanetY >= 20)
-				lvlEndPlanetY = 20;
-			else
-				lvlEndPlanetY += speed * t / 26000;
-
-			fuelCheck = false;														// stop fuel & ore when lvl end
-			previousFuelTime = 0;
-			oreCheck = false;
-			previousOreTime = 0;
-
-			if(millis() - (previousLevelTime + 5000) > levelTime){					// 5 sec after lvl end -> change lvl
-				newLevel = true;
-				level++;
-				betweenLevelState = true;
-				levelEnd = false;
-
-				previousLevelTime = millis();
-			}
 		}
 
 		if(millis() - previousLevelTime > levelTime){
