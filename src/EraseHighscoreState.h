@@ -36,8 +36,8 @@ private:
 	bool bState;
 
 	const char *check = "Are you sure ?";
-	const char *yes = "A -> Yes";
-	const char *no = "B -> No";
+	const char *yes = "A: Confirm";
+	const char *no = "B: Back";
 
 };
 
