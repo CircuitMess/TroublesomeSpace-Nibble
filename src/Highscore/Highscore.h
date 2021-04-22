@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 04/12/2020.
-//
-
 #ifndef NIBBLE_NEW_HIGHSCORE_H
 #define NIBBLE_NEW_HIGHSCORE_H
 

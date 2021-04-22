@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 02/12/2020.
-//
-
 #include "EnterHighscoreState.h"
 #include "ShowHighscoreState.h"
 #include "Highscore/Highscore.h"

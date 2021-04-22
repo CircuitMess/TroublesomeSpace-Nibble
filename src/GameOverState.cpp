@@ -1,8 +1,3 @@
-//
-// Created by Domagoj on 06/11/2020.
-//
-
-
 #include "GameOverState.h"
 #include "GameState.h"
 #include "EnterHighscoreState.h"

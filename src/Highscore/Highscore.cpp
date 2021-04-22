@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 04/12/2020.
-//
-
 #include "Highscore.h"
 #include <FS.h>
 #include <LittleFS.h>

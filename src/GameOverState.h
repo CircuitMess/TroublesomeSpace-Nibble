@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 06/11/2020.
-//
-
 #ifndef NIBBLE_NEW_GAMEOVERSTATE_H
 #define NIBBLE_NEW_GAMEOVERSTATE_H
 
