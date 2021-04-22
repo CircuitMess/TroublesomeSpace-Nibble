@@ -61,8 +61,8 @@ GameState::GameState(){
 
 	engine = new ParticleEngine(baseSprite);
 
-	objects.push_back({(float) random(20, 100), 0, Object::FUEL});
-	objects.push_back({(float) random(20, 100), 0, Object::ORE});
+	objects.push_back({static_cast<float>(random(20, 100)), 0, Object::FUEL});
+	objects.push_back({static_cast<float>(random(20, 100)), 0, Object::ORE});
 
 	for(int i = 0; i < 100; ++i){
 		stars.push_back({static_cast<float>(random(0, 127)), static_cast<float>(random(0, 127))});
