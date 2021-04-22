@@ -63,7 +63,6 @@ void EraseHighscoreState::draw(){
 	baseSprite->setTextColor(TFT_GOLD);
 
 	baseSprite->setCursor(20,20);
-	//baseSprite->drawString(check, 20, 20);
 	baseSprite->printCenter(check);
 
 	baseSprite->setTextSize(1);
@@ -71,11 +70,9 @@ void EraseHighscoreState::draw(){
 	baseSprite->setTextColor(TFT_WHITE);
 
 	baseSprite->setCursor(40,70);
-	//baseSprite->drawString(yes, 40, 70);
 	baseSprite->printCenter(yes);
 
 	baseSprite->setCursor(40,90);
-	//baseSprite->drawString(no, 40, 90);
 	baseSprite->printCenter(no);
 
 }
