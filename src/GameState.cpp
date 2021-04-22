@@ -584,8 +584,8 @@ void GameState::states(uint t){
 
 		if(instance->aState){
 
-			pausedState = false;
 			aState = false;
+			pausedState = false;
 
 		}else if(instance->bState){
 
@@ -604,6 +604,7 @@ void GameState::states(uint t){
 			previousInvisibilityTime = millis();
 
 			instance->aState = false;
+			betweenLevelState = false;
 		}
 
 		for(int i = 0; i < stars.size(); ++i){
