@@ -202,15 +202,15 @@ private:
 	const char *continueString = "Press A to continue";
 	const char *levelNumber = "Level";
 
-	unsigned long melodyPreviousMillis = 0;
+	unsigned long melodyPreviousMillis = millis();
 
 	bool oreCheck = false;
 	uint oreTime = 10000; // 11 sec
-	unsigned long previousOreTime = 0;
+	unsigned long previousOreTime = millis();
 
 	bool fuelCheck = false;
 	uint fuelTime = 15000; // 17 sec
-	unsigned long previousFuelTime = 0;
+	unsigned long previousFuelTime = millis();
 	float fuelDx = 1;
 
 	bool pausedState = false;
@@ -219,7 +219,7 @@ private:
 	bool newLevel = false;
 
 	uint levelTime = 60000;
-	unsigned long previousLevelTime = 0;
+	unsigned long previousLevelTime = millis();
 
 	bool levelEnd = false;
 	float lvlEndPlanetX = 42;
