@@ -682,12 +682,11 @@ void GameState::checkIfCollected(Object &object){
 
 			Piezo.tone(100, 300);
 
+			fuelBar.x -= 20;
+			fuelBar.width += 20;
 			if(fuelBar.width >= 64){
 				fuelBar.x = 65;
 				fuelBar.width = 64;
-			}else{
-				fuelBar.x -= 20;
-				fuelBar.width += 20;
 			}
 
 			object.x = (float)random(20,100);
@@ -789,9 +788,10 @@ void GameState::states(uint t){
 		}
 
 
-		if(fuelBar.width <= 0)
+		if(fuelBar.width <= 0){
 			game->changeState(new GameOverState(ore));
-		else{
+		}
+		else if(!levelEnd){
 			fuelBar.x += speed * (float) t * fuelDx / 1000000.0f;
 			fuelBar.width -= speed * (float) t * fuelDx / 1000000.0f;
 		}
