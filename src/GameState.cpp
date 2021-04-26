@@ -406,15 +406,15 @@ void GameState::drawAlien(Alien &alien){
 	if(alien.type == Alien::ALIEN6)
 		baseSprite->drawIcon(alien6, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
 	if(alien.type == Alien::ALIEN_SHIP1)
-		baseSprite->drawIcon(alienShip1, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+		baseSprite->drawIcon(alienShip1, alien.x, alien.y, 10, 16, 1, TFT_BLACK);
 	if(alien.type == Alien::ALIEN_SHIP2)
-		baseSprite->drawIcon(alienShip2, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+		baseSprite->drawIcon(alienShip2, alien.x, alien.y, 10, 16, 1, TFT_BLACK);
 	if(alien.type == Alien::ALIEN_SHIP3)
-		baseSprite->drawIcon(alienShip3, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+		baseSprite->drawIcon(alienShip3, alien.x, alien.y, 10, 16, 1, TFT_BLACK);
 	if(alien.type == Alien::ALIEN_SHIP4)
-		baseSprite->drawIcon(alienShip4, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+		baseSprite->drawIcon(alienShip4, alien.x, alien.y, 10, 16, 1, TFT_BLACK);
 	if(alien.type == Alien::ALIEN_SHIP5)
-		baseSprite->drawIcon(alienShip5, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
+		baseSprite->drawIcon(alienShip5, alien.x, alien.y, 10, 16, 1, TFT_BLACK);
 
 }
 
