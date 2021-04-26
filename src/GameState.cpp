@@ -430,7 +430,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN1){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 20000.0f;
 
 		if(alien.y > 128){
 
@@ -445,7 +445,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN2){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 19000.0f;
 
 		if(alien.y > 128){
 
@@ -460,7 +460,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN3){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 18000.0f;
 
 		if(alien.y > 128){
 
@@ -475,7 +475,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN4){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 17000.0f;
 
 		if(alien.y > 128){
 
@@ -490,7 +490,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN5){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 16000.0f;
 
 		if(alien.y > 128){
 
@@ -520,7 +520,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN_SHIP1){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 14000.0f;
 
 		if(alien.y > 128){
 
@@ -535,7 +535,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN_SHIP2){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 13000.0f;
 
 		if(alien.y > 128){
 
@@ -550,7 +550,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN_SHIP3){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 12000.0f;
 
 		if(alien.y > 128){
 
@@ -565,7 +565,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN_SHIP4){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 11000.0f;
 
 		if(alien.y > 128){
 
@@ -580,7 +580,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN_SHIP5){
 
-		alien.y += speed * (float)t / 15000.0f;
+		alien.y += speed * (float)t / 10000.0f;
 
 		if(alien.y > 128){
 
