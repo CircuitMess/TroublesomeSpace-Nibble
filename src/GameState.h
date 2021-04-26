@@ -191,7 +191,7 @@ private:
 
 	bool playerInvisible = false;
 
-	unsigned long invisibilityTime = 4000; // t = 4000 ms
+	unsigned long invisibilityTime = 5000;
 	unsigned long currentInvisibilityTime = 0;
 	unsigned long previousInvisibilityTime = 0;
 
@@ -206,11 +206,11 @@ private:
 	unsigned long melodyPreviousMillis = millis();
 
 	bool oreCheck = false;
-	uint oreTime = 10000; // 11 sec
+	uint oreTime = 8000;
 	unsigned long previousOreTime = millis();
 
 	bool fuelCheck = false;
-	uint fuelTime = 15000; // 17 sec
+	uint fuelTime = 14000;
 	unsigned long previousFuelTime = millis();
 	float fuelDx = 1;
 
