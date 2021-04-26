@@ -27,7 +27,7 @@
 #include "bitmaps/igniteHighFrames/igniteHighPlayer3.hpp"
 #include "bitmaps/igniteHighFrames/igniteHighPlayer4.hpp"
 #include "bitmaps/igniteHighFrames/igniteHighPlayer5.hpp"
-#include "bitmaps/redFlag.hpp"
+#include "bitmaps/greenFlag.hpp"
 #include "bitmaps/states/gameStateBackground.hpp"
 #include "bitmaps/planets/planet1.hpp"
 #include "bitmaps/planets/planet2.hpp"
@@ -38,6 +38,7 @@
 #include "bitmaps/planets/planet7.hpp"
 #include "bitmaps/planets/planet8.hpp"
 #include "bitmaps/planets/planet9.hpp"
+#include "bitmaps/planets/planet10.hpp"
 #include "bitmaps/tiltedPlayer/invisiblePlayer/invTiltLeft.hpp"
 #include "bitmaps/tiltedPlayer/invisiblePlayer/invTiltRight.hpp"
 #include "bitmaps/tiltedPlayer/player/playerTiltLeft1.hpp"
@@ -1127,6 +1128,7 @@ void GameState::drawBetweenLevelState(){
 			baseSprite->drawIcon(planet9, 42, 20, 45, 45, 1, TFT_BLACK);
 			break;
 		case 10:
+			baseSprite->drawIcon(planet10, 42, 20, 45, 45, 1, TFT_BLACK);
 			break;
 		default:
 			break;
@@ -1136,6 +1138,8 @@ void GameState::drawBetweenLevelState(){
 }
 
 void GameState::drawLevelEnd(){
+
+	baseSprite->drawIcon(greenFlag,lvlEndPlanetX-25,lvlEndPlanetY+20,10,10,1,TFT_BLACK);
 
 	switch(level){
 
@@ -1164,6 +1168,7 @@ void GameState::drawLevelEnd(){
 			baseSprite->drawIcon(planet9, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
 			break;
 		case 9:
+			baseSprite->drawIcon(planet10, lvlEndPlanetX, lvlEndPlanetY, 45, 45, 1, TFT_BLACK);
 			break;
 
 		default:
