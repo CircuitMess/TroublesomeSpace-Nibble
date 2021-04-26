@@ -920,8 +920,12 @@ void GameState::states(uint t){
 
 				betweenLevelState = true;
 				levelEnd = false;
+				fuelCheck = false;
+				oreCheck = false;
 
 				previousLevelTime = millis();
+
+				engine->removeAll();
 			}
 
 		}
