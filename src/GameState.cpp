@@ -437,7 +437,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -452,7 +452,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -467,7 +467,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -482,7 +482,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -497,7 +497,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -512,7 +512,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -527,7 +527,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -542,7 +542,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -557,7 +557,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -572,7 +572,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -587,7 +587,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 			float pomX = alien.x;
 
 			do {
-				alien.x = (float) random(10, 98);
+				alien.x = (float) random(0, 117);
 				alien.y = 0;
 			} while(abs(pomX - alien.x) < 30);
 		}
@@ -605,7 +605,7 @@ void GameState::objectMovement(Object &object, uint t){
 
 			fuelCheck = false;
 
-			object.x = (float) random(20, 100);
+			object.x = (float) random(5, 117);
 			object.y = -10;
 
 		}
@@ -619,7 +619,7 @@ void GameState::objectMovement(Object &object, uint t){
 
 			oreCheck = false;
 
-			object.x = (float) random(20, 100);
+			object.x = (float) random(5, 117);
 			object.y = -10;
 
 		}
