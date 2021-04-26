@@ -911,82 +911,82 @@ void GameState::levelHandler(){
 	switch(level){
 
 		case 1:
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN1});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN1});
 
 			fuelDx += 0.2;
 			break;
 
 		case 2:
 			aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP1});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP1});
 
 			fuelDx += 0.2;
 			break;
 
 		case 3:
 			aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN2});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP2});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN2});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP2});
 
 			fuelDx += 0.2;
 			break;
 
 		case 4:
 			aliens.pop_back();aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN3});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP3});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN3});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP3});
 
 			fuelDx += 0.2;
 			break;
 		case 5:
 			aliens.pop_back();aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN4});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN1});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP4});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN4});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN1});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP4});
 
 			fuelDx += 0.2;
 			break;
 		case 6:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN5});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN2});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP5});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN5});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN2});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP5});
 
 			fuelDx += 0.2;
 			break;
 		case 7:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN6});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN3});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN1});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN6});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN3});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN1});
 
 			fuelDx += 0.2;
 			break;
 		case 8:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN1});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN3});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP1});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP3});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN1});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN3});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP1});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP3});
 
 			fuelDx += 0.2;
 			break;
 		case 9:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN2});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN4});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP2});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP4});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN2});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN4});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP2});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP4});
 
 			fuelDx += 0.2;
 			break;
 		case 10:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();aliens.pop_back();
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN5});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN6});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP3});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP4});
-			aliens.push_back({(float) random(5, 110), 0, Alien::ALIEN_SHIP5});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN5});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN6});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP3});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP4});
+			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP5});
 
 			fuelDx = 1;
 			break;
