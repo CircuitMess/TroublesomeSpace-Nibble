@@ -83,7 +83,7 @@ void Menu::states(){
 
 		step = 0;
 		previousArrowTime = millis();
-		instance->downState =false;
+		instance->downState = false;
 	}
 
 	if(millis() - previousArrowTime > 200){
@@ -91,6 +91,11 @@ void Menu::states(){
 		if(step > 2)
 			step = 0;
 		previousArrowTime = millis();
+	}
+
+	msgPos--;
+	if(msgPos <= -40*5){
+		msgPos = 128;
 	}
 
 	if(aState && menuOrder == 1){
@@ -128,6 +133,11 @@ void Menu::draw(){
 	if(menuOrder == 4){
 		baseSprite->drawString(info, 52, 105);
 	}
+
+	baseSprite->setTextColor(TFT_DARKGREY);
+	baseSprite->setTextFont(1);
+	baseSprite->setTextSize(1);
+	baseSprite->drawString(infoMessage,msgPos,1);
 
 	drawTriangleArrows();
 }
