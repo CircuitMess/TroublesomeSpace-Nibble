@@ -724,6 +724,10 @@ void GameState::states(uint t){
 			currentInvisibilityTime = millis();
 			previousInvisibilityTime = millis();
 
+			playerX = 58;
+			playerY = 90;
+			engine->update(playerX,playerY);
+
 			instance->aState = false;
 			betweenLevelState = false;
 		}
