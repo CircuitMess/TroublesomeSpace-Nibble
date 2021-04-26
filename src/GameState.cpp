@@ -729,7 +729,7 @@ void GameState::states(uint t){
 		}
 
 		for(int i = 0; i < stars.size(); ++i){
-			stars[i].y++;
+			stars[i].y += speed * (float) t / 20000.0f;
 
 			if(stars[i].y > 127){
 				stars.remove(i);
@@ -807,7 +807,18 @@ void GameState::states(uint t){
 		}
 
 		for(int i = 0; i < stars.size(); ++i){
-			stars[i].y += speed * (float) t / 30000.0f;
+
+			if(levelEnd){
+				if(lvlEndPlanetY >= 20){
+					break;
+				}
+				else{
+					stars[i].y += speed * (float)t / 40000.0f;
+				}
+			}
+			else{
+				stars[i].y += speed * (float) t / 30000.0f;
+			}
 
 			if(stars[i].y > 127){
 				stars.remove(i);
@@ -1028,7 +1039,20 @@ void GameState::drawBackground(){
 	baseSprite->clear(TFT_BLACK);
 
 	for(int i = 0; i < stars.size(); ++i){
-		baseSprite->drawPixel(stars[i].x, stars[i].y, TFT_LIGHTGREY);
+		uint8_t z = random(1,3);
+		switch(z){
+			case 1:
+				baseSprite->drawPixel(stars[i].x, stars[i].y, TFT_LIGHTGREY);
+				break;
+			case 2:
+				baseSprite->drawPixel(stars[i].x, stars[i].y, TFT_RED);
+				break;
+			case 3:
+				baseSprite->drawPixel(stars[i].x, stars[i].y, TFT_GOLD);
+				break;
+			default:
+				break;
+		}
 	}
 }
 
