@@ -701,12 +701,6 @@ void GameState::checkIfCollected(Object &object){
 
 void GameState::states(uint t){
 
-	if(newLevel){
-		levelHandler();
-		lvlEndPlanetY = -45;
-		fuelBar = {65, 122, 64, 5};
-	}
-
 	if(pausedState){
 
 		if(instance->aState){
@@ -903,6 +897,16 @@ void GameState::states(uint t){
 		}
 
 		engine->update(playerX + 6, playerY + 18);
+
+		if(newLevel){
+			levelHandler();
+			lvlEndPlanetY = -45;
+			fuelBar = {65, 122, 64, 5};
+			if(playerInvisible){
+				playerInvisible = false;
+				invisibilityCounter--;
+			}
+		}
 	}
 }
 
