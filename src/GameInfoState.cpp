@@ -2,6 +2,8 @@
 #include "Menu.h"
 #include "bitmaps/player/invisiblePlayer.hpp"
 #include "bitmaps/player/player.hpp"
+#include "bitmaps/objects/fuel.hpp"
+#include "bitmaps/objects/ore.hpp"
 
 GameInfoState *GameInfoState::instance = nullptr;
 
@@ -67,6 +69,7 @@ void GameInfoState::draw(){
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_GOLD);
 	baseSprite->drawString("X", 5, 3);
+	baseSprite->drawIcon(oreIcon,14,5,3,3,1,TFT_BLACK);
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
@@ -80,6 +83,7 @@ void GameInfoState::draw(){
 
 	baseSprite->drawRect(64, 121, 64, 7, TFT_PURPLE);
 	baseSprite->fillRect(65, 122, 62, 5, TFT_BLUE);
+	baseSprite->drawIcon(fuelIcon,118,106,8,8,1,TFT_BLACK);
 
 	if(invisible){
 		baseSprite->drawIcon(invPlayer, 68, 75, 12, 18, 1, TFT_BLACK);
@@ -103,7 +107,7 @@ void GameInfoState::draw(){
 	baseSprite->drawString("Score", 5, 15);
 	baseSprite->drawString("Lives", 92, 15);
 	baseSprite->drawString("InvCounter", 3, 106);
-	baseSprite->drawString("Fuel", 95, 106);
+	baseSprite->drawString("Fuel", 90, 106);
 	baseSprite->drawString("Player:", 3, 40);
 	baseSprite->drawString("Invisible:", 3, 79);
 
