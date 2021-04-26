@@ -135,7 +135,7 @@ void EnterHighscoreState::draw(){
 	baseSprite->setTextColor(TFT_LIGHTGREY);
 
 	baseSprite->setCursor(10,90);
-	baseSprite->drawString(dispName,10,90);
+	baseSprite->drawString(dispName,10,92);
 
 	if(charCursor >= 0){
 		baseSprite->drawChar(name[0], 50, 90);
