@@ -91,10 +91,8 @@ GameState::GameState(){
 	newLevel = true;
 	level = 1;
 
-	fuelCheck = false;
-	oreCheck = false;
 
-	fuelDx = 1;
+
 }
 
 void GameState::loop(uint time){
@@ -172,15 +170,6 @@ void GameState::exit(){
 
 	delete engine;
 
-	oreCheck = false;
-	fuelCheck = false;
-	previousOreTime = 0;
-	previousFuelTime = 0;
-
-	pausedState = false;
-
-	loopPlaying = false;
-
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
 	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
 	Input::getInstance()->removeBtnPressCallback(BTN_LEFT);
@@ -212,10 +201,9 @@ void GameState::draw(){
 
 		drawBackground();
 
-		if(levelEnd)
+		if(levelEnd){
 			drawLevelEnd();
-
-		//drawBackground();
+		}
 		drawPlayer();
 		drawObjects();
 		drawAliens();
@@ -807,16 +795,15 @@ void GameState::states(uint t){
 
 		invisibility();
 
-		for(int i = 0; i < aliens.size(); ++i){                                            // alien movement
+		for(int i = 0; i < aliens.size(); ++i){
 
 			alienMovement(aliens[i], t);
-			if(!playerInvisible)
+			if(!playerInvisible){
 				checkIfDead(aliens[i]);
-			if(dead)
-				break;
+			}
 		}
 
-		for(int i = 0; i < objects.size(); ++i){                                        // object movement & interaction
+		for(int i = 0; i < objects.size(); ++i){
 
 			objectMovement(objects[i], t);
 			checkIfCollected(objects[i]);
@@ -895,13 +882,10 @@ void GameState::states(uint t){
 			levelEnd = true;
 			if(lvlEndPlanetY >= 20)
 				lvlEndPlanetY = 20;
-			else
-				lvlEndPlanetY += speed * t / 26000;
-
-			/*fuelCheck = false;
-			previousFuelTime = 0;
-			oreCheck = false;
-			previousOreTime = 0;*/
+			}
+			else{
+				lvlEndPlanetY += speed * (float)t/35000.0f;
+			}
 
 			if(millis() - (previousLevelTime + 3000) >
 			   levelTime){
