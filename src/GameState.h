@@ -223,6 +223,7 @@ private:
 	unsigned long previousLevelTime = millis();
 
 	bool levelEnd = false;
+	bool finalPart = false;
 	float lvlEndPlanetX = 42;
 	float lvlEndPlanetY = -45;
 

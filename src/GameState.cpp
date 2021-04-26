@@ -889,10 +889,10 @@ void GameState::states(uint t){
 
 		}
 
-		if(millis() - previousLevelTime > levelTime){
+		if(millis() - previousLevelTime > levelTime && !finalPart){
 
 			levelEnd = true;
-			if(lvlEndPlanetY >= 20)
+			if(lvlEndPlanetY >= 20){
 				lvlEndPlanetY = 20;
 			}
 			else{
@@ -903,6 +903,10 @@ void GameState::states(uint t){
 			   levelTime){
 				newLevel = true;
 				level++;
+				if(level >= 10){
+					finalPart = true;
+				}
+
 				betweenLevelState = true;
 				levelEnd = false;
 
