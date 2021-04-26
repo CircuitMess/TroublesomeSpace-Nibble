@@ -731,6 +731,9 @@ void GameState::states(uint t){
 			instance->aState = false;
 			betweenLevelState = false;
 		}
+		if(instance->bState){
+			game->changeState(new Menu());
+		}
 
 		for(int i = 0; i < stars.size(); ++i){
 			stars[i].y += speed * (float) t / 20000.0f;
