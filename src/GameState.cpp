@@ -917,14 +917,14 @@ void GameState::levelHandler(){
 		case 1:
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN1});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 
 		case 2:
 			aliens.pop_back();
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP1});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 
 		case 3:
@@ -932,7 +932,7 @@ void GameState::levelHandler(){
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN2});
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP2});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 
 		case 4:
@@ -940,7 +940,7 @@ void GameState::levelHandler(){
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN3});
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP3});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 		case 5:
 			aliens.pop_back();aliens.pop_back();
@@ -948,7 +948,7 @@ void GameState::levelHandler(){
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN1});
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP4});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 		case 6:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();
@@ -956,7 +956,7 @@ void GameState::levelHandler(){
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN2});
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP5});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 		case 7:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();
@@ -964,7 +964,7 @@ void GameState::levelHandler(){
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN3});
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN1});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 		case 8:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();
@@ -973,7 +973,7 @@ void GameState::levelHandler(){
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP1});
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP3});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 		case 9:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();aliens.pop_back();
@@ -982,7 +982,7 @@ void GameState::levelHandler(){
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP2});
 			aliens.push_back({(float) random(0, 117), 0, Alien::ALIEN_SHIP4});
 
-			fuelDx += 0.2;
+			fuelDx += 0.1;
 			break;
 		case 10:
 			aliens.pop_back();aliens.pop_back();aliens.pop_back();aliens.pop_back();
