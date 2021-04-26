@@ -847,48 +847,56 @@ void GameState::states(uint t){
 
 		if(millis() - previousLowIgnitionPlayerTime > lowIgnitionTimePerFrame){
 			lowIgnitionPlayerFrame++;
-			if(lowIgnitionPlayerFrame > 3)
+			if(lowIgnitionPlayerFrame > 3){
 				lowIgnitionPlayerFrame = 1;
+			}
 			previousLowIgnitionPlayerTime = millis();
 		}
 		if(millis() - previousHighIgnitionPlayerTime > highIgnitionTimePerFrame){
 			highIgnitionPlayerFrame++;
-			if(highIgnitionPlayerFrame > 4)
+			if(highIgnitionPlayerFrame > 4){
 				highIgnitionPlayerFrame = 1;
+			}
 			previousHighIgnitionPlayerTime = millis();
 		}
 
 		if(millis() - previousLeanLeftPlayerTime > leanLeftTimePerFrame){
 			leanLeftPlayerFrame++;
-			if(leanLeftPlayerFrame > 2)
+			if(leanLeftPlayerFrame > 2){
 				leanLeftPlayerFrame = 2;
+			}
 			previousLeanLeftPlayerTime = millis();
 		}
 		if(millis() - previousLeanRightPlayerTime > leanRightTimePerFrame){
 			leanRightPlayerFrame++;
-			if(leanRightPlayerFrame > 2)
+			if(leanRightPlayerFrame > 2){
 				leanRightPlayerFrame = 2;
+			}
 			previousLeanRightPlayerTime = millis();
 		}
 
 		if(millis() - previousLeanLeftIgnitionPlayerTime > leanLeftIgnitionTimePerFrame){
 			leanLeftIgnitionPlayerFrame++;
-			if(leanLeftIgnitionPlayerFrame > 2)
+			if(leanLeftIgnitionPlayerFrame > 2){
 				leanLeftIgnitionPlayerFrame = 2;
+			}
 			previousLeanLeftIgnitionPlayerTime = millis();
 		}
 		if(millis() - previousLeanRightIgnitionPlayerTime > leanRightIgnitionTimePerFrame){
 			leanRightIgnitionPlayerFrame++;
-			if(leanRightIgnitionPlayerFrame > 2)
+			if(leanRightIgnitionPlayerFrame > 2){
 				leanRightIgnitionPlayerFrame = 2;
+			}
 			previousLeanRightIgnitionPlayerTime = millis();
 		}
 
 		if(dead){
-			if(playerY <= 90)
+			if(playerY <= 90){
 				playerY = 90;
-			else
+			}
+			else{
 				playerY -= speed * t / 13000;
+			}
 
 		}
 
@@ -1030,13 +1038,15 @@ void GameState::invisibility(){
 	if(playerInvisible){
 		currentInvisibilityTime = millis();
 
-		if(currentInvisibilityTime - previousInvisibilityTime > invisibilityTime){
+		if((currentInvisibilityTime - previousInvisibilityTime) > invisibilityTime){
 
 			playerInvisible = false;
-			if(!dead)
+			if(!dead){
 				invisibilityCounter--;
-			else
+			}
+			else{
 				dead = false;
+			}
 			currentInvisibilityTime = previousInvisibilityTime = millis();
 
 			Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
