@@ -631,7 +631,7 @@ void GameState::checkIfDead(Alien &alien){
 	if(sqrt(pow(dx, 2) + pow(dy, 2)) <
 	   PLAYER_RADIUS + ALIEN_RADIUS){
 
-		Piezo.tone(1000, 300);
+		Piezo.tone(2500, 100);
 
 		dead = true;
 
@@ -658,7 +658,7 @@ void GameState::checkIfCollected(Object &object){
 		if(sqrt(pow(dx, 2) + pow(dy, 2)) <
 		   PLAYER_RADIUS + ORE_RADIUS){
 
-			Piezo.tone(250, 300);
+			Piezo.tone(2500, 100);
 
 			ore++;
 
@@ -676,7 +676,7 @@ void GameState::checkIfCollected(Object &object){
 		if(sqrt(pow(dx, 2) + pow(dy, 2)) <
 		   PLAYER_RADIUS + FUEL_RADIUS){
 
-			Piezo.tone(100, 300);
+			Piezo.tone(2500, 100);
 
 			fuelBar.x -= 20;
 			fuelBar.width += 20;
