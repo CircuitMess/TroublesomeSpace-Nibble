@@ -99,8 +99,6 @@ void GameState::loop(uint time){
 
 	if(pausedState){
 
-		Melody.playMelody(STOP, false);
-
 		baseSprite->clear(TFT_BLACK);
 
 		draw();
@@ -110,8 +108,6 @@ void GameState::loop(uint time){
 		states(time);
 
 	}else if(betweenLevelState){
-
-		//melodyTime = Melody.playMelody(START, false);
 
 		baseSprite->clear(TFT_BLACK);
 
@@ -728,6 +724,8 @@ void GameState::states(uint t){
 			playerY = 90;
 			engine->update(playerX,playerY);
 
+			loopPlaying = true;
+
 			instance->aState = false;
 			betweenLevelState = false;
 		}
@@ -784,6 +782,8 @@ void GameState::states(uint t){
 		}
 		if(instance->bState){
 
+			Melody.playMelody(STOP, false);
+			Piezo.tone(5000,100);
 			pausedState = true;
 			instance->bState = false;
 		}
@@ -926,8 +926,10 @@ void GameState::states(uint t){
 				previousLevelTime = millis();
 
 				engine->removeAll();
-			}
 
+				loopPlaying = false;
+				melodyTime = Melody.playMelody(STOP,false);
+			}
 		}
 
 		engine->update(playerX + 6, playerY + 18);
