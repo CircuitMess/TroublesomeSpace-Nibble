@@ -195,9 +195,6 @@ private:
 	unsigned long currentInvisibilityTime = 0;
 	unsigned long previousInvisibilityTime = 0;
 
-	const char *livesRest = "Lives: ";
-	const char *invisibleTimes = "Inv: ";
-	const char *pause = "Paused";
 	const char *resume = "Resume: A";
 	const char *quit = "Quit: B";
 	const char *continueString = "Press A to continue";
