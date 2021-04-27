@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(Nibble_New)
+project(TroublesomeSpace)
 set(PORT COM5)
 set(DEVICE cm:esp8266:nibble)
 set(CMAKE_CXX_STANDARD 11)
