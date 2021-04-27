@@ -191,7 +191,7 @@ private:
 
 	bool playerInvisible = false;
 
-	unsigned long invisibilityTime = 5000;
+	unsigned long invisibilityTime = 4000;
 	unsigned long currentInvisibilityTime = 0;
 	unsigned long previousInvisibilityTime = 0;
 
@@ -207,7 +207,7 @@ private:
 	unsigned long previousOreTime = millis();
 
 	bool fuelCheck = false;
-	uint fuelTime = 14000;
+	uint fuelTime = 15000;
 	unsigned long previousFuelTime = millis();
 	float fuelDx = 1;
 
