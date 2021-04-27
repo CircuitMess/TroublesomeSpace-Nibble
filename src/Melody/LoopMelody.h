@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 03/11/2020.
-//
-
 #ifndef NIBBLE_NEW_LOOPMELODY_H
 #define NIBBLE_NEW_LOOPMELODY_H
 

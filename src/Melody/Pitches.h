@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 28/10/2020.
-//
-
 #ifndef NIBBLE_NEW_PITCHES_H
 #define NIBBLE_NEW_PITCHES_H
 

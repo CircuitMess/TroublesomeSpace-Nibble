@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 03/11/2020.
-//
-
 #include "Melody.h"
 #include "StartUpMelody.h"
 #include "GameOverMelody.h"

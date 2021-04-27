@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 11/11/2020.
-//
-
 #ifndef NIBBLE_NEW_MENUMELODY_H
 #define NIBBLE_NEW_MENUMELODY_H
 
