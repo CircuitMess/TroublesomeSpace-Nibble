@@ -45,6 +45,7 @@ private:
 	const char *highScore = "High Score";
 	const char *eraseHighscore = "Erase High Score";
 	const char *info = "Info";
+	const char *quit = "Quit";
 
 	int msgPos = 128;
 	const char *infoMessage = "Check the game info before playing";

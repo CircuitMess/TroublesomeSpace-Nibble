@@ -60,24 +60,20 @@ void Menu::loop(uint t){
 void Menu::states(){
 
 	if(instance->upState){
-		if(menuOrder == 2)
+		menuOrder--;
+		if(menuOrder < 1){
 			menuOrder = 1;
-		else if (menuOrder == 3)
-			menuOrder = 2;
-		else if (menuOrder == 4)
-			menuOrder = 3;
+		}
 
 		step = 0;
 		previousArrowTime = millis();
 		instance->upState = false;
 	}
 	if(instance->downState){
-		if(menuOrder == 1)
-			menuOrder = 2;
-		else if (menuOrder == 2)
-			menuOrder = 3;
-		else if (menuOrder == 3)
-			menuOrder = 4;
+		menuOrder++;
+		if(menuOrder > 5){
+			menuOrder = 5;
+		}
 
 		step = 0;
 		previousArrowTime = millis();
@@ -109,6 +105,9 @@ void Menu::states(){
 	if(aState && menuOrder == 4){
 		game->changeState(new GameInfoState());
 	}
+	if(aState && menuOrder == 5){
+
+	}
 }
 
 void Menu::draw(){
@@ -131,6 +130,9 @@ void Menu::draw(){
 	if(menuOrder == 4){
 		baseSprite->drawString(info, 52, 105);
 	}
+	if(menuOrder == 5){
+		baseSprite->drawString(quit, 52, 105);
+	}
 
 	baseSprite->setTextColor(TFT_DARKGREY);
 	baseSprite->setTextFont(1);
@@ -142,18 +144,14 @@ void Menu::draw(){
 
 void Menu::drawTriangleArrows(){
 
-	if(menuOrder == 1){
+	if(menuOrder <= 1){
 		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
 	}
-	if(menuOrder == 2){
-		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
+	else if(menuOrder >= 5){
 		baseSprite->fillTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
 	}
-	if(menuOrder == 3){
+	else{
 		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
-		baseSprite->fillTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
-	}
-	if(menuOrder == 4){
 		baseSprite->fillTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
 	}
 }
