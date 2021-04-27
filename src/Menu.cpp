@@ -14,8 +14,6 @@ Menu::Menu(){
 
 	instance = this;
 
-	melodyTime = Melody.playMelody(MENU, true);
-
 	baseSprite->clear(TFT_BLACK);
 	draw();
 	display->commit();
@@ -25,9 +23,7 @@ void Menu::enter(Game &_game){
 
 	game = &_game;
 
-	upState = false;
-	downState = false;
-	aState = false;
+	melodyTime = Melody.playMelody(MENU, true);
 
 	menuOrder = 1;
 
@@ -41,6 +37,8 @@ void Menu::enter(Game &_game){
 }
 
 void Menu::exit(){
+
+	Melody.playMelody(STOP,false);
 
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
 	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);

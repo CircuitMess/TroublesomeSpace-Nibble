@@ -30,9 +30,9 @@ private:
 	void states();
 	void drawTriangleArrows();
 
-	bool upState;
-	bool downState;
-	bool aState;
+	bool upState = false;
+	bool downState = false;
+	bool aState = false;
 
 	uint melodyTime = 0;
 
