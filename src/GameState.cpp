@@ -1038,6 +1038,10 @@ void GameState::levelHandler(){
 
 	}
 
+	if(!(level % 5)){
+		lives++;
+	}
+
 	newLevel = false;
 }
 
