@@ -184,6 +184,8 @@ void GameState::exit(){
 
 void GameState::draw(){
 
+	baseSprite->clear(TFT_BLACK);
+
 	if(pausedState)
 		drawPausedState();
 
