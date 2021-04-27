@@ -127,20 +127,6 @@ void GameInfoState::states(){
 		game->changeState(new Menu());
 	}
 
-	else if(upState){
-		scrollFactor--;
-		if(scrollFactor <= 0){
-			scrollFactor = 0;
-		}
-	}
-
-	else if(downState){
-		scrollFactor++;
-		if(scrollFactor >= 255){
-			scrollFactor = 255;
-		}
-	}
-
 
 	if(millis() - previousArrowTime > 200){
 		step++;

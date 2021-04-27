@@ -35,10 +35,6 @@ private:
 	bool aState;
 	bool bState;
 
-	uint scrollFactor = 0;
-
-	const char *info = "Game Info";
-
 	int step = 0;
 	uint previousArrowTime = 0;
 
