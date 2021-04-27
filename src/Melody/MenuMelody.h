@@ -7,14 +7,14 @@
 
 Note menuMelody[] = {
 
-		{NOTE_E4, 400}, {NOTE_C4, 400},
-		{NOTE_E4, 400}, {NOTE_C4, 400},
-		{NOTE_E4, 400}, {NOTE_C4, 400},
-		{NOTE_E4, 400}, {NOTE_C4, 400},
-		{NOTE_F4, 400}, {NOTE_D4, 400},
-		{NOTE_F4, 400}, {NOTE_D4, 400},
-		{NOTE_F4, 400}, {NOTE_D4, 400},
-		{NOTE_F4, 400}, {NOTE_D4, 400},
+		{NOTE_E4, 250}, {NOTE_C4, 250},
+		{NOTE_E4, 250}, {NOTE_C4, 250},
+		{NOTE_E4, 250}, {NOTE_C4, 250},
+		{NOTE_E4, 250}, {NOTE_C4, 250},
+		{NOTE_F4, 250}, {NOTE_D4, 250},
+		{NOTE_F4, 250}, {NOTE_D4, 250},
+		{NOTE_F4, 250}, {NOTE_D4, 250},
+		{NOTE_F4, 250}, {NOTE_D4, 250},
 		
 
 };
