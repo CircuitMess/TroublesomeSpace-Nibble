@@ -772,7 +772,7 @@ void GameState::states(uint t){
 				playerX = 116;
 
 		}
-		if(instance->aState && !playerInvisible){
+		if(instance->aState && !playerInvisible && !dead){
 
 			if(invisibilityCounter > 0){
 
