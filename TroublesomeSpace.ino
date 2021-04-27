@@ -5,17 +5,21 @@
 #include <Loop/LoopManager.h>
 #include "src/Game.h"
 #include "src/Highscore/Highscore.h"
+//#include "GameInfo.hpp"
 
-Game *game;
+TroublesomeSpace::Game *game;
+Display display(128,128,-1,1);
 
 void setup(){
 
 	Nibble.begin();
-	Serial.begin(115200);
-	Piezo.setMute(false);
+	display.begin();
 
-	Highscore.begin();
-	game = new Game;
+	Serial.begin(115200);
+	Piezo.setMute(true);
+
+	TroublesomeSpace::Highscore.begin();
+	game = new TroublesomeSpace::Game(display);
 
 	LoopManager::addListener(game);
 	LoopManager::addListener(Input::getInstance());

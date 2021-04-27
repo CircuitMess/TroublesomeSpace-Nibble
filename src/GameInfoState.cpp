@@ -5,11 +5,11 @@
 #include "bitmaps/objects/fuel.hpp"
 #include "bitmaps/objects/ore.hpp"
 
-GameInfoState *GameInfoState::instance = nullptr;
+TroublesomeSpace::GameInfoState *TroublesomeSpace::GameInfoState::instance = nullptr;
 
-GameInfoState::GameInfoState(){
+TroublesomeSpace::GameInfoState::GameInfoState(Display &_display){
 
-	display = Nibble.getDisplay();
+	display = &_display;
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
@@ -19,11 +19,11 @@ GameInfoState::GameInfoState(){
 	display->commit();
 }
 
-GameInfoState::~GameInfoState(){
+TroublesomeSpace::GameInfoState::~GameInfoState(){
 
 }
 
-void GameInfoState::enter(Game &_game){
+void TroublesomeSpace::GameInfoState::enter(Game &_game){
 
 	game = &_game;
 
@@ -33,7 +33,7 @@ void GameInfoState::enter(Game &_game){
 	Input::getInstance()->setBtnReleaseCallback(BTN_B, buttonBReleased);
 }
 
-void GameInfoState::exit(){
+void TroublesomeSpace::GameInfoState::exit(){
 
 	Input::getInstance()->removeBtnPressCallback(BTN_A);
 	Input::getInstance()->removeBtnPressCallback(BTN_B);
@@ -41,7 +41,7 @@ void GameInfoState::exit(){
 	Input::getInstance()->removeBtnReleaseCallback(BTN_B);
 }
 
-void GameInfoState::loop(uint){
+void TroublesomeSpace::GameInfoState::loop(uint){
 
 	baseSprite->clear(TFT_BLACK);
 	draw();
@@ -50,7 +50,7 @@ void GameInfoState::loop(uint){
 	states();
 }
 
-void GameInfoState::draw(){
+void TroublesomeSpace::GameInfoState::draw(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
@@ -103,7 +103,7 @@ void GameInfoState::draw(){
 
 }
 
-void GameInfoState::states(){
+void TroublesomeSpace::GameInfoState::states(){
 
 	if(aState){
 		invisible = !invisible;
@@ -111,7 +111,7 @@ void GameInfoState::states(){
 	}
 
 	if(bState){
-		game->changeState(new Menu());
+		game->changeState(new Menu(*display));
 	}
 
 
@@ -123,15 +123,15 @@ void GameInfoState::states(){
 	}
 }
 
-void GameInfoState::buttonBPressed(){
+void TroublesomeSpace::GameInfoState::buttonBPressed(){
 	instance->bState = true;
 }
-void GameInfoState::buttonAPressed(){
+void TroublesomeSpace::GameInfoState::buttonAPressed(){
 	instance->aState = true;
 }
-void GameInfoState::buttonAReleased(){
+void TroublesomeSpace::GameInfoState::buttonAReleased(){
 	instance->aState =false;
 }
-void GameInfoState::buttonBReleased(){
+void TroublesomeSpace::GameInfoState::buttonBReleased(){
 	instance->bState =false;
 }

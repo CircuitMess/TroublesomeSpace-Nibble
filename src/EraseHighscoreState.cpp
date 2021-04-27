@@ -4,18 +4,18 @@
 #include "Highscore/Highscore.h"
 #include "bitmaps/states/eraseHighscoreStateScreen.hpp"
 
-EraseHighscoreState *EraseHighscoreState::instance = nullptr;
+TroublesomeSpace::EraseHighscoreState *TroublesomeSpace::EraseHighscoreState::instance = nullptr;
 
-EraseHighscoreState::EraseHighscoreState(){
+TroublesomeSpace::EraseHighscoreState::EraseHighscoreState(Display &_display){
 
-	display = Nibble.getDisplay();
+	display = &_display;
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
 
 }
 
-void EraseHighscoreState::enter(Game &_game){
+void TroublesomeSpace::EraseHighscoreState::enter(Game &_game){
 
 	game = &_game;
 
@@ -30,7 +30,7 @@ void EraseHighscoreState::enter(Game &_game){
 
 }
 
-void EraseHighscoreState::exit(){
+void TroublesomeSpace::EraseHighscoreState::exit(){
 
 	Input::getInstance()->removeBtnPressCallback(BTN_A);
 	Input::getInstance()->removeBtnPressCallback(BTN_B);
@@ -40,14 +40,14 @@ void EraseHighscoreState::exit(){
 
 }
 
-void EraseHighscoreState::loop(uint){
+void TroublesomeSpace::EraseHighscoreState::loop(uint){
 
 	if(aState){
 		Highscore.clearData();
-		game->changeState(new ShowHighscoreState());
+		game->changeState(new ShowHighscoreState(*display));
 	}
 	if(bState)
-		game->changeState(new ShowHighscoreState());
+		game->changeState(new ShowHighscoreState(*display));
 
 	baseSprite->clear(TFT_BLACK);
 
@@ -57,7 +57,7 @@ void EraseHighscoreState::loop(uint){
 
 }
 
-void EraseHighscoreState::draw(){
+void TroublesomeSpace::EraseHighscoreState::draw(){
 
 	baseSprite->drawIcon(eraseHighscoreStateScreen, 0, 0, 128, 128);
 
@@ -80,18 +80,18 @@ void EraseHighscoreState::draw(){
 
 }
 
-void EraseHighscoreState::buttonAPressed(){
+void TroublesomeSpace::EraseHighscoreState::buttonAPressed(){
 	instance->aState = true;
 }
 
-void EraseHighscoreState::buttonBPressed(){
+void TroublesomeSpace::EraseHighscoreState::buttonBPressed(){
 	instance->bState = true;
 }
 
-void EraseHighscoreState::buttonAReleased(){
+void TroublesomeSpace::EraseHighscoreState::buttonAReleased(){
 	instance->aState = false;
 }
 
-void EraseHighscoreState::buttonBReleased(){
+void TroublesomeSpace::EraseHighscoreState::buttonBReleased(){
 	instance->bState = false;
 }

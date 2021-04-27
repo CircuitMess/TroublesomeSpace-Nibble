@@ -8,32 +8,37 @@
 #include "Melodies.h"
 #include "Note.h"
 
+namespace TroublesomeSpace {
 
-class MelodyImpl : public LoopListener {
+	class MelodyImpl : public LoopListener {
 
-public:
+	public:
 
-	void loop(uint) override;
-	uint playMelody(mel melody , bool loop);
+		void loop(uint) override;
 
-private:
+		uint playMelody(mel melody, bool loop);
 
-	void play(bool loop);
-	void stop();
+	private:
 
-	int melodySize = 0;
-	Note *melodyNote{};
+		void play(bool loop);
 
-	int shortNoteNum = 0;
-	int loopNoteNum = 0;
-	unsigned long previousMillis = 0;
+		void stop();
 
-	bool loopCheck = false;
-	bool melodyPlaying = false;
+		int melodySize = 0;
+		Note *melodyNote{};
 
-	unsigned int melodyTime = 0;
-};
+		int shortNoteNum = 0;
+		int loopNoteNum = 0;
+		unsigned long previousMillis = 0;
 
-extern MelodyImpl Melody;
+		bool loopCheck = false;
+		bool melodyPlaying = false;
+
+		unsigned int melodyTime = 0;
+	};
+
+	extern MelodyImpl Melody;
+
+}
 
 #endif //NIBBLE_NEW_MELODY_H

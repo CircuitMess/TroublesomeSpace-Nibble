@@ -22,209 +22,213 @@
 #define		ORE_RADIUS		sqrt(pow(1.5, 2) + pow(1.5, 2))
 #define		FUEL_RADIUS		sqrt(pow(4, 2) + pow(4, 2))
 
-struct Alien {
+namespace TroublesomeSpace {
 
-	float x;
-	float y;
-	enum alienType{
-		ALIEN1, ALIEN2, ALIEN3, ALIEN4, ALIEN5, ALIEN6,
-		ALIEN_SHIP1, ALIEN_SHIP2, ALIEN_SHIP3, ALIEN_SHIP4, ALIEN_SHIP5
-	}type;
-};
+	struct Alien {
 
-struct Object {
+		float x;
+		float y;
+		enum alienType {
+			ALIEN1, ALIEN2, ALIEN3, ALIEN4, ALIEN5, ALIEN6,
+			ALIEN_SHIP1, ALIEN_SHIP2, ALIEN_SHIP3, ALIEN_SHIP4, ALIEN_SHIP5
+		} type;
+	};
 
-	float x;
-	float y;
-	enum objectType{
-		FUEL,ORE
-	}type;
-};
+	struct Object {
 
-struct FuelBar{
+		float x;
+		float y;
+		enum objectType {
+			FUEL, ORE
+		} type;
+	};
 
-	float x;
-	float y;
-	float width;
-	float height;
+	struct FuelBar {
 
-};
+		float x;
+		float y;
+		float width;
+		float height;
 
-struct Star{
-	float x;
-	float y;
-};
+	};
 
-class GameState : public State {
+	struct Star {
+		float x;
+		float y;
+	};
 
-public:
+	class GameState : public State {
 
-	GameState();
+	public:
 
-	void loop(uint t) override;
+		GameState(Display &display);
 
-	void enter(Game& game) override;
+		void loop(uint t) override;
 
-	void exit() override;
+		void enter(Game &game) override;
 
-	void draw();
+		void exit() override;
 
-	static void buttonUpPressed();
+		void draw();
 
-	static void buttonDownPressed();
+		static void buttonUpPressed();
 
-	static void buttonLeftPressed();
+		static void buttonDownPressed();
 
-	static void buttonRightPressed();
+		static void buttonLeftPressed();
 
-	static void buttonAPressed();
+		static void buttonRightPressed();
 
-	static void buttonBPressed();
+		static void buttonAPressed();
 
-	static void buttonUpReleased();
+		static void buttonBPressed();
 
-	static void buttonDownReleased();
+		static void buttonUpReleased();
 
-	static void buttonLeftReleased();
+		static void buttonDownReleased();
 
-	static void buttonRightReleased();
+		static void buttonLeftReleased();
 
-	static void buttonAReleased();
+		static void buttonRightReleased();
 
-	static void buttonBReleased();
+		static void buttonAReleased();
 
-	uint lives{};
-	uint level{};
-	uint ore{};
-	int invisibilityCounter{};
+		static void buttonBReleased();
 
-	uint melodyTime = 0;
-	bool loopPlaying = false;
+		uint lives{};
+		uint level{};
+		uint ore{};
+		int invisibilityCounter{};
 
-private:
+		uint melodyTime = 0;
+		bool loopPlaying = false;
 
-	static GameState *instance;
+	private:
 
-	Vector<Alien> aliens;
-	Vector<Object> objects;
-	Vector<Star> stars;
+		static GameState *instance;
 
-	ParticleEngine *engine;
+		Vector<Alien> aliens;
+		Vector<Object> objects;
+		Vector<Star> stars;
 
-	FuelBar fuelBar;
+		ParticleEngine *engine;
 
-	void states(uint time);
+		FuelBar fuelBar;
 
-	void levelHandler();
+		void states(uint time);
 
-	void drawPlayer();
+		void levelHandler();
 
-	void drawObject(Object &object);
+		void drawPlayer();
 
-	void drawObjects();
+		void drawObject(Object &object);
 
-	void drawAlien(Alien &alien);
+		void drawObjects();
 
-	void drawAliens();
+		void drawAlien(Alien &alien);
 
-	void alienMovement(Alien &alien, uint t) const;
+		void drawAliens();
 
-	void objectMovement(Object &object, uint t);
+		void alienMovement(Alien &alien, uint t) const;
 
-	void checkIfCollected(Object &object);
+		void objectMovement(Object &object, uint t);
 
-	void checkIfDead(Alien &alien);
+		void checkIfCollected(Object &object);
 
-	void invisibility();
+		void checkIfDead(Alien &alien);
 
-	void drawBackground();
+		void invisibility();
 
-	void drawCounterString();
+		void drawBackground();
 
-	void drawLivesString();
+		void drawCounterString();
 
-	void drawInvisibilityCounter();
+		void drawLivesString();
 
-	void drawFuelBar();
+		void drawInvisibilityCounter();
 
-	void drawPausedState();
+		void drawFuelBar();
 
-	void drawBetweenLevelState();
+		void drawPausedState();
 
-	void drawLevelEnd();
+		void drawBetweenLevelState();
 
+		void drawLevelEnd();
 
-	float playerX = 58;
-	float playerY = 90;
 
-	uint lowIgnitionPlayerFrame = 1;
-	uint previousLowIgnitionPlayerTime = 0;
-	uint lowIgnitionTimePerFrame = 300;
-	uint highIgnitionPlayerFrame = 1;
-	uint previousHighIgnitionPlayerTime = 0;
-	uint highIgnitionTimePerFrame = 300;
+		float playerX = 58;
+		float playerY = 90;
 
-	uint leanLeftPlayerFrame = 1;
-	uint previousLeanLeftPlayerTime = 0;
-	uint leanLeftTimePerFrame = 300;
-	uint leanRightPlayerFrame = 1;
-	uint previousLeanRightPlayerTime = 0;
-	uint leanRightTimePerFrame = 300;
+		uint lowIgnitionPlayerFrame = 1;
+		uint previousLowIgnitionPlayerTime = 0;
+		uint lowIgnitionTimePerFrame = 300;
+		uint highIgnitionPlayerFrame = 1;
+		uint previousHighIgnitionPlayerTime = 0;
+		uint highIgnitionTimePerFrame = 300;
 
-	uint leanLeftIgnitionPlayerFrame = 1;
-	uint previousLeanLeftIgnitionPlayerTime = 0;
-	uint leanLeftIgnitionTimePerFrame = 300;
-	uint leanRightIgnitionPlayerFrame = 1;
-	uint previousLeanRightIgnitionPlayerTime = 0;
-	uint leanRightIgnitionTimePerFrame = 300;
+		uint leanLeftPlayerFrame = 1;
+		uint previousLeanLeftPlayerTime = 0;
+		uint leanLeftTimePerFrame = 300;
+		uint leanRightPlayerFrame = 1;
+		uint previousLeanRightPlayerTime = 0;
+		uint leanRightTimePerFrame = 300;
 
-	const float speed = 1;
+		uint leanLeftIgnitionPlayerFrame = 1;
+		uint previousLeanLeftIgnitionPlayerTime = 0;
+		uint leanLeftIgnitionTimePerFrame = 300;
+		uint leanRightIgnitionPlayerFrame = 1;
+		uint previousLeanRightIgnitionPlayerTime = 0;
+		uint leanRightIgnitionTimePerFrame = 300;
 
-	bool upState = false;
-	bool downState = false;
-	bool rightState = false;
-	bool leftState = false;
-	bool aState = false;
-	bool bState = false;
+		const float speed = 1;
 
-	bool dead = false;
+		bool upState = false;
+		bool downState = false;
+		bool rightState = false;
+		bool leftState = false;
+		bool aState = false;
+		bool bState = false;
 
-	bool playerInvisible = false;
+		bool dead = false;
 
-	unsigned long invisibilityTime = 4000;
-	unsigned long currentInvisibilityTime = 0;
-	unsigned long previousInvisibilityTime = 0;
+		bool playerInvisible = false;
 
-	const char *resume = "Resume: A";
-	const char *quit = "Quit: B";
-	const char *continueString = "Press A to continue";
-	const char *levelNumber = "Level";
+		unsigned long invisibilityTime = 4000;
+		unsigned long currentInvisibilityTime = 0;
+		unsigned long previousInvisibilityTime = 0;
 
-	unsigned long melodyPreviousMillis = millis();
+		const char *resume = "Resume: A";
+		const char *quit = "Quit: B";
+		const char *continueString = "Press A to continue";
+		const char *levelNumber = "Level";
 
-	bool oreCheck = false;
-	uint oreTime = 8000;
-	unsigned long previousOreTime = millis();
+		unsigned long melodyPreviousMillis = millis();
 
-	bool fuelCheck = false;
-	uint fuelTime = 15000;
-	unsigned long previousFuelTime = millis();
-	float fuelDx = 1;
+		bool oreCheck = false;
+		uint oreTime = 8000;
+		unsigned long previousOreTime = millis();
 
-	bool pausedState = false;
-	bool betweenLevelState = false;
+		bool fuelCheck = false;
+		uint fuelTime = 15000;
+		unsigned long previousFuelTime = millis();
+		float fuelDx = 1;
 
-	bool newLevel = false;
+		bool pausedState = false;
+		bool betweenLevelState = false;
 
-	uint levelTime = 60000;
-	unsigned long previousLevelTime = millis();
+		bool newLevel = false;
 
-	bool levelEnd = false;
-	bool finalPart = false;
-	float lvlEndPlanetX = 42;
-	float lvlEndPlanetY = -45;
+		uint levelTime = 60000;
+		unsigned long previousLevelTime = millis();
 
+		bool levelEnd = false;
+		bool finalPart = false;
+		float lvlEndPlanetX = 42;
+		float lvlEndPlanetY = -45;
 
-};
+
+	};
+
+}
 
 #endif //NIBBLE_NEW_GAMESTATE_H

@@ -5,10 +5,10 @@
 #include "MenuMelody.h"
 
 
-MelodyImpl Melody;
+TroublesomeSpace::MelodyImpl TroublesomeSpace::Melody;
 
 
-void MelodyImpl::loop(uint t){
+void TroublesomeSpace::MelodyImpl::loop(uint t){
 
 	if(melodyPlaying){
 		if(!loopCheck){
@@ -22,7 +22,7 @@ void MelodyImpl::loop(uint t){
 	}
 }
 
-uint MelodyImpl::playMelody(mel melody, bool loop){
+uint TroublesomeSpace::MelodyImpl::playMelody(mel melody, bool loop){
 
 
 	loopCheck = loop;
@@ -69,7 +69,7 @@ uint MelodyImpl::playMelody(mel melody, bool loop){
 }
 
 
-void MelodyImpl::play(bool loop){
+void TroublesomeSpace::MelodyImpl::play(bool loop){
 
 	if(loop){
 
@@ -103,7 +103,7 @@ void MelodyImpl::play(bool loop){
 }
 
 
-void MelodyImpl::stop(){
+void TroublesomeSpace::MelodyImpl::stop(){
 
 	melodySize = 0;
 	melodyNote = nullptr;

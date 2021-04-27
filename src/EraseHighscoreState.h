@@ -4,42 +4,43 @@
 #include <Arduino.h>
 #include "Game.h"
 
-class EraseHighscoreState : public State {
+namespace TroublesomeSpace {
 
-public:
+	class EraseHighscoreState : public State {
 
-	EraseHighscoreState();
+	public:
 
-	void enter(Game& game) override;
+		EraseHighscoreState(Display &display);
 
-	void exit() override;
+		void enter(Game &game) override;
 
-	void loop(uint) override;
+		void exit() override;
 
-	void draw();
+		void loop(uint) override;
 
-	static void buttonAPressed();
-	static void buttonBPressed();
-	static void buttonAReleased();
-	static void buttonBReleased();
+		void draw();
 
-private:
+		static void buttonAPressed();
 
-	Display *display;
-	Sprite *baseSprite;
+		static void buttonBPressed();
 
-	Game *game;
+		static void buttonAReleased();
 
-	static EraseHighscoreState *instance;
+		static void buttonBReleased();
 
-	bool aState;
-	bool bState;
+	private:
 
-	const char *confirm = "CONFIRM";
-	const char *yes = "A: yes";
-	const char *no = "B: no";
+		static EraseHighscoreState *instance;
 
-};
+		bool aState;
+		bool bState;
 
+		const char *confirm = "CONFIRM";
+		const char *yes = "A: yes";
+		const char *no = "B: no";
+
+	};
+
+}
 
 #endif //NIBBLE_NEW_ERASEHIGHSCORESTATE_H

@@ -1,15 +1,18 @@
 #ifndef NIBBLE_NEW_MELODIES_H
 #define NIBBLE_NEW_MELODIES_H
 
-enum mel{
+namespace TroublesomeSpace {
 
-	MENU,
-	START,
-	LOSE,
-	LOOP,
-	STOP
+	enum mel {
 
-};
+		MENU,
+		START,
+		LOSE,
+		LOOP,
+		STOP
 
+	};
+
+}
 
 #endif //NIBBLE_NEW_MELODIES_H

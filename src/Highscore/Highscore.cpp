@@ -2,13 +2,13 @@
 #include <FS.h>
 #include <LittleFS.h>
 
-HighscoreImpl Highscore;
+TroublesomeSpace::HighscoreImpl TroublesomeSpace::Highscore;
 
-HighscoreImpl::HighscoreImpl(){
+TroublesomeSpace::HighscoreImpl::HighscoreImpl(){
 
 }
 
-void HighscoreImpl::begin(){
+void TroublesomeSpace::HighscoreImpl::begin(){
 
 	if(!LittleFS.begin()){
 		Serial.println("LittleFS begin error");
@@ -23,7 +23,7 @@ void HighscoreImpl::begin(){
 	}
 }
 
-void HighscoreImpl::addData(Score &score){
+void TroublesomeSpace::HighscoreImpl::addData(Score &score){
 
 	if(data.count == MAX_SCORE_PLAYERS && score.score < data.scores[data.count - 1].score)
 		return;
@@ -55,32 +55,32 @@ void HighscoreImpl::addData(Score &score){
 
 }
 
-void HighscoreImpl::clearData(){
+void TroublesomeSpace::HighscoreImpl::clearData(){
 
 	data.count = 0;
 	saveData();
 }
 
-void HighscoreImpl::saveData(){
+void TroublesomeSpace::HighscoreImpl::saveData(){
 
 	File file = LittleFS.open(FILENAME, "w");
 	file.write((byte *) &data, sizeof(Data));
 	file.close();
 }
 
-void HighscoreImpl::loadData(){
+void TroublesomeSpace::HighscoreImpl::loadData(){
 
 	File file = LittleFS.open(FILENAME, "r");
 	file.readBytes((char *) &data, sizeof(Data));
 	file.close();
 }
 
-const Score &HighscoreImpl::get(uint8_t i){
+const TroublesomeSpace::Score &TroublesomeSpace::HighscoreImpl::get(uint8_t i){
 
 	return data.scores[i];
 }
 
-uint8_t HighscoreImpl::dataCount(){
+uint8_t TroublesomeSpace::HighscoreImpl::dataCount(){
 
 	return data.count;
 }

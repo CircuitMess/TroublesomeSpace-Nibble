@@ -1,20 +1,21 @@
 #include "Game.h"
 #include "GameState.h"
 #include "GameOverState.h"
+#include "Melody/Melody.h"
 
-Game::Game(){
+TroublesomeSpace::Game::Game(Display &display){
 
 	LoopManager::addListener(&Melody);
-	state = new Menu();
+	state = new Menu(display);
 	state->enter(*this);
 }
 
-void Game::loop(uint t){
+void TroublesomeSpace::Game::loop(uint t){
 
 	state->loop(t);
 }
 
-void Game::changeState(State *s){
+void TroublesomeSpace::Game::changeState(State *s){
 
 	state->exit();
 	delete state;

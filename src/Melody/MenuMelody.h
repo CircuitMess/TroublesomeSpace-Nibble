@@ -5,7 +5,7 @@
 #include "Note.h"
 
 
-Note menuMelody[] = {
+TroublesomeSpace::Note menuMelody[] = {
 
 		{NOTE_E4, 250}, {NOTE_C4, 250},
 		{NOTE_E4, 250}, {NOTE_C4, 250},

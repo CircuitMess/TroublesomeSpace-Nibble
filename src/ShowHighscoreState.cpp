@@ -4,18 +4,18 @@
 #include "bitmaps/states/highscore.hpp"
 
 
-ShowHighscoreState *ShowHighscoreState::instance = nullptr;
+TroublesomeSpace::ShowHighscoreState *TroublesomeSpace::ShowHighscoreState::instance = nullptr;
 
-ShowHighscoreState::ShowHighscoreState(){
+TroublesomeSpace::ShowHighscoreState::ShowHighscoreState(Display &_display){
 
-	display = Nibble.getDisplay();
+	display = &_display;
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
 
 }
 
-void ShowHighscoreState::enter(Game &_game){
+void TroublesomeSpace::ShowHighscoreState::enter(Game &_game){
 
 	game = &_game;
 
@@ -27,13 +27,13 @@ void ShowHighscoreState::enter(Game &_game){
 	Input::getInstance()->setBtnReleaseCallback(BTN_B, buttonBReleased);
 }
 
-void ShowHighscoreState::exit(){
+void TroublesomeSpace::ShowHighscoreState::exit(){
 
 	Input::getInstance()->removeBtnPressCallback(BTN_B);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_B);
 }
 
-void ShowHighscoreState::loop(uint){
+void TroublesomeSpace::ShowHighscoreState::loop(uint){
 
 	draw();
 
@@ -42,7 +42,7 @@ void ShowHighscoreState::loop(uint){
 	baseSprite->clear(TFT_BLACK);
 
 	if(bState)
-		game->changeState(new Menu());
+		game->changeState(new Menu(*display));
 
 	if(millis() - previousArrowTime > 200){
 		step++;
@@ -53,7 +53,7 @@ void ShowHighscoreState::loop(uint){
 
 }
 
-void ShowHighscoreState::draw(){
+void TroublesomeSpace::ShowHighscoreState::draw(){
 
 	baseSprite->drawIcon(highscoreScreen,0,0,128,128);
 
@@ -76,12 +76,12 @@ void ShowHighscoreState::draw(){
 	}
 }
 
-void ShowHighscoreState::buttonBPressed(){
+void TroublesomeSpace::ShowHighscoreState::buttonBPressed(){
 
 	instance->bState = true;
 }
 
-void ShowHighscoreState::buttonBReleased(){
+void TroublesomeSpace::ShowHighscoreState::buttonBReleased(){
 
 	instance->bState = false;
 }

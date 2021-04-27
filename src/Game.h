@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 06/11/2020.
-//
-
 #ifndef NIBBLE_NEW_GAME_H
 #define NIBBLE_NEW_GAME_H
 
@@ -9,24 +5,26 @@
 #include <CircuitOS.h>
 #include <Nibble.h>
 #include <Loop/LoopManager.h>
-#include "melody/Melody.h"
 
-class State;
+namespace TroublesomeSpace {
 
-class Game : public LoopListener {
+	class State;
 
-public:
+	class Game : public LoopListener {
 
-	Game();
+	public:
 
-	void loop(uint) override;
+		Game(Display &display);
 
-	void changeState(State *s);
+		void loop(uint) override;
 
-private:
+		void changeState(State *s);
 
-	State *state{};
-};
+	private:
 
+		State *state{};
+	};
+
+}
 
 #endif //NIBBLE_NEW_GAME_H

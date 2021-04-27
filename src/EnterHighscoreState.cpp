@@ -2,11 +2,11 @@
 #include "ShowHighscoreState.h"
 #include "Highscore/Highscore.h"
 
-EnterHighscoreState *EnterHighscoreState::instance = nullptr;
+TroublesomeSpace::EnterHighscoreState *TroublesomeSpace::EnterHighscoreState::instance = nullptr;
 
-EnterHighscoreState::EnterHighscoreState(uint _score){
+TroublesomeSpace::EnterHighscoreState::EnterHighscoreState(Display &_display, uint _score){
 
-	display = Nibble.getDisplay();
+	display = &_display;
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
@@ -14,7 +14,7 @@ EnterHighscoreState::EnterHighscoreState(uint _score){
 	score = _score;
 }
 
-void EnterHighscoreState::enter(Game &_game){
+void TroublesomeSpace::EnterHighscoreState::enter(Game &_game){
 
 	game = &_game;
 
@@ -39,7 +39,7 @@ void EnterHighscoreState::enter(Game &_game){
 
 }
 
-void EnterHighscoreState::exit(){
+void TroublesomeSpace::EnterHighscoreState::exit(){
 
 	Input::getInstance()->removeBtnPressCallback(BTN_UP);
 	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
@@ -58,7 +58,7 @@ void EnterHighscoreState::exit(){
 	free(name);
 }
 
-void EnterHighscoreState::loop(uint){
+void TroublesomeSpace::EnterHighscoreState::loop(uint){
 
 	states();
 
@@ -83,7 +83,7 @@ void EnterHighscoreState::loop(uint){
 
 }
 
-void EnterHighscoreState::states(){
+void TroublesomeSpace::EnterHighscoreState::states(){
 
 	if(upState){
 
@@ -119,14 +119,14 @@ void EnterHighscoreState::states(){
 			strcpy(newScore.name, name);
 
 			Highscore.addData(newScore);
-			game->changeState(new ShowHighscoreState());
+			game->changeState(new ShowHighscoreState(*display));
 		}
 
 		aState = false;
 	}
 }
 
-void EnterHighscoreState::draw(){
+void TroublesomeSpace::EnterHighscoreState::draw(){
 
 	baseSprite->drawLine(50, 100, 82, 100, TFT_GOLD);
 
@@ -160,62 +160,62 @@ void EnterHighscoreState::draw(){
 
 }
 
-void EnterHighscoreState::buttonUpPressed(){
+void TroublesomeSpace::EnterHighscoreState::buttonUpPressed(){
 
 	instance->upState = true;
 }
 
-void EnterHighscoreState::buttonDownPressed(){
+void TroublesomeSpace::EnterHighscoreState::buttonDownPressed(){
 
 	instance->downState = true;
 }
 
-void EnterHighscoreState::buttonLeftPressed(){
+void TroublesomeSpace::EnterHighscoreState::buttonLeftPressed(){
 
 	instance->leftState = true;
 }
 
-void EnterHighscoreState::buttonRightPressed(){
+void TroublesomeSpace::EnterHighscoreState::buttonRightPressed(){
 
 	instance->rightState = true;
 }
 
-void EnterHighscoreState::buttonAPressed(){
+void TroublesomeSpace::EnterHighscoreState::buttonAPressed(){
 
 	instance->aState = true;
 }
 
-void EnterHighscoreState::buttonBPressed(){
+void TroublesomeSpace::EnterHighscoreState::buttonBPressed(){
 
 	instance->bState = true;
 }
 
-void EnterHighscoreState::buttonUpReleased(){
+void TroublesomeSpace::EnterHighscoreState::buttonUpReleased(){
 
 	instance->upState = false;
 }
 
-void EnterHighscoreState::buttonDownReleased(){
+void TroublesomeSpace::EnterHighscoreState::buttonDownReleased(){
 
 	instance->downState = false;
 }
 
-void EnterHighscoreState::buttonLeftReleased(){
+void TroublesomeSpace::EnterHighscoreState::buttonLeftReleased(){
 
 	instance->leftState = false;
 }
 
-void EnterHighscoreState::buttonRightReleased(){
+void TroublesomeSpace::EnterHighscoreState::buttonRightReleased(){
 
 	instance->rightState = false;
 }
 
-void EnterHighscoreState::buttonAReleased(){
+void TroublesomeSpace::EnterHighscoreState::buttonAReleased(){
 
 	instance->aState = false;
 }
 
-void EnterHighscoreState::buttonBReleased(){
+void TroublesomeSpace::EnterHighscoreState::buttonBReleased(){
 
 	instance->bState = false;
 }

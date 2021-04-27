@@ -5,39 +5,42 @@
 #include "State.h"
 #include "Menu.h"
 
+namespace TroublesomeSpace {
 
-class ShowHighscoreState : public State {
+	class ShowHighscoreState : public State {
 
-public:
+	public:
 
-	ShowHighscoreState();
+		ShowHighscoreState(Display &display);
 
-	void enter(Game &game) override;
+		void enter(Game &game) override;
 
-	void exit() override;
+		void exit() override;
 
-	void loop(uint) override;
+		void loop(uint) override;
 
-	void draw();
+		void draw();
 
-	static void buttonBPressed();
-	static void buttonBReleased();
+		static void buttonBPressed();
 
-private:
+		static void buttonBReleased();
 
-	static ShowHighscoreState *instance;
+	private:
 
-	Menu *menu;
+		static ShowHighscoreState *instance;
 
-	bool bState;
+		Menu *menu;
 
-	uint previousArrowTime = 0;
-	int step = 0;
+		bool bState;
 
-	const char *highscore = "Highscore:";
-	const char *back = "B";
+		uint previousArrowTime = 0;
+		int step = 0;
 
-};
+		const char *highscore = "Highscore:";
+		const char *back = "B";
 
+	};
+
+}
 
 #endif //NIBBLE_NEW_SHOWHIGHSCORESTATE_H

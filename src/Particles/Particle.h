@@ -8,33 +8,37 @@
 #include <Display/Display.h>
 #include <Display/Sprite.h>
 
-class ParticleEngine;
+namespace TroublesomeSpace {
 
-class Particle : public LoopListener {
+	class ParticleEngine;
 
-public:
+	class Particle : public LoopListener {
 
-	Particle(ParticleEngine *particle, Sprite *baseSprite, uint8_t engineX, uint8_t engineY);
+	public:
 
-	void draw();
+		Particle(ParticleEngine *particle, Sprite *baseSprite, uint8_t engineX, uint8_t engineY);
 
-	void loop(uint) override;
+		void draw();
 
-private:
+		void loop(uint) override;
 
-	Display *display;
-	Sprite *baseSprite;
+	private:
 
-	ParticleEngine *engine;
+		Display *display;
+		Sprite *baseSprite;
 
-	const uint8_t delta = 10;
+		ParticleEngine *engine;
 
-	float particleX;
-	float particleY;
-	const uint8_t particleRadius = 1;
+		const uint8_t delta = 10;
 
-	uint32_t particleMovementTime = millis();
-	uint8_t movementModifier = 0;
-};
+		float particleX;
+		float particleY;
+		const uint8_t particleRadius = 1;
+
+		uint32_t particleMovementTime = millis();
+		uint8_t movementModifier = 0;
+	};
+
+}
 
 #endif //NIBBLE_NEW_PARTICLE_H

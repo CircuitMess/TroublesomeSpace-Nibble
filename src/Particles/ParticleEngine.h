@@ -9,39 +9,43 @@
 #include <Display/Sprite.h>
 #include "Particle.h"
 
-class Particle;
+namespace TroublesomeSpace {
 
-class ParticleEngine : public LoopListener {
+	class Particle;
 
-public:
+	class ParticleEngine : public LoopListener {
 
-	explicit ParticleEngine(Sprite *baseSprite);
-	~ParticleEngine();
+	public:
 
-	void loop(uint)override;
+		explicit ParticleEngine(Sprite *baseSprite);
 
-	void update(uint8_t engineX, uint8_t engineY);
+		~ParticleEngine();
 
-	void createParticle();
+		void loop(uint) override;
 
-	void removeParticle(Particle *particleToRemove);
+		void update(uint8_t engineX, uint8_t engineY);
 
-	void removeAll();
+		void createParticle();
+
+		void removeParticle(Particle *particleToRemove);
+
+		void removeAll();
 
 
-private:
+	private:
 
-	Sprite *baseSprite;
+		Sprite *baseSprite;
 
-	Vector<Particle*> particles;
+		Vector<Particle *> particles;
 
-	uint16_t creationFrequency = 50;
-	uint previousCreationTime = 0;
+		uint16_t creationFrequency = 50;
+		uint previousCreationTime = 0;
 
-	uint8_t engineX = 0;
-	uint8_t engineY = 0;
+		uint8_t engineX = 0;
+		uint8_t engineY = 0;
 
-};
+	};
 
+}
 
 #endif //NIBBLE_NEW_PARTICLEENGINE_H

@@ -4,11 +4,12 @@
 #include "ShowHighscoreState.h"
 #include "Highscore/Highscore.h"
 #include "bitmaps/states/gameover.hpp"
+#include "Melody/Melody.h"
 
 
-GameOverState::GameOverState(uint _score){
+TroublesomeSpace::GameOverState::GameOverState(Display &_display, uint _score){
 
-	display = Nibble.getDisplay();
+	display = &_display;
 	baseSprite = display->getBaseSprite();
 
 	score = _score;
@@ -20,17 +21,17 @@ GameOverState::GameOverState(uint _score){
 	draw();
 }
 
-void GameOverState::enter(Game &_game){
+void TroublesomeSpace::GameOverState::enter(Game &_game){
 
 	game = &_game;
 
 }
 
-void GameOverState::exit(){
+void TroublesomeSpace::GameOverState::exit(){
 
 }
 
-void GameOverState::loop(uint){
+void TroublesomeSpace::GameOverState::loop(uint){
 
 	baseSprite->clear(TFT_BLACK);
 
@@ -41,16 +42,16 @@ void GameOverState::loop(uint){
 	if(millis() - gameOverMillis > melodyTime){
 
 		if(score > Highscore.get(4).score){
-			game->changeState(new EnterHighscoreState(score));
+			game->changeState(new EnterHighscoreState(*display, score));
 		}
 		else{
-			game->changeState(new ShowHighscoreState());
+			game->changeState(new ShowHighscoreState(*display));
 		}
 	}
 
 }
 
-void GameOverState::draw(){
+void TroublesomeSpace::GameOverState::draw(){
 
 	baseSprite->drawIcon(gameover, 0, 0, 128, 128);
 

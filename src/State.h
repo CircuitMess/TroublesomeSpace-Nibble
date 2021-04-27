@@ -1,7 +1,3 @@
-//
-// Created by Domagoj on 06/11/2020.
-//
-
 #ifndef NIBBLE_NEW_STATE_H
 #define NIBBLE_NEW_STATE_H
 
@@ -13,27 +9,31 @@
 #include <Display/Display.h>
 #include <Display/Sprite.h>
 
-class Game;
+namespace TroublesomeSpace {
 
-class State {
+	class Game;
 
-public:
+	class State {
 
-	State();
+	public:
 
-	virtual void enter(Game& game) = 0;
+		State();
 
-	virtual void exit() = 0;
+		virtual void enter(Game &game) = 0;
 
-	virtual void loop(uint) = 0;
+		virtual void exit() = 0;
+
+		virtual void loop(uint) = 0;
 
 
-protected:
+	protected:
 
-	Game *game;
-	Display *display;
-	Sprite *baseSprite;
+		Game *game;
+		Display *display;
+		Sprite *baseSprite;
 
-};
+	};
+
+}
 
 #endif //NIBBLE_NEW_STATE_H

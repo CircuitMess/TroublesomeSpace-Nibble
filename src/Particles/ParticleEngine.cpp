@@ -1,6 +1,6 @@
 #include "ParticleEngine.h"
 
-ParticleEngine::ParticleEngine(Sprite *_baseSprite){
+TroublesomeSpace::ParticleEngine::ParticleEngine(Sprite *_baseSprite){
 
 	baseSprite = _baseSprite;
 
@@ -10,11 +10,11 @@ ParticleEngine::ParticleEngine(Sprite *_baseSprite){
 
 }
 
-ParticleEngine::~ParticleEngine() noexcept{
+TroublesomeSpace::ParticleEngine::~ParticleEngine() noexcept{
 	removeAll();
 }
 
-void ParticleEngine::loop(uint t){
+void TroublesomeSpace::ParticleEngine::loop(uint t){
 
 	if(millis()- previousCreationTime > creationFrequency){
 		if(particles.size() < 5){
@@ -30,19 +30,19 @@ void ParticleEngine::loop(uint t){
 	}
 }
 
-void ParticleEngine::update(uint8_t x, uint8_t y){
+void TroublesomeSpace::ParticleEngine::update(uint8_t x, uint8_t y){
 
 	engineX = x;
 	engineY = y;
 }
 
-void ParticleEngine::createParticle(){
+void TroublesomeSpace::ParticleEngine::createParticle(){
 
 	auto* newParticle = new Particle(this, baseSprite, engineX, engineY);
 	particles.push_back(newParticle);
 }
 
-void ParticleEngine::removeParticle(Particle *particleToRemove){
+void TroublesomeSpace::ParticleEngine::removeParticle(Particle *particleToRemove){
 
 	int indexToRemove = particles.indexOf(particleToRemove);
 
@@ -51,7 +51,7 @@ void ParticleEngine::removeParticle(Particle *particleToRemove){
 
 }
 
-void ParticleEngine::removeAll(){
+void TroublesomeSpace::ParticleEngine::removeAll(){
 
 	particles.clear();
 }

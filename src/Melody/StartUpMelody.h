@@ -5,7 +5,7 @@
 #include "Note.h"
 #include "Melodies.h"
 
-Note startUpMelody[] = {
+TroublesomeSpace::Note startUpMelody[] = {
 
 		{NOTE_C4, 250},
 		{NOTE_G3, 125},

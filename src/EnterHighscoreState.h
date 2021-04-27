@@ -5,69 +5,72 @@
 #include "Game.h"
 #include "State.h"
 
-class EnterHighscoreState : public State {
+namespace TroublesomeSpace {
 
-public:
+	class EnterHighscoreState : public State {
 
-	explicit EnterHighscoreState(uint score);
+	public:
 
-	void enter(Game& game) override;
+		explicit EnterHighscoreState(Display &display, uint score);
 
-	void exit() override;
+		void enter(Game &game) override;
 
-	void loop(uint) override;
+		void exit() override;
 
-	void draw();
+		void loop(uint) override;
 
-	void states();
+		void draw();
 
-	static void buttonUpPressed();
+		void states();
 
-	static void buttonDownPressed();
+		static void buttonUpPressed();
 
-	static void buttonLeftPressed();
+		static void buttonDownPressed();
 
-	static void buttonRightPressed();
+		static void buttonLeftPressed();
 
-	static void buttonAPressed();
+		static void buttonRightPressed();
 
-	static void buttonBPressed();
+		static void buttonAPressed();
 
-	static void buttonUpReleased();
+		static void buttonBPressed();
 
-	static void buttonDownReleased();
+		static void buttonUpReleased();
 
-	static void buttonLeftReleased();
+		static void buttonDownReleased();
 
-	static void buttonRightReleased();
+		static void buttonLeftReleased();
 
-	static void buttonAReleased();
+		static void buttonRightReleased();
 
-	static void buttonBReleased();
+		static void buttonAReleased();
 
-private:
+		static void buttonBReleased();
 
-	static EnterHighscoreState *instance;
+	private:
 
-	Display *display;
-	Sprite *baseSprite;
+		static EnterHighscoreState *instance;
 
-	Game *game;
+		Display *display;
+		Sprite *baseSprite;
 
-	uint score = 0;
-	char *name;
-	const char* dispName = "Name:";
+		Game *game;
 
-	uint8_t charCursor;
+		uint score = 0;
+		char *name;
+		const char *dispName = "Name:";
 
-	bool upState;
-	bool downState;
-	bool aState;
-	bool bState;
-	bool leftState;
-	bool rightState;
+		uint8_t charCursor;
 
-};
+		bool upState;
+		bool downState;
+		bool aState;
+		bool bState;
+		bool leftState;
+		bool rightState;
 
+	};
+
+}
 
 #endif //NIBBLE_NEW_ENTERHIGHSCORESTATE_H

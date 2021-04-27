@@ -5,43 +5,47 @@
 
 #define MAX_SCORE_PLAYERS 5
 #define MAX_PLAYER_LETTERS 5
-#define FILENAME "/Troublesome Space"
+#define FILENAME "/TroublesomeSpace"
 
-struct Score {
+namespace TroublesomeSpace {
 
-	char name[MAX_PLAYER_LETTERS + 1];
-	uint score;
-};
+	struct Score {
 
-class HighscoreImpl {
+		char name[MAX_PLAYER_LETTERS + 1];
+		uint score;
+	};
 
-public:
+	class HighscoreImpl {
 
-	HighscoreImpl();
+	public:
 
-	void begin();
+		HighscoreImpl();
 
-	void addData(Score &score);
+		void begin();
 
-	void clearData();
+		void addData(Score &score);
 
-	const Score &get(uint8_t i);
+		void clearData();
 
-	uint8_t dataCount();
+		const Score &get(uint8_t i);
 
-private:
+		uint8_t dataCount();
 
-	struct Data {
-		uint8_t count;
-		Score scores[MAX_SCORE_PLAYERS];
-	} data;
+	private:
 
-	void saveData();
+		struct Data {
+			uint8_t count;
+			Score scores[MAX_SCORE_PLAYERS];
+		} data;
 
-	void loadData();
+		void saveData();
 
-};
+		void loadData();
 
-extern HighscoreImpl Highscore;
+	};
+
+	extern HighscoreImpl Highscore;
+
+}
 
 #endif //NIBBLE_NEW_HIGHSCORE_H

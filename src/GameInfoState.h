@@ -4,38 +4,47 @@
 #include "Game.h"
 #include "State.h"
 
-class GameInfoState : public State {
+namespace TroublesomeSpace {
 
-public:
-	GameInfoState();
-	~GameInfoState();
+	class GameInfoState : public State {
 
-	void enter(Game &game) override;
-	void exit() override;
-	void loop(uint) override;
-	void draw();
+	public:
+		GameInfoState(Display &display);
+
+		~GameInfoState();
+
+		void enter(Game &game) override;
+
+		void exit() override;
+
+		void loop(uint) override;
+
+		void draw();
 
 
-	static void buttonAPressed();
-	static void buttonBPressed();
+		static void buttonAPressed();
 
-	static void buttonAReleased();
-	static void buttonBReleased();
+		static void buttonBPressed();
 
-private:
+		static void buttonAReleased();
 
-	static GameInfoState *instance;
+		static void buttonBReleased();
 
-	void states();
+	private:
 
-	bool aState = false;
-	bool bState = false;
+		static GameInfoState *instance;
 
-	int step = 0;
-	uint previousArrowTime = 0;
+		void states();
 
-	bool invisible = false;
-};
+		bool aState = false;
+		bool bState = false;
 
+		int step = 0;
+		uint previousArrowTime = 0;
+
+		bool invisible = false;
+	};
+
+}
 
 #endif //NIBBLE_NEW_GAMEINFOSTATE_H

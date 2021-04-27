@@ -4,33 +4,35 @@
 
 #include "State.h"
 #include "Menu.h"
-#include "melody/Melody.h"
 
-class GameState;
+namespace TroublesomeSpace {
 
-class GameOverState : public State {
+	class GameState;
 
-public:
+	class GameOverState : public State {
 
-	GameOverState(uint score);
+	public:
 
-	void loop(uint) override;
+		GameOverState(Display &display, uint score);
 
-	void enter(Game& game) override;
+		void loop(uint) override;
 
-	void exit() override;
+		void enter(Game &game) override;
 
-	void draw();
+		void exit() override;
 
-private:
+		void draw();
 
-	unsigned long gameOverMillis = millis();
+	private:
 
-	uint melodyTime;
+		unsigned long gameOverMillis = millis();
 
-	uint score = 0;
+		uint melodyTime;
 
-};
+		uint score = 0;
 
+	};
+
+}
 
 #endif //NIBBLE_NEW_GAMEOVERSTATE_H

@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include "ParticleEngine.h"
 
-Particle::Particle(ParticleEngine *_particle, Sprite *_baseSprite, uint8_t engineX, uint8_t engineY){
+TroublesomeSpace::Particle::Particle(ParticleEngine *_particle, Sprite *_baseSprite, uint8_t engineX, uint8_t engineY){
 
 	baseSprite = _baseSprite;
 
@@ -12,7 +12,7 @@ Particle::Particle(ParticleEngine *_particle, Sprite *_baseSprite, uint8_t engin
 
 }
 
-void Particle::loop(uint){
+void TroublesomeSpace::Particle::loop(uint){
 
 	movementModifier++;
 	if(movementModifier > 255){
@@ -37,7 +37,7 @@ void Particle::loop(uint){
 	draw();
 }
 
-void Particle::draw(){
+void TroublesomeSpace::Particle::draw(){
 	baseSprite->fillCircle((uint8_t)particleX, (uint8_t)particleY,particleRadius, TFT_ORANGE);
 	baseSprite->drawPixel((uint8_t)particleX, (uint8_t)particleY, TFT_RED);
 }

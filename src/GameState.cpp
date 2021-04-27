@@ -55,12 +55,13 @@
 #include "bitmaps/tiltedPlayer/ignition/ignitionTiltRight3.hpp"
 #include "bitmaps/states/background.hpp"
 #include "bitmaps/states/pauseScreen.hpp"
+#include "melody/Melody.h"
 
-GameState *GameState::instance = nullptr;
+TroublesomeSpace::GameState *TroublesomeSpace::GameState::instance = nullptr;
 
-GameState::GameState(){
+TroublesomeSpace::GameState::GameState(Display &_display){
 
-	display = Nibble.getDisplay();
+	display = &_display;
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
@@ -95,7 +96,7 @@ GameState::GameState(){
 
 }
 
-void GameState::loop(uint time){
+void TroublesomeSpace::GameState::loop(uint time){
 
 	if(pausedState){
 
@@ -135,7 +136,7 @@ void GameState::loop(uint time){
 	}
 }
 
-void GameState::enter(Game &_game){
+void TroublesomeSpace::GameState::enter(Game &_game){
 
 	game = &_game;
 
@@ -155,7 +156,7 @@ void GameState::enter(Game &_game){
 
 }
 
-void GameState::exit(){
+void TroublesomeSpace::GameState::exit(){
 
 	for(int i = 0; i < aliens.size(); i++)
 		aliens.pop_back();
@@ -182,7 +183,7 @@ void GameState::exit(){
 
 }
 
-void GameState::draw(){
+void TroublesomeSpace::GameState::draw(){
 
 	baseSprite->clear(TFT_BLACK);
 
@@ -215,7 +216,7 @@ void GameState::draw(){
 	}
 }
 
-void GameState::drawPlayer(){
+void TroublesomeSpace::GameState::drawPlayer(){
 
 	if(playerInvisible){
 		if(leftState || (leftState && upState) || (leftState && downState)){
@@ -372,7 +373,7 @@ void GameState::drawPlayer(){
 
 }
 
-void GameState::drawObject(Object &object){
+void TroublesomeSpace::GameState::drawObject(Object &object){
 
 	if(object.type == Object::FUEL && fuelCheck)
 		baseSprite->drawIcon(fuelIcon, object.x, object.y, 8, 8, 1, TFT_BLACK);
@@ -381,7 +382,7 @@ void GameState::drawObject(Object &object){
 
 }
 
-void GameState::drawObjects(){
+void TroublesomeSpace::GameState::drawObjects(){
 	for(int i = 0; i < objects.size(); i++){
 
 		drawObject(objects[i]);
@@ -389,7 +390,7 @@ void GameState::drawObjects(){
 	}
 }
 
-void GameState::drawAlien(Alien &alien){
+void TroublesomeSpace::GameState::drawAlien(Alien &alien){
 
 	if(alien.type == Alien::ALIEN1)
 		baseSprite->drawIcon(alien1, alien.x, alien.y, 10, 10, 1, TFT_BLACK);
@@ -416,7 +417,7 @@ void GameState::drawAlien(Alien &alien){
 
 }
 
-void GameState::drawAliens(){
+void TroublesomeSpace::GameState::drawAliens(){
 	for(int i = 0; i < aliens.size(); i++){
 
 		drawAlien(aliens[i]);
@@ -424,7 +425,7 @@ void GameState::drawAliens(){
 	}
 }
 
-void GameState::alienMovement(Alien &alien, uint t) const{
+void TroublesomeSpace::GameState::alienMovement(Alien &alien, uint t) const{
 
 	if(alien.type == alien.ALIEN1){
 
@@ -593,7 +594,7 @@ void GameState::alienMovement(Alien &alien, uint t) const{
 
 }
 
-void GameState::objectMovement(Object &object, uint t){
+void TroublesomeSpace::GameState::objectMovement(Object &object, uint t){
 
 	if(object.type == Object::FUEL && fuelCheck){
 
@@ -625,7 +626,7 @@ void GameState::objectMovement(Object &object, uint t){
 
 }
 
-void GameState::checkIfDead(Alien &alien){
+void TroublesomeSpace::GameState::checkIfDead(Alien &alien){
 
 	uint dx = abs((alien.x + 5) - (playerX + 6));
 	uint dy = abs((alien.y + 5) - (playerY + 9));
@@ -645,12 +646,12 @@ void GameState::checkIfDead(Alien &alien){
 		previousInvisibilityTime = currentInvisibilityTime = millis();
 
 		if(lives == 0){
-			game->changeState(new GameOverState(ore));
+			game->changeState(new GameOverState(*display, ore));
 		}
 	}
 }
 
-void GameState::checkIfCollected(Object &object){
+void TroublesomeSpace::GameState::checkIfCollected(Object &object){
 
 	if(object.type == Object::ORE){
 
@@ -697,7 +698,7 @@ void GameState::checkIfCollected(Object &object){
 	}
 }
 
-void GameState::states(uint t){
+void TroublesomeSpace::GameState::states(uint t){
 
 	if(pausedState){
 
@@ -708,7 +709,7 @@ void GameState::states(uint t){
 
 		}else if(instance->bState){
 
-			game->changeState(new Menu());
+			game->changeState(new Menu(*display));
 		}
 	}else if(betweenLevelState){
 
@@ -732,7 +733,7 @@ void GameState::states(uint t){
 			betweenLevelState = false;
 		}
 		if(instance->bState){
-			game->changeState(new Menu());
+			game->changeState(new Menu(*display));
 		}
 
 		for(int i = 0; i < stars.size(); ++i){
@@ -792,7 +793,7 @@ void GameState::states(uint t){
 
 
 		if(fuelBar.width <= 0){
-			game->changeState(new GameOverState(ore));
+			game->changeState(new TroublesomeSpace::GameOverState(*display, ore));
 		}
 		else if(!levelEnd){
 			fuelBar.x += speed * (float) t * fuelDx / 1000000.0f;
@@ -948,7 +949,7 @@ void GameState::states(uint t){
 	}
 }
 
-void GameState::levelHandler(){
+void TroublesomeSpace::GameState::levelHandler(){
 
 	switch(level){
 
@@ -1045,7 +1046,7 @@ void GameState::levelHandler(){
 	newLevel = false;
 }
 
-void GameState::invisibility(){
+void TroublesomeSpace::GameState::invisibility(){
 
 	if(playerInvisible){
 		currentInvisibilityTime = millis();
@@ -1067,7 +1068,7 @@ void GameState::invisibility(){
 }
 
 
-void GameState::drawBackground(){
+void TroublesomeSpace::GameState::drawBackground(){
 
 	baseSprite->clear(TFT_BLACK);
 
@@ -1089,7 +1090,7 @@ void GameState::drawBackground(){
 	}
 }
 
-void GameState::drawCounterString(){
+void TroublesomeSpace::GameState::drawCounterString(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
@@ -1097,7 +1098,7 @@ void GameState::drawCounterString(){
 	baseSprite->drawNumber(ore, 5, 3);
 }
 
-void GameState::drawLivesString(){
+void TroublesomeSpace::GameState::drawLivesString(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
@@ -1105,7 +1106,7 @@ void GameState::drawLivesString(){
 	baseSprite->drawNumber(lives, 113, 3);
 }
 
-void GameState::drawInvisibilityCounter(){
+void TroublesomeSpace::GameState::drawInvisibilityCounter(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
@@ -1113,13 +1114,13 @@ void GameState::drawInvisibilityCounter(){
 	baseSprite->drawNumber(invisibilityCounter, 5, 118);
 }
 
-void GameState::drawFuelBar(){
+void TroublesomeSpace::GameState::drawFuelBar(){
 
 	baseSprite->drawRect(64, 121, 64, 7, TFT_PURPLE);
 	baseSprite->fillRect(fuelBar.x, fuelBar.y, fuelBar.width, fuelBar.height, TFT_BLUE);
 }
 
-void GameState::drawPausedState(){
+void TroublesomeSpace::GameState::drawPausedState(){
 
 	baseSprite->drawIcon(pauseScreen, 0, 0, 128, 128);
 
@@ -1130,7 +1131,7 @@ void GameState::drawPausedState(){
 	baseSprite->drawString(quit, 80, 118);
 }
 
-void GameState::drawBetweenLevelState(){
+void TroublesomeSpace::GameState::drawBetweenLevelState(){
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
@@ -1185,7 +1186,7 @@ void GameState::drawBetweenLevelState(){
 
 }
 
-void GameState::drawLevelEnd(){
+void TroublesomeSpace::GameState::drawLevelEnd(){
 
 	baseSprite->drawIcon(greenFlag,lvlEndPlanetX-25,lvlEndPlanetY+20,10,10,1,TFT_BLACK);
 
@@ -1227,74 +1228,74 @@ void GameState::drawLevelEnd(){
 }
 
 
-void GameState::buttonUpPressed(){
+void TroublesomeSpace::GameState::buttonUpPressed(){
 
 	instance->upState = true;
 
 }
 
-void GameState::buttonDownPressed(){
+void TroublesomeSpace::GameState::buttonDownPressed(){
 
 	instance->downState = true;
 
 }
 
-void GameState::buttonLeftPressed(){
+void TroublesomeSpace::GameState::buttonLeftPressed(){
 
 	instance->leftState = true;
 
 }
 
-void GameState::buttonRightPressed(){
+void TroublesomeSpace::GameState::buttonRightPressed(){
 
 	instance->rightState = true;
 
 }
 
-void GameState::buttonAPressed(){
+void TroublesomeSpace::GameState::buttonAPressed(){
 
 	instance->aState = true;
 
 }
 
-void GameState::buttonBPressed(){
+void TroublesomeSpace::GameState::buttonBPressed(){
 
 	instance->bState = true;
 
 }
 
-void GameState::buttonUpReleased(){
+void TroublesomeSpace::GameState::buttonUpReleased(){
 
 	instance->upState = false;
 
 }
 
-void GameState::buttonDownReleased(){
+void TroublesomeSpace::GameState::buttonDownReleased(){
 
 	instance->downState = false;
 
 }
 
-void GameState::buttonLeftReleased(){
+void TroublesomeSpace::GameState::buttonLeftReleased(){
 
 	instance->leftState = false;
 
 }
 
-void GameState::buttonRightReleased(){
+void TroublesomeSpace::GameState::buttonRightReleased(){
 
 	instance->rightState = false;
 
 
 }
 
-void GameState::buttonAReleased(){
+void TroublesomeSpace::GameState::buttonAReleased(){
 
 	instance->aState = false;
 
 }
 
-void GameState::buttonBReleased(){
+void TroublesomeSpace::GameState::buttonBReleased(){
 
 	instance->bState = false;
 }

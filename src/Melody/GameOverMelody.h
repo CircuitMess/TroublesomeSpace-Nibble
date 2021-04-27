@@ -4,7 +4,7 @@
 #include "Pitches.h"
 #include "Note.h"
 
-Note gameOverMelody[] = {
+TroublesomeSpace::Note gameOverMelody[] = {
 
 		{NOTE_A3, 250},
 		{NOTE_F3, 250},

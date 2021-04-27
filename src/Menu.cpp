@@ -4,12 +4,13 @@
 #include "EraseHighscoreState.h"
 #include "GameInfoState.h"
 #include "bitmaps/states/homescreen.hpp"
+#include "Melody/Melody.h"
 
-Menu *Menu::instance = nullptr;
+TroublesomeSpace::Menu *TroublesomeSpace::Menu::instance = nullptr;
 
-Menu::Menu(){
+TroublesomeSpace::Menu::Menu(Display &_display){
 
-	display = Nibble.getDisplay();
+	display = &_display;
 	baseSprite = display->getBaseSprite();
 
 	instance = this;
@@ -19,7 +20,7 @@ Menu::Menu(){
 	display->commit();
 }
 
-void Menu::enter(Game &_game){
+void TroublesomeSpace::Menu::enter(Game &_game){
 
 	game = &_game;
 
@@ -36,7 +37,7 @@ void Menu::enter(Game &_game){
 
 }
 
-void Menu::exit(){
+void TroublesomeSpace::Menu::exit(){
 
 	Melody.playMelody(STOP,false);
 
@@ -48,7 +49,7 @@ void Menu::exit(){
 	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 }
 
-void Menu::loop(uint t){
+void TroublesomeSpace::Menu::loop(uint t){
 
 	baseSprite->clear(TFT_BLACK);
 	draw();
@@ -57,7 +58,7 @@ void Menu::loop(uint t){
 	states();
 }
 
-void Menu::states(){
+void TroublesomeSpace::Menu::states(){
 
 	if(instance->upState){
 		menuOrder--;
@@ -93,24 +94,24 @@ void Menu::states(){
 	}
 
 	if(aState && menuOrder == 1){
-		game->changeState(new GameState());
+		game->changeState(new TroublesomeSpace::GameState(*display));
 	}
 	if(aState && menuOrder == 2){
 		Melody.playMelody(STOP,false);
-		game->changeState(new ShowHighscoreState());
+		game->changeState(new TroublesomeSpace::ShowHighscoreState(*display));
 	}
 	if(aState && menuOrder == 3){
-		game->changeState(new EraseHighscoreState());
+		game->changeState(new TroublesomeSpace::EraseHighscoreState(*display));
 	}
 	if(aState && menuOrder == 4){
-		game->changeState(new GameInfoState());
+		game->changeState(new TroublesomeSpace::GameInfoState(*display));
 	}
 	if(aState && menuOrder == 5){
 
 	}
 }
 
-void Menu::draw(){
+void TroublesomeSpace::Menu::draw(){
 
 	baseSprite->drawIcon(homescreen, 0, 0, 128, 128);
 
@@ -142,7 +143,7 @@ void Menu::draw(){
 	drawTriangleArrows();
 }
 
-void Menu::drawTriangleArrows(){
+void TroublesomeSpace::Menu::drawTriangleArrows(){
 
 	if(menuOrder <= 1){
 		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_WHITE);
@@ -156,27 +157,27 @@ void Menu::drawTriangleArrows(){
 	}
 }
 
-void Menu::buttonUpPressed(){
+void TroublesomeSpace::Menu::buttonUpPressed(){
 	instance->upState = true;
 }
 
-void Menu::buttonDownPressed(){
+void TroublesomeSpace::Menu::buttonDownPressed(){
 	instance->downState = true;
 }
 
-void Menu::buttonAPressed(){
+void TroublesomeSpace::Menu::buttonAPressed(){
 	instance->aState = true;
 }
 
-void Menu::buttonUpReleased(){
+void TroublesomeSpace::Menu::buttonUpReleased(){
 	instance->upState = false;
 }
 
-void Menu::buttonDownReleased(){
+void TroublesomeSpace::Menu::buttonDownReleased(){
 	instance->downState = false;
 }
 
-void Menu::buttonAReleased(){
+void TroublesomeSpace::Menu::buttonAReleased(){
 	instance->aState = false;
 }
 
