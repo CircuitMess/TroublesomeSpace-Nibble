@@ -69,7 +69,7 @@ void GameInfoState::draw(){
 	baseSprite->setTextFont(1);
 	baseSprite->setTextColor(TFT_GOLD);
 	baseSprite->drawString("X", 5, 3);
-	baseSprite->drawIcon(oreIcon,14,5,3,3,1,TFT_BLACK);
+	baseSprite->drawIcon(oreIcon,20,5,3,3,1,TFT_BLACK);
 
 	baseSprite->setTextSize(1);
 	baseSprite->setTextFont(1);
