@@ -27,29 +27,16 @@ void GameInfoState::enter(Game &_game){
 
 	game = &_game;
 
-	upState = false;
-	downState = false;
-	bState = false;
-
-
-	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
-	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_A, buttonAPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_B, buttonBPressed);
-	Input::getInstance()->setBtnReleaseCallback(BTN_UP, buttonUpReleased);
-	Input::getInstance()->setBtnReleaseCallback(BTN_DOWN, buttonDownReleased);
 	Input::getInstance()->setBtnReleaseCallback(BTN_A, buttonAReleased);
 	Input::getInstance()->setBtnReleaseCallback(BTN_B, buttonBReleased);
 }
 
 void GameInfoState::exit(){
 
-	Input::getInstance()->removeBtnPressCallback(BTN_UP);
-	Input::getInstance()->removeBtnPressCallback(BTN_DOWN);
 	Input::getInstance()->removeBtnPressCallback(BTN_A);
 	Input::getInstance()->removeBtnPressCallback(BTN_B);
-	Input::getInstance()->removeBtnReleaseCallback(BTN_UP);
-	Input::getInstance()->removeBtnReleaseCallback(BTN_DOWN);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_A);
 	Input::getInstance()->removeBtnReleaseCallback(BTN_B);
 }
@@ -136,23 +123,11 @@ void GameInfoState::states(){
 	}
 }
 
-void GameInfoState::buttonUpPressed(){
-	instance->upState = true;
-}
-void GameInfoState::buttonDownPressed(){
-	instance->downState = true;
-}
 void GameInfoState::buttonBPressed(){
 	instance->bState = true;
 }
 void GameInfoState::buttonAPressed(){
 	instance->aState = true;
-}
-void GameInfoState::buttonUpReleased(){
-	instance->upState = false;
-}
-void GameInfoState::buttonDownReleased(){
-	instance->downState = false;
 }
 void GameInfoState::buttonAReleased(){
 	instance->aState =false;

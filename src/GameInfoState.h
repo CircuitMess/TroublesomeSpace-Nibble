@@ -15,12 +15,10 @@ public:
 	void loop(uint) override;
 	void draw();
 
-	static void buttonUpPressed();
-	static void buttonDownPressed();
+
 	static void buttonAPressed();
 	static void buttonBPressed();
-	static void buttonUpReleased();
-	static void buttonDownReleased();
+
 	static void buttonAReleased();
 	static void buttonBReleased();
 
@@ -30,10 +28,8 @@ private:
 
 	void states();
 
-	bool upState;
-	bool downState;
-	bool aState;
-	bool bState;
+	bool aState = false;
+	bool bState = false;
 
 	int step = 0;
 	uint previousArrowTime = 0;
