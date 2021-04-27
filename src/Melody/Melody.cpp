@@ -20,7 +20,6 @@ void MelodyImpl::loop(uint t){
 			play(true);
 		}
 	}
-
 }
 
 uint MelodyImpl::playMelody(mel melody, bool loop){
@@ -88,9 +87,6 @@ void MelodyImpl::play(bool loop){
 		}
 	}else{
 
-		if(shortNoteNum >= melodySize)
-			melodyPlaying = false;
-
 		Piezo.tone((melodyNote + shortNoteNum)->note, (melodyNote + shortNoteNum)->duration);
 
 		unsigned long currentMillis = millis();
@@ -99,6 +95,9 @@ void MelodyImpl::play(bool loop){
 
 			previousMillis = currentMillis;
 			shortNoteNum++;
+			if(shortNoteNum >= melodySize){
+				melodyPlaying = false;
+			}
 		}
 	}
 }
@@ -111,4 +110,5 @@ void MelodyImpl::stop(){
 	shortNoteNum = 0;
 	loopNoteNum = 0;
 	melodyPlaying = false;
+	melodyTime = 0;
 }
