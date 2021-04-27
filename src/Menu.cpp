@@ -145,14 +145,14 @@ void Menu::draw(){
 void Menu::drawTriangleArrows(){
 
 	if(menuOrder <= 1){
-		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
+		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_WHITE);
 	}
 	else if(menuOrder >= 5){
-		baseSprite->fillTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
+		baseSprite->fillTriangle(64, 95 - step, 59, 101 - step, 69, 101 - step, TFT_WHITE);
 	}
 	else{
-		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_LIGHTGREY);
-		baseSprite->fillTriangle(64, 95 - step, 59, 100 - step, 69, 100 - step, TFT_LIGHTGREY);
+		baseSprite->fillTriangle(64, 120 + step, 59, 115 + step, 69, 115 + step, TFT_WHITE);
+		baseSprite->fillTriangle(64, 95 - step, 59, 101 - step, 69, 101 - step, TFT_WHITE);
 	}
 }
 
