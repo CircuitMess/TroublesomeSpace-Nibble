@@ -912,7 +912,7 @@ void GameState::states(uint t){
 				lvlEndPlanetY += speed * (float)t/35000.0f;
 			}
 
-			if(millis() - (previousLevelTime + 3000) >
+			if(millis() - (previousLevelTime + 4000) >
 			   levelTime){
 				newLevel = true;
 				level++;
