@@ -3,7 +3,7 @@
 #include "ShowHighscoreState.h"
 #include "EraseHighscoreState.h"
 #include "GameInfoState.h"
-#include "bitmaps/states/homescreen.hpp"
+#include "bitmaps/states/TS_homescreen.hpp"
 #include "Melody/Melody.h"
 
 TroublesomeSpace::Menu *TroublesomeSpace::Menu::instance = nullptr;

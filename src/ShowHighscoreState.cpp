@@ -1,7 +1,7 @@
 #include "ShowHighscoreState.h"
 #include "GameState.h"
 #include "Highscore/Highscore.h"
-#include "bitmaps/states/highscore.hpp"
+#include "bitmaps/states/TS_highscore.hpp"
 
 
 TroublesomeSpace::ShowHighscoreState *TroublesomeSpace::ShowHighscoreState::instance = nullptr;

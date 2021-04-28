@@ -1,9 +1,9 @@
 #include "GameInfoState.h"
 #include "Menu.h"
-#include "bitmaps/player/invisiblePlayer.hpp"
-#include "bitmaps/player/player.hpp"
-#include "bitmaps/objects/fuel.hpp"
-#include "bitmaps/objects/ore.hpp"
+#include "bitmaps/player/TS_invisiblePlayer.hpp"
+#include "bitmaps/player/TS_player.hpp"
+#include "bitmaps/objects/TS_fuel.hpp"
+#include "bitmaps/objects/TS_ore.hpp"
 
 TroublesomeSpace::GameInfoState *TroublesomeSpace::GameInfoState::instance = nullptr;
 

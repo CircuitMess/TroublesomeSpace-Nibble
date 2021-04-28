@@ -2,7 +2,7 @@
 #include "EraseHighscoreState.h"
 #include "ShowHighscoreState.h"
 #include "Highscore/Highscore.h"
-#include "bitmaps/states/eraseHighscoreStateScreen.hpp"
+#include "bitmaps/states/TS_eraseHighscoreStateScreen.hpp"
 
 TroublesomeSpace::EraseHighscoreState *TroublesomeSpace::EraseHighscoreState::instance = nullptr;
 

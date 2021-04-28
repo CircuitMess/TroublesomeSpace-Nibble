@@ -3,7 +3,7 @@
 #include "EnterHighscoreState.h"
 #include "ShowHighscoreState.h"
 #include "Highscore/Highscore.h"
-#include "bitmaps/states/gameover.hpp"
+#include "bitmaps/states/TS_gameover.hpp"
 #include "Melody/Melody.h"
 
 
