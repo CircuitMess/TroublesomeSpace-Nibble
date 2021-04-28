@@ -62,12 +62,14 @@ namespace TroublesomeSpace {
 
 		uint8_t charCursor;
 
-		bool upState;
-		bool downState;
-		bool aState;
-		bool bState;
-		bool leftState;
-		bool rightState;
+		uint32_t previousCursorTime = millis();
+
+		bool upState = false;
+		bool downState = false;
+		bool aState = false;
+		bool bState = false;
+		bool leftState = false;
+		bool rightState = false;
 
 	};
 

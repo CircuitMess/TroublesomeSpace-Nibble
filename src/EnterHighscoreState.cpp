@@ -12,16 +12,16 @@ TroublesomeSpace::EnterHighscoreState::EnterHighscoreState(Display &_display, ui
 	instance = this;
 
 	score = _score;
-}
-
-void TroublesomeSpace::EnterHighscoreState::enter(Game &_game){
-
-	game = &_game;
 
 	charCursor = 0;
 	name = new char[5];
 
 	strcpy(name, "AAAAA\0");
+}
+
+void TroublesomeSpace::EnterHighscoreState::enter(Game &_game){
+
+	game = &_game;
 
 	Input::getInstance()->setBtnPressCallback(BTN_UP, buttonUpPressed);
 	Input::getInstance()->setBtnPressCallback(BTN_DOWN, buttonDownPressed);
@@ -87,28 +87,31 @@ void TroublesomeSpace::EnterHighscoreState::states(){
 
 	if(upState){
 
-		name[charCursor]--;
-
-		upState = false;
-
-	}else if(downState){
-
-		name[charCursor]++;
+		if(name[charCursor] != 'A' && (millis()-previousCursorTime)>100){
+			name[charCursor]--;
+			previousCursorTime = millis();
+		}
 
 		downState = false;
+	}
+	if(downState){
 
-	}else if(leftState){
+		if(name[charCursor] != 'Z' && (millis()-previousCursorTime)>100){
+			name[charCursor]++;
+			previousCursorTime = millis();
+		}
+
+		upState = false;
+	}
+	if(leftState){
 
 		if(charCursor > 0)
 			charCursor--;
 
 		leftState = false;
+	}
 
-	}else if(rightState){
-
-		rightState = false;
-
-	}else if(aState){
+	if(aState){
 
 		charCursor++;
 
@@ -121,7 +124,6 @@ void TroublesomeSpace::EnterHighscoreState::states(){
 			Highscore.addData(newScore);
 			game->changeState(new ShowHighscoreState(*display));
 		}
-
 		aState = false;
 	}
 }
